@@ -1,16 +1,33 @@
 name: CI
 on:
   pull_request:
-    branches: [develop]
+    branches: [develop, master]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Cache node_modules
+        uses: actions/cache@v1
+
+        with:
+          #Where the cash stored in the home for linux
+          path: ~/.npm
+
+          #This key will be used by actions/cache@v1, to retrieve our cash, if it's exist otherwise will be created
+
+          key: ${{ runner.os }}-node-key-${{ hashFiles('**/package-lock.json') }}
+
+          #This expression will allow me to create new cache key every time npm dependencies has changed, and also to have a unique key with every runner.
+
+          restore-key: |
+            ${{runner.os}}-node-key-
+          #Restore-keys are extra keys that github can search for caches at , in github didn't find any caches using the main key
+
       - name: Use NodeJs
         uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: "17.x"
       - run: npm ci
       - run: npm run format:check
       - run: npm test -- --coverage
