@@ -33,3 +33,12 @@ jobs:
       - run: npm test -- --coverage
         env:
           CI: true
+      - name: Upload artifacts
+        uses: actions/upload-artifacts@v3
+        with:
+          #My artifacts name so we can retrieve under this name
+          name: dist-files
+          # Path tell where to find the files should be stored as artifacts, we can store as many as we need
+          path: |
+            dist
+            package.json
