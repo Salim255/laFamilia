@@ -60,3 +60,14 @@ in order to check if our
 - Cache dependencies
 
 - some code
+
+#### Install supertest
+
+- npm install supertest --save-dev
+- npm install dedent
+- npm install express
+- npm install jest
+- npm install node-pg-migrate
+- npm install nodemon
+- npm install pg
+- npm install pg-format
