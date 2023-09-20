@@ -20,7 +20,7 @@ jobs:
 
           #This expression will allow me to create new cache key every time npm dependencies has changed, and also to have a unique key with every runner.
 
-          restore-key: |
+          restore-keys: |
             ${{runner.os}}-node-key-
           #Restore-keys are extra keys that github can search for caches at , in github didn't find any caches using the main key
 
