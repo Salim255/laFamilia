@@ -58,3 +58,5 @@ in order to check if our
 - Upload build as an artifact
 - Deploy to Staging server
 - Cache dependencies
+
+- some code
