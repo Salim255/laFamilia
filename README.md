@@ -39,3 +39,5 @@ in order to check if our
 - Require status checks to pass before merging
 - Require branches to be up to date before merging
 - Do not allow bypassing the above settings
+
+# Just some test
