@@ -13,8 +13,11 @@ jobs:
         with:
           #Where the cash stored in the home for linux
           path: ~/.npm
+
           #This key will be used by actions/cache@v1, to retrieve our cash, if it's exist otherwise will be created
-          key: ${{runner.os}}-node-key-${{ hashFile('**/package-lock.json') }}
+
+          key: ${{ runner.os }}-node-key-${{ hashFiles('**/package-lock.json') }}
+
           #This expression will allow me to create new cache key every time npm dependencies has changed, and also to have a unique key with every runner.
 
           restore-key: |
