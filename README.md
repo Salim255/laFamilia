@@ -40,10 +40,21 @@ in order to check if our
 - Require branches to be up to date before merging
 - Do not allow bypassing the above settings
 
-# Just some test
+#### Build workflow yml file for develop
 
-# Just some test
+- install dependencies
+- Check code formation
+- Run automated tests
+- Upload code coverage as an artifact
+- Cache dependencies
 
-# Just one more test
+#### Build workflow yml file for master
 
-# Just one more test
+- install dependencies
+- Check code formation
+- Run automated tests
+- Upload code coverage as an artifact
+- Build project
+- Upload build as an artifact
+- Deploy to Staging server
+- Cache dependencies
