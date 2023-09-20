@@ -27,3 +27,15 @@ in order to check if our
 - npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
 
 - echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
+
+#### Setup the repository settings
+
+##### Add rules
+
+- Branch name pattern (master, develop)
+- Require pull request reviews before merging
+- Dismiss stale pull request approvals when new commit are pushed
+- Require review from Code owners
+- Require status checks to pass before merging
+- Require branches to be up to date before merging
+- Do not allow bypassing the above settings
