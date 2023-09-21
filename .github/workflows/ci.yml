@@ -39,6 +39,21 @@ jobs:
           #My artifacts name so we can retrieve under this name
           name: dist-files
           # Path tell where to find the files should be stored as artifacts, we can store as many as we need
+          # path: dist
           path: |
             dist
             package.json
+  deploy:
+    ## Needs determine weather the job run parallel or not
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          #This wil download the artifacts create in build then unzip it, so it will be available in this deploy job
+          name: dist-files
+      - name: Output contents
+        run: ls
+      - name: Deploy
+        run: echo "Deploying..."
