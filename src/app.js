@@ -1,6 +1,6 @@
 const express = require("express");
-const core = require("cors");
-
+const cors = require("cors");
+const userRouter = require("./routes/users");
 const options = {
   origin: "*",
   credentials: true,
@@ -8,8 +8,11 @@ const options = {
 
 module.exports = () => {
   const app = express();
-
+  //
   app.use(express.json());
+  app.use(cors(options));
+  //
+  app.use("/api/v1/users", userRouter);
 
   return app;
 };
