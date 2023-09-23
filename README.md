@@ -73,3 +73,5 @@ in order to check if our
 - npm install nodemon
 - npm install pg
 - npm install pg-format
+- npm install cors
+- npm install --save-dev vitest
