@@ -6,6 +6,8 @@ const dbConfig = require("./src/config/db");
 
 const pool = require("./src/config/pool");
 
+const port = appConfig.appPort || 3000;
+
 pool
   .connect({
     host: dbConfig.dbHost,
