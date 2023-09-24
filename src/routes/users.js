@@ -7,7 +7,7 @@ const authController = require("../controllers/authController");
 //Auth  endpoints
 router.post("/signup", authController.signup);
 
-router.post("/login", async (req, res) => {});
+router.post("/login", authController.login);
 
 //Get users
 router.get("/", async (req, res) => {});
