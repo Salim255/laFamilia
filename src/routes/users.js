@@ -2,8 +2,10 @@ const express = require("express");
 
 const router = express.Router();
 
+const authController = require("../controllers/authController");
+
 //Auth  endpoints
-router.post("/signup", async (req, res) => {});
+router.post("/signup", authController.signup);
 
 router.post("/login", async (req, res) => {});
 
