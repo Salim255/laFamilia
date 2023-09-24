@@ -75,3 +75,9 @@ in order to check if our
 - npm install pg-format
 - npm install cors
 - npm install --save-dev vitest
+- npm install jsonwebtoken
+- npm install validator
+- npm install bcrypt
+
+- npm run migrate create add users table
+- DATABASE_URL=postgres://salimhassanmohamed@localhost:5432/spotiBook npm run migrate up
