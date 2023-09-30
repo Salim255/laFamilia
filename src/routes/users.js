@@ -12,8 +12,8 @@ router.post("/login", authController.login);
 //Get users
 router.get("/", async (req, res) => {});
 
-router.put("/", async (req, res) => {});
+router.put("/:userId", async (req, res) => {});
 
-router.delete("/", async (req, res) => {});
+router.delete("/:userId", async (req, res) => {});
 
 module.exports = router;
