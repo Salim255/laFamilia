@@ -80,4 +80,4 @@ in order to check if our
 - npm install bcrypt
 
 - npm run migrate create add users table
-- DATABASE_URL=postgres://salimhassanmohamed@localhost:5432/spotiBook npm run migrate up
+- DATABASE_URL=postgres://salimhassanmohamed@localhost:5432/laFamilia npm run migrate up
