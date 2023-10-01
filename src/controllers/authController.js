@@ -88,7 +88,7 @@ exports.signup = async (req, res) => {
     const { rows } = await pool.query(
       `INSERT INTO users (first_name, last_name, email, password)
          VALUES 
-            ($1, $2, $3, $4) RETURNING *;`,
+            ($1, $2, $3, $4) RETURNING id, create_at,updated_at, first_name,photo,email ;`,
       [first_name, last_name, email, hashedPassword],
     );
 
