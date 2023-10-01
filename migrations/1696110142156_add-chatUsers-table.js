@@ -24,6 +24,6 @@ exports.up = pgm => {
 
 exports.down = pgm => {
   pgm.sql(` 
-           DROP TABLE chatUsers ;
+      DROP TABLE chatUsers ;
             `);
 };

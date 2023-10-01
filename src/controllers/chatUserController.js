@@ -13,7 +13,6 @@ exports.createChatUser = async (req, res) => {
       );
     }
 
-    //
     res.status(200).json({
       status: "success",
       data: {
@@ -24,3 +23,4 @@ exports.createChatUser = async (req, res) => {
     res.send(error);
   }
 };
+

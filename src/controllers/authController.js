@@ -10,6 +10,8 @@ const validator = require("validator");
 
 const tokenConfig = require("../config/token");
 
+const { promisify } = require("util");
+
 const createToken = userId => {
   return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
@@ -108,4 +110,47 @@ exports.signup = async (req, res) => {
       message: error,
     });
   }
+};
+exports.protect = async (req, res, next) => {
+  //1)Getting token and check of it's there
+  let token;
+
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  if (!token) {
+    return res.status(401).json({
+      status: "fail",
+      message: "You are not logged in! Please log in to get access.",
+    });
+  }
+  //2)Verification token
+  let decoded;
+
+  try {
+    decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return res.status(401).json({
+      status: "fail",
+      message: "token invalid",
+    });
+  }
+
+  //3)Check if user still exist
+  const { rows } = await pool.query(`SELECT * FROM users  WHERE id = $1;`, [decoded.id]);
+
+  const user = rows[0];
+
+  if (isEmpty(user)) {
+    return res.status(401).json({
+      status: "fail",
+      message: "The user belonging to this token does no longer exist",
+    });
+  }
+
+  //4) Check uf user changed password after the JWT was issued
+  req.user = user;
+
+  next();
 };
