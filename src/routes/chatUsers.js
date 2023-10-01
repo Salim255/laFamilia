@@ -10,7 +10,7 @@ router.post("/", chatUserController.createChatUser);
 //Update chat
 router.post("/:postId", async (req, res) => {});
 
-//Get chats
+//Get chatUser
 router.get("/", async (req, res) => {});
 
 //Delete chat
