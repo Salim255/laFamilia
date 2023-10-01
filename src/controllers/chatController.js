@@ -2,7 +2,7 @@ const pool = require("../config/pool");
 
 const isEmpty = require("../utils/isEmpty");
 
-exports.createChat = async (req, res) => {
+exports.createChat = async (req, res, next) => {
   try {
     const { chatType, usersId } = req.body;
 
@@ -42,26 +42,20 @@ exports.createChat = async (req, res) => {
       }
     }
 
-    //Create chatUsers
-    //Check if user already associated with the current chat id
-    /*  const { rows: chatUser } = await pool.query(`SELECT * FROM chatUsers WHERE chat_id = $1;`, [
-    createdChat.id,
-  ]); */
+    req.body.createdChatId = createdChat.id;
 
-    for (let i = 0; i < usersId.length; i++) {
-      const { rows } = await pool.query(
-        `INSERT INTO chatUsers (user_id, chat_id) VALUES($1, $2) RETURNING *;`,
-        [usersId[i], createdChat.id],
-      );
-    }
+    req.body.usersIdList = usersId;
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        createdChatId: createdChat.id,
-      },
-    });
+    next();
   } catch (error) {
     res.send(error);
   }
+};
+
+exports.getChatUser = async (req, res) => {
+  //Check if user already associated with the current chat id
+  /*  const { rows: chatUser } = await pool.query(`SELECT * FROM chatUsers WHERE chat_id = $1;`, [
+    createdChat.id,
+  ]); */
+  res.send("Hello from chatUser");
 };

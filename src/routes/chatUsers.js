@@ -2,11 +2,10 @@ const express = require("express");
 
 const router = express.Router();
 
-const chatController = require("../controllers/chatController");
-
 const chatUserController = require("../controllers/chatUserController");
+
 //Create chat
-router.post("/", chatController.createChat, chatUserController.createChatUser);
+router.post("/", chatUserController.createChatUser);
 
 //Update chat
 router.post("/:postId", async (req, res) => {});
