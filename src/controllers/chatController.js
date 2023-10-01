@@ -20,7 +20,7 @@ exports.createChat = async (req, res, next) => {
     }
 
     //Check if there users to start a new chat
-    if (isEmpty(usersId)) {
+    if (isEmpty(usersId) || usersId.length < 2) {
       return res.status(401).json({
         status: "fail",
         message: "Chat needs to have at least two users",

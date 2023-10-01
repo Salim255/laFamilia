@@ -12,6 +12,8 @@ const commentRouter = require("./routes/comments");
 
 const messageRouter = require("./routes/messages");
 
+const chatUserRouter = require("./routes/chatUsers");
+
 const options = {
   origin: "*",
 
@@ -31,6 +33,8 @@ module.exports = () => {
   app.use("/api/v1/posts", postRouter);
 
   app.use("/api/v1/chats", chatRouter);
+
+  app.use("/api/v1/chatUsers", chatUserRouter);
 
   app.use("/api/v1/comments", commentRouter);
 
