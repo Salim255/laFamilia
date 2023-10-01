@@ -1,7 +1,5 @@
 const pool = require("../config/pool");
 
-const isEmpty = require("../utils/isEmpty");
-
 exports.createChatUser = async (req, res) => {
   try {
     const { createdChatId, usersIdList } = req.body;
@@ -23,4 +21,3 @@ exports.createChatUser = async (req, res) => {
     res.send(error);
   }
 };
-
