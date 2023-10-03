@@ -56,7 +56,7 @@ exports.getChatUser = async (req, res) => {
     res.status(200).json({
       status: "success",
       data: {
-        userId,
+        rows,
       },
     });
   } catch (error) {}

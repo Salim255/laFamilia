@@ -19,7 +19,7 @@ router.post(
 router.post("/:postId", async (req, res) => {});
 
 //Get chats
-router.get("/", async (req, res) => {});
+router.get("/", authController.protect, chatController.getChatsByUser);
 
 //Delete chat
 router.delete("/:postId", async (req, res) => {});
