@@ -55,18 +55,22 @@ exports.createChat = async (req, res, next) => {
 exports.getChatsByUser = async (req, res) => {
   try {
     const { rows } = await pool.query(
-      `SELECT   chats.* ,
+      `SELECT   chats.*,
 
-      COALESCE(JSON_AGG( chatUsers.*) FILTER (WHERE chatUsers.user_id=$1)) AS chatUser,
+      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE chatUsers.user_id=$1)) AS chatUser,
 
-      COALESCE(JSON_AGG(users.*) FILTER (WHERE chatUsers.user_id!=$1))  AS users
+      COALESCE(JSON_AGG(users.*) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
+
+      JSON_AGG(messages.*)   AS messages
 
       FROM chats
 
       JOIN chatUsers ON chats.id = chatUsers.chat_id 
 
       JOIN users ON chatUsers.user_id=users.id
-     
+
+      JOIN messages ON messages.chat_id=chats.id
+
       GROUP BY chats.id
 
       ORDER BY chats.id ;
