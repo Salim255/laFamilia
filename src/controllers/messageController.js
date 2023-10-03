@@ -39,7 +39,11 @@ exports.getMessages = async (req, res) => {
       });
     }
 
-    const { rows } = await pool.query(`SELECT * FROM messages  WHERE chat_id=$1;`, [chat_id]);
+    const { rows } = await pool.query(
+      `SELECT * FROM messages WHERE chat_id=$1 ORDER BY create_at ASC`,
+      [chat_id],
+    );
+
     res.status(200).json({
       status: "success",
       data: rows,

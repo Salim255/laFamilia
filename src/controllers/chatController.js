@@ -52,10 +52,34 @@ exports.createChat = async (req, res, next) => {
   }
 };
 
-exports.getChatUser = async (req, res) => {
-  //Check if user already associated with the current chat id
-  /*  const { rows: chatUser } = await pool.query(`SELECT * FROM chatUsers WHERE chat_id = $1;`, [
-    createdChat.id,
-  ]); */
-  res.send("Hello from chatUser");
+exports.getChatsByUser = async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT   chats.* ,
+
+      COALESCE(JSON_AGG( chatUsers.*) FILTER (WHERE chatUsers.user_id=$1)) AS chatUser,
+
+      COALESCE(JSON_AGG(users.*) FILTER (WHERE chatUsers.user_id!=$1))  AS users
+
+      FROM chats
+
+      JOIN chatUsers ON chats.id = chatUsers.chat_id 
+
+      JOIN users ON chatUsers.user_id=users.id
+     
+      GROUP BY chats.id
+
+      ORDER BY chats.id ;
+      
+       `,
+      [req.user.id],
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: rows,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
