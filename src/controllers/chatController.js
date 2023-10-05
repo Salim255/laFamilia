@@ -6,20 +6,9 @@ exports.createChat = async (req, res, next) => {
   try {
     const { chatType, usersId } = req.body;
 
-    let createdChat;
+    const { rows: users } = await pool.query(`SELECT * FROM users`);
 
-    if (!isEmpty(chatType)) {
-      const { rows } = await pool.query(`INSERT INTO chats (type) VALUES($1) RETURNING id, type;`, [
-        chatType,
-      ]);
-
-      createdChat = rows[0];
-    } else if (isEmpty(chatType)) {
-      const { rows } = await pool.query(`INSERT INTO chats VALUES(DEFAULT) RETURNING id, type;`);
-      createdChat = rows[0];
-    }
-
-    //Check if there users to start a new chat
+    //1)Check if we have at least two users before creating a chat
     if (isEmpty(usersId) || usersId.length < 2) {
       return res.status(401).json({
         status: "fail",
@@ -27,10 +16,7 @@ exports.createChat = async (req, res, next) => {
       });
     }
 
-    //Get all users
-    const { rows: users } = await pool.query(`SELECT * FROM users`);
-
-    //Check that all usersId still hold their account
+    //2)Check that all usersId still hold their account
     for (let i = 0; i < usersId.length; i++) {
       result = users.filter(element => element.id == usersId[i]);
 
@@ -42,12 +28,58 @@ exports.createChat = async (req, res, next) => {
       }
     }
 
+    //4)Create chat based on type
+
+    let createdChat;
+
+    //4-1)Create group chat
+    if (!isEmpty(chatType)) {
+      const { rows } = await pool.query(`INSERT INTO chats (type) VALUES($1) RETURNING id, type;`, [
+        chatType,
+      ]);
+
+      createdChat = rows[0];
+    } else if (isEmpty(chatType)) {
+      //If chat of type dual, check if the two users already in chat or not
+
+      const { rows: partnerPared } = await pool.query(
+        `SELECT chats.* ,
+        
+         JSON_AGG(chatUsers.*) AS chatUsers
+  
+         FROM chats
+  
+         JOIN chatUsers On chats.id=chatUsers.chat_id
+  
+         JOIN users ON users.id=$1
+  
+         WHERE chats.type='dual' AND chatUsers.user_id=$2
+  
+         GROUP BY chats.id 
+        
+     `,
+        [req.user.id, usersId[1]],
+      );
+
+      //If they are in chat, then return
+      if (!isEmpty(partnerPared)) {
+        return res.status(401).json({
+          status: "fail",
+          message: "You are already in chat with this user ",
+        });
+      }
+
+      const { rows } = await pool.query(`INSERT INTO chats VALUES(DEFAULT) RETURNING id, type;`);
+      createdChat = rows[0];
+    }
+
     req.body.createdChatId = createdChat.id;
 
     req.body.usersIdList = usersId;
 
     next();
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 };
@@ -55,18 +87,22 @@ exports.createChat = async (req, res, next) => {
 exports.getChatsByUser = async (req, res) => {
   try {
     const { rows } = await pool.query(
-      `SELECT   chats.* ,
+      `SELECT   chats.*,
 
-      COALESCE(JSON_AGG( chatUsers.*) FILTER (WHERE chatUsers.user_id=$1)) AS chatUser,
+      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE chatUsers.user_id=$1)) AS chatUser,
 
-      COALESCE(JSON_AGG(users.*) FILTER (WHERE chatUsers.user_id!=$1))  AS users
+      COALESCE(JSON_AGG( users.* ) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
+
+      JSON_AGG(messages.*)   AS messages
 
       FROM chats
 
       JOIN chatUsers ON chats.id = chatUsers.chat_id 
 
-      JOIN users ON chatUsers.user_id=users.id
-     
+      JOIN users ON chatUsers.user_id = users.id
+
+      JOIN messages ON messages.chat_id = chats.id
+
       GROUP BY chats.id
 
       ORDER BY chats.id ;

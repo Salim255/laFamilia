@@ -1,10 +1,13 @@
 const express = require("express");
-const { route } = require("./users");
 
 const router = express.Router();
 
+const authController = require("../controllers/authController");
+
+const postController = require("../controllers/postController");
+
 //Create a post
-router.post("/", async (req, res) => {});
+router.post("/", authController.protect, postController.createPost);
 
 //Update a post
 router.put("/:postId", async (req, res) => {});
