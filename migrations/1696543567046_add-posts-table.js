@@ -11,8 +11,11 @@ exports.up = pgm => {
           created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   
           updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  
-          captions VARCHAR(250) 
+
+          captions VARCHAR(250) ,
+
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
+         
           
     );
     `,

@@ -7,7 +7,7 @@ const authController = require("../controllers/authController");
 const postController = require("../controllers/postController");
 
 //Create a post
-router.post("/", postController.createPost);
+router.post("/", authController.protect, postController.createPost);
 
 //Update a post
 router.put("/:postId", async (req, res) => {});
