@@ -22,7 +22,8 @@ exports.up = pgm => {
 
               comment_id INTEGER  REFERENCES comments(id) ON DELETE CASCADE,
 
-              message_id INTEGER REFERENCES messages(id) ON DELETE CASCADE
+              message_id INTEGER  REFERENCES messages(id) ON DELETE CASCADE
+
     
                         );
           `,

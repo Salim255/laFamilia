@@ -35,6 +35,20 @@ exports.createReaction = async (req, res) => {
       });
     }
 
+    if (messageId) {
+      const { rows } = await pool.query(
+        `INSERT INTO reactions (type, reaction, user_id, message_id ) VALUES($1, $2, $3, $4) RETURNING *;`,
+        [type, reaction, req.user.id, messageId],
+      );
+
+      return res.status(201).json({
+        status: "success",
+        data: {
+          rows,
+        },
+      });
+    }
+
     console.log(type, req.body, commentId);
     res.status(201).json({
       status: "success",
