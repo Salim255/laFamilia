@@ -20,9 +20,30 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.delete = async (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "User deleted",
-  });
+exports.getUsers = async (req, res) => {
+  try {
+    const { rows } = await pool.query(`SELECT last_name, first_name, photo FROM users;`);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        rows,
+      },
+    });
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { rows } = await pool.query(`DELETE FROM users WHERE id = $1`, [req.user.id]);
+
+    res.status(204).json({
+      status: "success",
+      data: rows,
+    });
+  } catch (error) {
+    res.send(error);
+  }
 };
