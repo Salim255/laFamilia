@@ -119,3 +119,18 @@ exports.getChatsByUser = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.deleteChat = async (req, res) => {
+  try {
+    const { chatId } = req.params;
+
+    const { rows } = await pool.query(`DELETE FROM chats WHERE chats.id = $1`, [chatId]);
+
+    res.status(204).json({
+      status: "success",
+      data: rows,
+    });
+  } catch (error) {
+    res.send(error);
+  }
+};

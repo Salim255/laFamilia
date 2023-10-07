@@ -37,9 +37,6 @@ exports.getChatUser = async (req, res) => {
     //Bring all chatUser associate to the current user
     const { rows } = await pool.query(`SELECT * FROM chatUsers WHERE user_id=$1;`, [userId]);
 
-    console.log("====================================");
-    console.log(rows, "Hllo world ");
-    console.log("====================================");
     res.status(200).json({
       status: "success",
       data: {
@@ -47,4 +44,24 @@ exports.getChatUser = async (req, res) => {
       },
     });
   } catch (error) {}
+};
+
+exports.deleteChatUser = async (req, res) => {
+  try {
+    const { chatId, chatUserId } = req.params;
+
+    const { rows } = await pool.query(
+      `DELETE  FROM chatUsers WHERE user_id = $1  AND chat_id = $2`,
+      [chatUserId, chatId],
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        rows,
+      },
+    });
+  } catch (error) {
+    res.send(error);
+  }
 };

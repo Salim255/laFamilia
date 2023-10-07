@@ -151,6 +151,6 @@ exports.protect = async (req, res, next) => {
 
   //4) Check uf user changed password after the JWT was issued
   req.user = user;
-  console.log(req.user);
+
   next();
 };

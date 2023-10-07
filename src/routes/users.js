@@ -12,10 +12,10 @@ router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 
 //Get users
-router.get("/", async (req, res) => {});
+router.get("/", authController.protect, userController.getUsers);
 
 router.put("/", authController.protect, userController.updateUser);
 
-router.delete("/:userId", async (req, res) => {});
+router.delete("/", authController.protect, userController.deleteUser);
 
 module.exports = router;
