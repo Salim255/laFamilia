@@ -16,12 +16,19 @@ router.post(
 );
 
 //Update chat
-router.post("/:postId", async (req, res) => {});
+router.post("/:chatId", async (req, res) => {});
 
 //Get chats
 router.get("/", authController.protect, chatController.getChatsByUser);
 
 //Delete chat
-router.delete("/:postId", async (req, res) => {});
+router.delete("/:chatId", authController.protect, chatController.deleteChat);
+
+//Delete chatUser form chat
+router.delete(
+  "/:chatId/chatUsers/:chatUserId",
+  authController.protect,
+  chatUserController.deleteChatUser,
+);
 
 module.exports = router;

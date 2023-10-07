@@ -5,6 +5,7 @@ const isEmpty = require("../utils/isEmpty");
 exports.createReaction = async (req, res) => {
   try {
     const { type, reaction } = req.body;
+
     const { postId, commentId, messageId } = req.params;
 
     if (postId) {
@@ -49,7 +50,6 @@ exports.createReaction = async (req, res) => {
       });
     }
 
-    console.log(type, req.body, commentId);
     res.status(201).json({
       status: "success",
       data: {
@@ -57,7 +57,6 @@ exports.createReaction = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
     res.send(error);
   }
 };
