@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const morgan = require("morgan");
 
+const AppError = require("./utils/appError");
+
 const userRouter = require("./routes/users");
 
 const postRouter = require("./routes/posts");
@@ -47,12 +49,35 @@ module.exports = () => {
   app.use("/api/v1/messages", messageRouter);
 
   //For all https method
-  app.all("*", (req, res) => {
-    res.status(404).json({
+  app.all("*", (req, res, next) => {
+    /*  res.status(404).json({
       status: "fail",
       message: `Can't find ${req.originalUrl} on this server`,
-    });
+    }); */
+
+    /*   const err = new Error(`Can't find ${req.originalUrl} on this server`);
+
+    err.status = "fail";
+
+    err.statusCode = 404; */
+
+    //If next function receive an argument, whatever it's, express automatically know that, there is an error,  then will express will skip all other middleware in the stack and go straight to error middleware handler
+    next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
   });
 
+  //Errors middleware handler
+  app.use((err, req, res, next) => {
+    console.log(err.stack);
+
+    //We set the err.statusCode if its not defined
+    err.statusCode = err.statusCode || 500;
+
+    err.status = err.status || "error";
+
+    res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message,
+    });
+  });
   return app;
 };
