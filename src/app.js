@@ -2,6 +2,8 @@ const express = require("express");
 
 const cors = require("cors");
 
+const morgan = require("morgan");
+
 const userRouter = require("./routes/users");
 
 const postRouter = require("./routes/posts");
@@ -22,6 +24,10 @@ const options = {
 
 module.exports = () => {
   const app = express();
+
+  //We use morgan to log the http method, the url, status code, the time it took to response , the response in bit
+  app.use(morgan("dev"));
+
   //
   app.use(express.json());
 
@@ -39,6 +45,14 @@ module.exports = () => {
   app.use("/api/v1/comments", commentRouter);
 
   app.use("/api/v1/messages", messageRouter);
+
+  //For all https method
+  app.all("*", (req, res) => {
+    res.status(404).json({
+      status: "fail",
+      message: `Can't find ${req.originalUrl} on this server`,
+    });
+  });
 
   return app;
 };

@@ -24,7 +24,6 @@ exports.getUsers = async (req, res) => {
   try {
     const { rows } = await pool.query(`SELECT last_name, first_name, photo FROM users;`);
 
-    console.log("Users Hello users ");
     res.status(200).json({
       status: "success",
       data: {
