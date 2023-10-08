@@ -2,61 +2,54 @@ const pool = require("../config/pool");
 
 const isEmpty = require("../utils/isEmpty");
 
-exports.createReaction = async (req, res) => {
-  try {
-    const { type, reaction } = req.body;
+const catchAsync = require("../utils/catchAsync");
 
-    const { postId, commentId, messageId } = req.params;
+exports.createReaction = catchAsync(async (req, res, next) => {
+  const { type, reaction } = req.body;
 
-    if (postId) {
-      const { rows } = await pool.query(
-        `INSERT INTO reactions (type, reaction, user_id, post_id ) VALUES($1, $2, $3, $4) RETURNING *;`,
-        [type, reaction, req.user.id, postId],
-      );
+  const { postId, commentId, messageId } = req.params;
 
-      return res.status(201).json({
-        status: "success",
-        data: {
-          rows,
-        },
-      });
-    }
+  if (postId) {
+    const { rows } = await pool.query(
+      `INSERT INTO reactions (type, reaction, user_id, post_id ) VALUES($1, $2, $3, $4) RETURNING *;`,
+      [type, reaction, req.user.id, postId],
+    );
 
-    if (commentId) {
-      const { rows } = await pool.query(
-        `INSERT INTO reactions (type, reaction, user_id, comment_id ) VALUES($1, $2, $3, $4) RETURNING *;`,
-        [type, reaction, req.user.id, commentId],
-      );
-
-      return res.status(201).json({
-        status: "success",
-        data: {
-          rows,
-        },
-      });
-    }
-
-    if (messageId) {
-      const { rows } = await pool.query(
-        `INSERT INTO reactions (type, reaction, user_id, message_id ) VALUES($1, $2, $3, $4) RETURNING *;`,
-        [type, reaction, req.user.id, messageId],
-      );
-
-      return res.status(201).json({
-        status: "success",
-        data: {
-          rows,
-        },
-      });
-    }
-
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       data: {
-        type,
+        rows,
       },
     });
-  } catch (error) {
-    res.send(error);
   }
-};
+
+  if (commentId) {
+    const { rows } = await pool.query(
+      `INSERT INTO reactions (type, reaction, user_id, comment_id ) VALUES($1, $2, $3, $4) RETURNING *;`,
+      [type, reaction, req.user.id, commentId],
+    );
+
+    return res.status(201).json({
+      status: "success",
+      data: {
+        rows,
+      },
+    });
+  }
+
+  if (messageId) {
+    const { rows } = await pool.query(
+      `INSERT INTO reactions (type, reaction, user_id, message_id ) VALUES($1, $2, $3, $4) RETURNING *;`,
+      [type, reaction, req.user.id, messageId],
+    );
+
+    return res.status(201).json({
+      status: "success",
+      data: {
+        rows,
+      },
+    });
+  }
+
+  return;
+});

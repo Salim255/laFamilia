@@ -74,7 +74,7 @@ exports.createChat = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.getChatsByUser = catchAsync(async (req, res) => {
+exports.getChatsByUser = catchAsync(async (req, res, next) => {
   const { rows } = await pool.query(
     `SELECT   chats.*,
 
@@ -106,7 +106,7 @@ exports.getChatsByUser = catchAsync(async (req, res) => {
   });
 });
 
-exports.deleteChat = catchAsync(async (req, res) => {
+exports.deleteChat = catchAsync(async (req, res, next) => {
   const { chatId } = req.params;
 
   const { rows } = await pool.query(`DELETE FROM chats WHERE chats.id = $1`, [chatId]);
