@@ -83,3 +83,9 @@ in order to check if our
 
 - npm run migrate create add users table
 - DATABASE_URL=postgres://salimhassanmohamed@localhost:5432/laFamilia npm run migrate up
+
+### In order to set to declare node env variables
+
+- NODE_ENV=value then then the command to start the server
+
+- NODE_ENV='development' nodemon index.js
