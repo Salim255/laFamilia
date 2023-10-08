@@ -6,6 +6,8 @@ const morgan = require("morgan");
 
 const AppError = require("./utils/appError");
 
+const globalErrorHandler = require("./controllers/errorController");
+
 const userRouter = require("./routes/users");
 
 const postRouter = require("./routes/posts");
@@ -66,18 +68,7 @@ module.exports = () => {
   });
 
   //Errors middleware handler
-  app.use((err, req, res, next) => {
-    console.log(err.stack);
+  app.use(globalErrorHandler);
 
-    //We set the err.statusCode if its not defined
-    err.statusCode = err.statusCode || 500;
-
-    err.status = err.status || "error";
-
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message,
-    });
-  });
   return app;
 };
