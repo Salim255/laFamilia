@@ -55,7 +55,7 @@ module.exports = () => {
     next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
   });
 
-  //Errors middleware handler
+  //Global Errors middleware handler
   app.use(globalErrorHandler);
 
   return app;
