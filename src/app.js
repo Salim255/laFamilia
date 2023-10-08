@@ -52,18 +52,6 @@ module.exports = () => {
 
   //For all https method
   app.all("*", (req, res, next) => {
-    /*  res.status(404).json({
-      status: "fail",
-      message: `Can't find ${req.originalUrl} on this server`,
-    }); */
-
-    /*   const err = new Error(`Can't find ${req.originalUrl} on this server`);
-
-    err.status = "fail";
-
-    err.statusCode = 404; */
-
-    //If next function receive an argument, whatever it's, express automatically know that, there is an error,  then will express will skip all other middleware in the stack and go straight to error middleware handler
     next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
   });
 
