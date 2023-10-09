@@ -2,7 +2,7 @@ const pool = require("../config/pool");
 
 const catchAsync = require("../utils/catchAsync");
 
-exports.createChatUser = catchAsync(async (req, res) => {
+exports.createChatUser = catchAsync(async (req, res, next) => {
   const { createdChatId, usersIdList } = req.body;
 
   for (let i = 0; i < usersIdList.length; i++) {
@@ -28,7 +28,7 @@ exports.createChatUser = catchAsync(async (req, res) => {
   });
 });
 
-exports.getChatUser = catchAsync(async (req, res) => {
+exports.getChatUser = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
 
   //Bring all chatUser associate to the current user
@@ -42,7 +42,7 @@ exports.getChatUser = catchAsync(async (req, res) => {
   });
 });
 
-exports.deleteChatUser = catchAsync(async (req, res) => {
+exports.deleteChatUser = catchAsync(async (req, res, next) => {
   const { chatId, chatUserId } = req.params;
 
   const { rows } = await pool.query(`DELETE  FROM chatUsers WHERE user_id = $1  AND chat_id = $2`, [
