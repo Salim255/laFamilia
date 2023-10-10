@@ -21,9 +21,9 @@ router.post("/:postId/reactions", authController.protect, reactionController.cre
 router.put("/:postId", authController.protect, postController.updatePost);
 
 //Get posts
-router.get("/", async (req, res) => {});
+router.get("/", authController.protect, postController.getAllPosts);
 
 //Delete a post
-router.delete("/:postId", async (req, res) => {});
+router.delete("/:postId", authController.protect, postController.deletePost);
 
 module.exports = router;
