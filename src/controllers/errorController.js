@@ -1,3 +1,19 @@
+const AppError = require("../utils/appError");
+
+require("dotenv").config();
+
+const handleErrorInvalidIdDB = error => {
+  //"Key (post_id)=(2) is not present in table \"posts\".",
+  let string = error.detail;
+
+  string = string.split(" ");
+  console.log("====================================");
+  console.log("💥💥", string[1]);
+  console.log("====================================");
+  const message = `Invalid ${string[1]}`;
+  return new AppError(message, 400);
+};
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -7,7 +23,7 @@ const sendErrorDev = (err, res) => {
   });
 };
 
-const sendErrorProd = (req, res) => {
+const sendErrorProd = (err, res) => {
   //Operational, trusted error: send message to client
   if (err.isOperational) {
     res.status(err.statusCode).json({
@@ -36,7 +52,13 @@ module.exports = (err, req, res, next) => {
 
   if (process.env.NODE_ENV === "development") {
     sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === "development") {
-    sendErrorProd(req, res);
+  } else if (process.env.NODE_ENV === "production") {
+    let error = { ...err };
+    console.log("====================================");
+    console.log(error, "Hello hello ");
+    console.log("====================================");
+    if (error.code === "23503") error = handleErrorInvalidIdDB(error);
+
+    sendErrorProd(error, res);
   }
 };

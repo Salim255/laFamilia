@@ -113,6 +113,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const user = rows[0];
 
   if (isEmpty(user)) {
+    console.log(token, user);
     return next(new AppError("The user belonging to this token does no longer exist", 401));
   }
 
