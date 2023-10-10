@@ -7,6 +7,7 @@ exports.createComment = catchAsync(async (req, res, next) => {
 
   const { postId } = req.params;
 
+  console.log(postId);
   const { rows } = await pool.query(
     `INSERT INTO comments (content, user_id, post_id) VALUES($1, $2, $3) RETURNING *;`,
     [content, req.user.id, postId],

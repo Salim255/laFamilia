@@ -1,3 +1,26 @@
+const AppError = require("../utils/appError");
+
+require("dotenv").config();
+
+const handleInvalIdIdDB = err => {
+  //"Key (post_id)=(2) is not present in table \"posts\".",
+  let value = err.detail.match(/\(([^()]*)\)/g);
+  value = value.map(x => x.replace(/[()]/g, ""));
+
+  const message = `Invalid ${value[0]}: ${value[1]}`;
+  return new AppError(message, 400);
+};
+
+const handleDuplicateFieldDB = err => {
+  let value = err.detail.match(/\(([^()]*)\)/g);
+
+  value = value.map(x => x.replace(/[()]/g, ""));
+
+  const message = `Duplicate field value: ${value[1]}. Please use another value!`;
+
+  return new AppError(message, 400);
+};
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -7,7 +30,7 @@ const sendErrorDev = (err, res) => {
   });
 };
 
-const sendErrorProd = (req, res) => {
+const sendErrorProd = (err, res) => {
   //Operational, trusted error: send message to client
   if (err.isOperational) {
     res.status(err.statusCode).json({
@@ -36,7 +59,14 @@ module.exports = (err, req, res, next) => {
 
   if (process.env.NODE_ENV === "development") {
     sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === "development") {
-    sendErrorProd(req, res);
+  } else if (process.env.NODE_ENV === "production") {
+    let error = { ...err };
+    console.log("====================================");
+    console.log(error, "Hello hello ");
+    console.log("====================================");
+    if (error.code === "23503") error = handleInvalIdIdDB(error);
+
+    if (error.code === "23505") error = handleDuplicateFieldDB(error);
+    sendErrorProd(error, res);
   }
 };

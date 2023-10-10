@@ -18,7 +18,7 @@ router.post("/:postId/comments", authController.protect, commentController.creat
 router.post("/:postId/reactions", authController.protect, reactionController.createReaction);
 
 //Update a post
-router.put("/:postId", async (req, res) => {});
+router.put("/:postId", authController.protect, postController.updatePost);
 
 //Get posts
 router.get("/", async (req, res) => {});
