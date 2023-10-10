@@ -2,15 +2,22 @@ const AppError = require("../utils/appError");
 
 require("dotenv").config();
 
-const handleErrorInvalidIdDB = error => {
+const handleInvalIdIdDB = err => {
   //"Key (post_id)=(2) is not present in table \"posts\".",
-  let string = error.detail;
+  let value = err.detail.match(/\(([^()]*)\)/g);
+  value = value.map(x => x.replace(/[()]/g, ""));
 
-  string = string.split(" ");
-  console.log("====================================");
-  console.log("💥💥", string[1]);
-  console.log("====================================");
-  const message = `Invalid ${string[1]}`;
+  const message = `Invalid ${value[0]}: ${value[1]}`;
+  return new AppError(message, 400);
+};
+
+const handleDuplicateFieldDB = err => {
+  let value = err.detail.match(/\(([^()]*)\)/g);
+
+  value = value.map(x => x.replace(/[()]/g, ""));
+
+  const message = `Duplicate field value: ${value[1]}. Please use another value!`;
+
   return new AppError(message, 400);
 };
 
@@ -57,8 +64,9 @@ module.exports = (err, req, res, next) => {
     console.log("====================================");
     console.log(error, "Hello hello ");
     console.log("====================================");
-    if (error.code === "23503") error = handleErrorInvalidIdDB(error);
+    if (error.code === "23503") error = handleInvalIdIdDB(error);
 
+    if (error.code === "23505") error = handleDuplicateFieldDB(error);
     sendErrorProd(error, res);
   }
 };

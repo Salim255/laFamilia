@@ -60,17 +60,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     return next(new AppError("Create user information error", 401));
   }
 
-  //Check if the email already used
-  const { rows: user } = await pool.query(`SELECT * FROM users WHERE email = $1;`, [email]);
-
-  //If email already used
-  if (!isEmpty(user[0])) {
-    return next(
-      new AppError("duplicate key value violates unique constraint users_email_key", 401),
-    );
-  }
-
-  //If not, create new user
   const hashedPassword = await bcrypt.hash(password, 12);
 
   const { rows } = await pool.query(
