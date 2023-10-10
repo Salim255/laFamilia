@@ -24,6 +24,6 @@ router.put("/:postId", authController.protect, postController.updatePost);
 router.get("/", async (req, res) => {});
 
 //Delete a post
-router.delete("/:postId", async (req, res) => {});
+router.delete("/:postId", authController.protect, postController.deletePost);
 
 module.exports = router;

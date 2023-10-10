@@ -55,3 +55,23 @@ exports.updatePost = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.deletePost = catchAsync(async (req, res, next) => {
+  const { postId } = req.params;
+
+  const { rows: post } = await pool.query(`SELECT * FROM posts WHERE id=$1`, [postId]);
+
+  if (isEmpty(post)) {
+    return next(new AppError(`No post found with the id ${postId}: `, 401));
+  }
+
+  const { rows } = await pool.query(`DELETE FROM posts WHERE id = $2 AND user_id=$1`, [
+    req.user.id,
+    postId,
+  ]);
+
+  res.status(204).json({
+    status: "success",
+    data: rows,
+  });
+});
