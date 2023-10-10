@@ -1,5 +1,14 @@
-const app = require("./src/app.js");
+//Catching Uncaught Exception Errors
+process.on("uncaughtException", err => {
+  console.log("UNHANDLED EXCEPTION! 💥 Shutting down...");
 
+  console.log(err.name, err.message);
+
+  process.exit(1);
+});
+
+const app = require("./src/app.js");
+require("dotenv").config();
 const appConfig = require("./src/config/app");
 
 const dbConfig = require("./src/config/db");
