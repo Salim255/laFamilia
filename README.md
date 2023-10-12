@@ -80,7 +80,9 @@ in order to check if our
 - npm install bcrypt
 - npm install ndb --save-dev
 - npm install morgan
+
 - npm i express-rate-limit
+- npm i helmet
 
 - npm run migrate create add users table
 - DATABASE_URL=postgres://salimhassanmohamed@localhost:5432/laFamilia npm run migrate up
