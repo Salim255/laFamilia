@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const pool = require("../config/pool");
 
 const jwt = require("jsonwebtoken");
@@ -9,6 +11,8 @@ const isEmpty = require("../utils/isEmpty");
 const validator = require("validator");
 
 const tokenConfig = require("../config/token");
+
+const cookieConfig = require("../config/cookie");
 
 const { promisify } = require("util");
 
@@ -71,6 +75,18 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   //Create token
   const token = createToken(rows[0].id);
+
+  //To send a cookie, all we have to do is to attach it to the response object,
+  // So we say res.cookie, and all what we have to do is to specify the name of the cookie, then the data that we want to send in the cookie, options for the cookie
+  const cookieOptions = {
+    expires: new Date(Date.now() + cookieConfig.cookieEXP * 24 * 60 * 60 * 1000), //Date in millisecond
+    //secure: false, //By this cookie will be send only in on an encrypted connection, HHTPS
+    httpOnly: true, //This will make it so that cookie cannot be accessed or modified in any way by the browser, this important to prevent CSS attack, so the browser can do , is to receive the cookie, store it then send it back with every request
+  };
+
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  res.cookie("jwt", token, cookieOptions);
 
   res.status(200).json({
     message: "success",
