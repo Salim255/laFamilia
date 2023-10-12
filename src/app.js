@@ -6,6 +6,8 @@ const morgan = require("morgan");
 
 const rateLimit = require("express-rate-limit");
 
+const helmet = require("helmet");
+
 const AppError = require("./utils/appError");
 
 const globalErrorHandler = require("./controllers/errorController");
@@ -32,12 +34,15 @@ module.exports = () => {
   const app = express();
 
   // 1) Global middleware
-  //We use morgan to log the http method, the url, status code, the time it took to response , the response in bit
+  //Set security HTTP headers,The best use of helmet is to use t early in middleware stack
+  app.use(helmet());
+
+  //Development logging, we use morgan to log the http method, the url, status code, the time it took to response , the response in bit
   if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
   }
 
-  //This will allow 100 requests from the same IP in one hour
+  //Limit request from same IP, This will allow 100 requests from the same IP in one hour
   const limiter = rateLimit({
     max: 100, //Max 100 request par hour
     windowMs: 60 * 60 * 1000, //Time in millisecond
@@ -46,8 +51,8 @@ module.exports = () => {
 
   app.use("/api", limiter);
 
-  //
-  app.use(express.json());
+  //Body parser, reading data from body into req.body
+  app.use(express.json({ limit: "10kb" }));
 
   app.use(cors(options));
 
