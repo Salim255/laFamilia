@@ -10,6 +10,8 @@ const rateLimit = require("express-rate-limit");
 
 const helmet = require("helmet");
 
+const hpp = require("hpp");
+
 const AppError = require("./utils/appError");
 
 const globalErrorHandler = require("./controllers/errorController");
@@ -61,6 +63,17 @@ module.exports = () => {
   // So xss module will convert any HTML symbols into HTML entity
   //Like  "<div id=`bad`>Bad</div>" =>  "&lt;div id=`bad`>Bad&lt;/div>"
   app.use(xss());
+
+  //Prevent params pollution, by clearing up the query string
+  //If in the params there are key with two values, then this middleware, keep the first the last value and the key only, so there will be no key with two values
+  //But if we want to allow the duplication in the queryString, we can pas a whiteList to the middleware where we allow to certain key to be duplicated
+  /*  app.use(
+    hpp({
+      whitelist: ["duration","salim",...],
+    }),
+  ); */
+
+  app.use(hpp());
 
   app.use(cors(options));
 

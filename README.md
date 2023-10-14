@@ -84,6 +84,7 @@ in order to check if our
 - npm i express-rate-limit
 - npm i helmet
 - npm i xss-clean
+- npm i hpp
 - npm run migrate create add users table
 - DATABASE_URL=postgres://salimhassanmohamed@localhost:5432/laFamilia npm run migrate up
 
