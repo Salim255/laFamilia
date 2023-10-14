@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const morgan = require("morgan");
 
+const xss = require("xss-clean");
+
 const rateLimit = require("express-rate-limit");
 
 const helmet = require("helmet");
@@ -53,6 +55,12 @@ module.exports = () => {
 
   //Body parser, reading data from body into req.body
   app.use(express.json({ limit: "10kb" }));
+
+  //Data sanitization against XSS attacks
+  //This will clean any user input from malicious HTML code with some JavaScript code attached to it .
+  // So xss module will convert any HTML symbols into HTML entity
+  //Like  "<div id=`bad`>Bad</div>" =>  "&lt;div id=`bad`>Bad&lt;/div>"
+  app.use(xss());
 
   app.use(cors(options));
 
