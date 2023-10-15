@@ -31,7 +31,7 @@ jobs:
           node-version: "17.x"
       - run: npm ci
       - run: npm run format:check
-      - run: npm test:ci -- --coverage
+      - run: npm test -- --coverage
         env:
           CI: true
       - name: Upload artifacts
