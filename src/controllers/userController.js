@@ -37,3 +37,9 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     data: rows,
   });
 });
+
+exports.countUsers = async () => {
+  const { rows } = await pool.query(`SELECT COUNT(*) FROM users;`);
+
+  return rows[0].count;
+};
