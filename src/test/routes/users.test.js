@@ -1,8 +1,8 @@
 const request = require("supertest");
 
-const dbConfig = require("../../config/db");
-
 const buildApp = require("../../app");
+
+const dbTestConfig = require("../../config/dbTst");
 
 const userController = require("../../controllers/userController");
 
@@ -10,10 +10,10 @@ const pool = require("../../config/pool");
 
 beforeAll(() => {
   return pool.connect({
-    host: dbConfig.dbHost,
-    port: dbConfig.dbPort,
-    database: dbConfig.dbDatabase,
-    user: dbConfig.dbUser,
+    host: dbTestConfig.dbHost,
+    port: dbTestConfig.dbPort,
+    database: dbTestConfig.dbDatabase,
+    user: dbTestConfig.dbUser,
     password: "",
   });
 });
@@ -26,19 +26,17 @@ afterAll(() => {
 it("create a user", async () => {
   const startingCount = await userController.countUsers();
 
-  expect(startingCount).toEqual(0);
-
   await request(buildApp())
-    .post("/users")
+    .post("/api/v1/users/signup")
     .send({
       first_name: "salim",
       last_name: "hassan",
-      email: "asq@gmail.com",
+      email: "s@gmail.com",
       password: "3333",
     })
     .expect(200);
 
   const finishCount = await userController.countUsers();
 
-  expect(finishCount).toEqual(1);
+  expect(finishCount - startingCount).toEqual(1);
 });
