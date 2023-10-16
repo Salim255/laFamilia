@@ -50,7 +50,8 @@ jobs:
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
         #run: DATABASE_URL=postgres://root:postgres@localhost:5432/postgres  npm run migrate up
-        run: node client.js
+        #run: node client.js
+        run: sudo systemctl start postgresql.service
         #  echo "Hello salim"
         # Environment variables used by the `client.js` script to create
         # a new PostgreSQL table.
