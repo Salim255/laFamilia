@@ -49,9 +49,9 @@ jobs:
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
-        run: |
-          node client.js
-          echo "Hello salim"
+        run: DATABASE_URL=postgres://root:postgres@localhost:5433/postgres  npm run migrate up
+        #  node client.js
+        #  echo "Hello salim"
         # Environment variables used by the `client.js` script to create
         # a new PostgreSQL table.
         env:
