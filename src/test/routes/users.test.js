@@ -8,13 +8,23 @@ const userController = require("../../controllers/userController");
 
 const pool = require("../../config/pool");
 
-beforeAll(() => {
+/* beforeAll(() => {
   return pool.connect({
     host: dbTestConfig.dbHost,
     port: dbTestConfig.dbPort,
     database: dbTestConfig.dbDatabase,
     user: dbTestConfig.dbUser,
     password: "",
+  });
+}); */
+
+beforeAll(() => {
+  return pool.connect({
+    host: "postgres",
+    port: "5432",
+    database: "laFamilia-test",
+    user: "postgres",
+    password: "postgres",
   });
 });
 
