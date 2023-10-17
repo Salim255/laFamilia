@@ -146,7 +146,7 @@ jobs:
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
-        run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres  npm run migrate up
+        run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/laFamilia-test  npm run migrate up
 
       - run: npm run format:check
       - run: npm test -- --coverage
