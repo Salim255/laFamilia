@@ -1,12 +1,121 @@
 name: CI
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
   pull_request:
     branches: [develop, master]
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  # This workflow contains a multi jobs called "build, ...,"
+  # Label used to access the service container
+  db-container:
+    # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+    container: node:10.18-jessie
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          # optional (defaults to `postgres`)
+          #POSTGRES_DB: laFamilia-test
+          # required
+          POSTGRES_PASSWORD: postgres
+          # optional (defaults to `5432`)
+          #POSTGRES_PORT: 5432
+          # optional (defaults to `postgres`)
+          #POSTGRES_USER: postgres_user
+
+        ports:
+          # maps tcp port 5432 on service container to the host
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    # Provide the password for postgres
+    env:
+      POSTGRES_PASSWORD: postgres
+
     steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: "17"
+      # Performs a clean installation of all dependencies in the `package.json` file
+      - name: Install dependencies
+        run: npm ci
+      - name: Connect to PostgreSQL
+        # Runs a script that creates a PostgreSQL table, populates
+        # the table with data, and then retrieves the data.
+
+        run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres  npm run migrate up
+        #run: node client.js
+        #run: sudo systemctl start postgresql.service
+        #  echo "Hello salim"
+        # Environment variables used by the `client.js` script to create
+        # a new PostgreSQL table.
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
+          # postgress password is required; alternatively, you can run:
+          # `PGPASSWORD=postgres_password psql ...`
+          PGPASSWORD: postgres_password
+
+  #####----
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+    container:
+      node:10.18-jessie
+      # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          # optional (defaults to `postgres`)
+          POSTGRES_DB: laFamilia-test
+          # required
+          POSTGRES_PASSWORD: postgres
+          # optional (defaults to `5432`)
+          #POSTGRES_PORT: 5432
+          # optional (defaults to `postgres`)
+          POSTGRES_USER: postgres
+
+        ports:
+          # maps tcp port 5432 on service container to the host
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    # Provide the password for postgres
+    env:
+      POSTGRES_PASSWORD: postgres
+
+      # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Cache node_modules
         uses: actions/cache@v1
@@ -29,7 +138,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "17.x"
-      - run: npm ci
+
+        # Performs a clean installation of all dependencies in the `package.json` file
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Connect to PostgreSQL
+        # Runs a script that creates a PostgreSQL table, populates
+        # the table with data, and then retrieves the data.
+        run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/laFamilia-test  npm run migrate up
+
       - run: npm run format:check
       - run: npm test -- --coverage
         env:

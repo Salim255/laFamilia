@@ -93,3 +93,5 @@ in order to check if our
 - NODE_ENV=value then then the command to start the server
 
 - NODE_ENV='development' nodemon index.js
+
+- "test": "jest --watchAll --no-cache ",
