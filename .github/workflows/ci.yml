@@ -47,15 +47,6 @@ jobs:
       POSTGRES_PASSWORD: postgres
 
     steps:
-      - name: Install PostgreSQL client
-        run: |
-          apt-get update
-          apt-get install --yes postgresql-client
-
-      # queries database with postgres client
-      - name: Query database
-        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
-
       # Downloads a copy of the code in your repository before running CI tests
       - name: Check out repository code
         uses: actions/checkout@v3
