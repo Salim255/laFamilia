@@ -24,7 +24,18 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
+          # optional (defaults to `postgres`)
+          #POSTGRES_DB: laFamilia-test
+          # required
           POSTGRES_PASSWORD: postgres
+          # optional (defaults to `5432`)
+          #POSTGRES_PORT: 5432
+          # optional (defaults to `postgres`)
+          #POSTGRES_USER: postgres_user
+
+        ports:
+          # maps tcp port 5432 on service container to the host
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -36,6 +47,15 @@ jobs:
       POSTGRES_PASSWORD: postgres
 
     steps:
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+
+      # queries database with postgres client
+      - name: Query database
+        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
+
       # Downloads a copy of the code in your repository before running CI tests
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -49,9 +69,10 @@ jobs:
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
-        #run: DATABASE_URL=postgres://root:postgres@localhost:5432/postgres  npm run migrate up
+
+        run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres  npm run migrate up
         #run: node client.js
-        run: sudo systemctl start postgresql.service
+        #run: sudo systemctl start postgresql.service
         #  echo "Hello salim"
         # Environment variables used by the `client.js` script to create
         # a new PostgreSQL table.
@@ -60,6 +81,9 @@ jobs:
           POSTGRES_HOST: localhost
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
+          # postgress password is required; alternatively, you can run:
+          # `PGPASSWORD=postgres_password psql ...`
+          PGPASSWORD: postgres_password
 
   #####----
   build:
