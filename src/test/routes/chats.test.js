@@ -2,9 +2,8 @@ const request = require("supertest");
 
 const buildApp = require("../../app");
 
-const dbTestConfig = require("../../config/dbTst");
-
 const userController = require("../../controllers/userController");
+
 const Context = require("../context");
 
 let context;
@@ -18,6 +17,7 @@ afterAll(() => {
 
 let createdUsersId = [];
 let token;
+
 describe("Chats test handler", () => {
   it("create  user 1", async () => {
     await request(buildApp())
@@ -36,7 +36,7 @@ describe("Chats test handler", () => {
       });
   });
 
-  it("create  user 1", async () => {
+  it("create  user 2", async () => {
     await request(buildApp())
       .post(`/api/v1/users/signup`)
       .send({
@@ -60,7 +60,19 @@ describe("Chats test handler", () => {
         usersId: createdUsersId,
       })
       .expect(200);
+  });
 
-    console.log("Hello chat test");
+  it("get chats by user", async () => {
+    await request(buildApp())
+      .get(`/api/v1/chats`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
+
+  it("Delete chats by user", async () => {
+    await request(buildApp())
+      .delete(`/api/v1/chats/1`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(204);
   });
 });
