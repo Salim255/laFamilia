@@ -8,13 +8,22 @@ const format = require("pg-format");
 
 const dbTestConfig = require("../config/dbTst");
 const { Pool } = require("pg");
-const DEFAULT_OPTS = {
+/* const DEFAULT_OPTS = {
   host: dbTestConfig.dbHost,
   port: dbTestConfig.dbPort,
   database: dbTestConfig.dbDatabase,
   user: dbTestConfig.dbUser,
   password: "",
+}; */
+
+const DEFAULT_OPTS = {
+  host: "postgres",
+  port: "5432",
+  database: "laFamilia-test",
+  user: "postgres",
+  password: "postgres",
 };
+
 class Context {
   static async build() {
     // Randomly generating  a role name to connect to PG as
@@ -45,8 +54,15 @@ class Context {
 
       dir: "migrations", //File where our migrations files stored
 
-      databaseUrl: {
+      /* databaseUrl: {
         host: dbTestConfig.dbHost,
+        port: dbTestConfig.dbPort,
+        database: dbTestConfig.dbDatabase,
+        user: roleName,
+        password: roleName,
+      }, */
+      databaseUrl: {
+        host: "postgres",
         port: dbTestConfig.dbPort,
         database: dbTestConfig.dbDatabase,
         user: roleName,
@@ -55,8 +71,19 @@ class Context {
     });
 
     // Connect to PG as the newly created role
-    await pool.connect({
+    /*  await pool.connect({
       host: dbTestConfig.dbHost,
+
+      port: dbTestConfig.dbPort,
+
+      database: dbTestConfig.dbDatabase,
+
+      user: roleName,
+
+      password: roleName,
+    }); */
+    await pool.connect({
+      host: "postgres",
 
       port: dbTestConfig.dbPort,
 

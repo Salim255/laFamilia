@@ -5,34 +5,18 @@ const buildApp = require("../../app");
 const dbTestConfig = require("../../config/dbTst");
 
 const userController = require("../../controllers/userController");
+const Context = require("../context");
 
-const pool = require("../../config/pool");
-
-beforeAll(() => {
-  return pool.connect({
-    host: dbTestConfig.dbHost,
-    port: dbTestConfig.dbPort,
-    database: dbTestConfig.dbDatabase,
-    user: dbTestConfig.dbUser,
-    password: "",
-  });
+let context;
+beforeAll(async () => {
+  context = await Context.build();
 });
-
-/* beforeAll(() => {
-  return pool.connect({
-    host: "postgres",
-    port: "5432",
-    database: "laFamilia-test",
-    user: "postgres",
-    password: "postgres",
-  });
-}); */
 
 afterAll(() => {
-  return pool.close();
+  return context.close();
 });
 
-let createdUserId;
+let createdUsersId = [];
 let token;
 describe("Chats test handler", () => {
   it("create  user 1", async () => {
@@ -41,53 +25,42 @@ describe("Chats test handler", () => {
       .send({
         first_name: "salim",
         last_name: "hassan",
-        email: "ok@gmail.com",
+        email: "a@gmail.com",
         password: "3333",
       })
-      .set("Authorization", `Bearer ${token}`)
       .expect(200)
       .then(async response => {
-        createdUserId = response._body.data.user.id;
+        createdUsersId.push(response._body.data.user.id);
+
         token = response._body.data.token;
       });
   });
 
-  it("create  user 2", async () => {
+  it("create  user 1", async () => {
     await request(buildApp())
       .post(`/api/v1/users/signup`)
       .send({
         first_name: "salim",
         last_name: "hassan",
-        email: "ok@gmail.com",
+        email: "b@gmail.com",
         password: "3333",
       })
-      .set("Authorization", `Bearer ${token}`)
       .expect(200)
       .then(async response => {
-        createdUserId = response._body.data.user.id;
-        token = response._body.data.token;
+        createdUsersId.push(response._body.data.user.id);
       });
   });
 
   it("create a chat", async () => {
     await request(buildApp())
       .post(`/api/v1/chats`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         chatType: "group",
-        usersId: [1, 2],
+        usersId: createdUsersId,
       })
-      .expect(200)
-      .then(async response => {
-        createdUserId = response._body.data.user.id;
-        token = response._body.data.token;
-      });
-    console.log("Hello chat test");
-  });
+      .expect(200);
 
-  it("delete a user", async () => {
-    await request(buildApp())
-      .delete("/api/v1/users")
-      .set("Authorization", `Bearer ${token}`)
-      .expect(204);
+    console.log("Hello chat test");
   });
 });
