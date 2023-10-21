@@ -19,7 +19,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 });
 
 exports.getUsers = catchAsync(async (req, res, next) => {
-  const { rows } = await pool.query(`SELECT last_name, first_name, photo FROM users;`);
+  const { rows } = await pool.query(`SELECT last_name, first_name, id, photo FROM users;`);
 
   res.status(200).json({
     status: "success",
