@@ -7,6 +7,8 @@ const chatController = require("../controllers/chatController");
 const chatUserController = require("../controllers/chatUserController");
 
 const authController = require("../controllers/authController");
+
+const messageController = require("../controllers/messageController");
 //Create chat
 router.post(
   "/",
@@ -20,6 +22,9 @@ router.post("/:chatId", async (req, res) => {});
 
 //Get chats
 router.get("/", authController.protect, chatController.getChatsByUser);
+
+//Get messages by chat id
+router.get("/:chatId/messages", authController.protect, messageController.getMessages);
 
 //Delete chat
 router.delete("/:chatId", authController.protect, chatController.deleteChat);

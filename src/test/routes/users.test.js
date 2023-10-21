@@ -4,8 +4,6 @@ const buildApp = require("../../app");
 
 const userController = require("../../controllers/userController");
 
-const pool = require("../../config/pool");
-
 const Context = require("../context");
 
 let context;
@@ -13,22 +11,11 @@ beforeAll(async () => {
   context = await Context.build();
 });
 
-/* beforeAll(() => {
-  return pool.connect({
-    host: "postgres",
-    port: "5432",
-    database: "laFamilia-test",
-    user: "postgres",
-    password: "postgres",
-  });
-}); */
-
 afterAll(() => {
   return context.close();
 });
 
 //After running all tests , disconnect from postgres
-
 let createdUserId;
 let token;
 describe("Test user controller", () => {

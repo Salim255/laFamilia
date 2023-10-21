@@ -20,9 +20,7 @@ exports.createPost = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      rows,
-    },
+    data: rows[0],
   });
 });
 
@@ -50,16 +48,14 @@ exports.updatePost = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      rows,
-    },
+    data: rows[0],
   });
 });
 
 exports.getAllPosts = catchAsync(async (req, res, next) => {
   const { rows } = await pool.query(`SELECT * FROM posts WHERE user_id=$1`, [req.user.id]);
   //const { sort } = req.query;
-  console.log(req.query);
+
   res.status(200).json({
     status: "success",
     data: rows,
@@ -82,6 +78,6 @@ exports.deletePost = catchAsync(async (req, res, next) => {
 
   res.status(204).json({
     status: "success",
-    data: rows,
+    data: rows[0],
   });
 });

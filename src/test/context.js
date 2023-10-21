@@ -54,7 +54,7 @@ class Context {
 
       dir: "migrations", //File where our migrations files stored
 
-      /* databaseUrl: {
+      /*  databaseUrl: {
         host: dbTestConfig.dbHost,
         port: dbTestConfig.dbPort,
         database: dbTestConfig.dbDatabase,
@@ -71,7 +71,7 @@ class Context {
     });
 
     // Connect to PG as the newly created role
-    /*  await pool.connect({
+    /*   await pool.connect({
       host: dbTestConfig.dbHost,
 
       port: dbTestConfig.dbPort,
@@ -100,6 +100,12 @@ class Context {
     this.roleName = roleName;
   }
 
+  async reset() {
+    return pool.query(`
+    DELETE FROM users;
+    DELETE FROM chats;
+    `);
+  }
   async close() {
     // Disconnect from PG
     await pool.close();
