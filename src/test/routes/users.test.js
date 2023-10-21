@@ -8,11 +8,9 @@ const pool = require("../../config/pool");
 
 const Context = require("../context");
 
+let context;
 beforeAll(async () => {
-  console.log("====================================");
-  console.log("before");
-  console.log("====================================");
-  const context = await Context.build();
+  context = await Context.build();
 });
 
 /* beforeAll(() => {
@@ -26,7 +24,7 @@ beforeAll(async () => {
 }); */
 
 afterAll(() => {
-  return pool.close();
+  return context.close();
 });
 
 //After running all tests , disconnect from postgres
