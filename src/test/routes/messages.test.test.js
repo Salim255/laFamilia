@@ -2,8 +2,6 @@ const request = require("supertest");
 
 const buildApp = require("../../app");
 
-const chatController = require("../../controllers/chatController");
-
 const Context = require("../context");
 
 let context;
@@ -17,7 +15,7 @@ afterAll(() => {
 
 let createdUsersId = [];
 let token;
-
+let createdChatId;
 describe("Chats test handler", () => {
   it("create  user 1", async () => {
     await request(buildApp())
@@ -52,8 +50,6 @@ describe("Chats test handler", () => {
   });
 
   it("create a chat", async () => {
-    const startingCount = await chatController.countChats();
-
     await request(buildApp())
       .post(`/api/v1/chats`)
       .set("Authorization", `Bearer ${token}`)
@@ -61,44 +57,27 @@ describe("Chats test handler", () => {
         chatType: "group",
         usersId: createdUsersId,
       })
-      .expect(200);
-
-    const finishingCount = await chatController.countChats();
-
-    expect(finishingCount - startingCount).toEqual(1);
+      .expect(200)
+      .then(async response => {
+        createdChatId = response.body.data.chat_id;
+      });
   });
 
-  it("get chats by user", async () => {
+  it("create message on chat", async () => {
     await request(buildApp())
-      .get(`/api/v1/chats`)
+      .post(`/api/v1/messages`)
       .set("Authorization", `Bearer ${token}`)
-      .expect(200);
-  });
-
-  it("get chatsUser by user", async () => {
-    await request(buildApp())
-      .get(`/api/v1/chatUsers`)
-      .set("Authorization", `Bearer ${token}`)
+      .send({
+        chat_id: createdChatId,
+        message: "Hello world!",
+      })
       .expect(200);
   });
 
-  it("delete chatUser by user and chatUser id", async () => {
+  it("get messages by chat id", async () => {
     await request(buildApp())
-      .delete(`/api/v1/chats/1/chatUsers/1`)
+      .get(`/api/v1/chats/${createdChatId}/messages`)
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
-  });
-
-  it("Delete chats by user", async () => {
-    const startingCount = await chatController.countChats();
-
-    await request(buildApp())
-      .delete(`/api/v1/chats/1`)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(204);
-
-    const finishingCount = await chatController.countChats();
-
-    expect(finishingCount - startingCount).toEqual(-1);
   });
 });

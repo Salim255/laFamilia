@@ -116,3 +116,9 @@ exports.deleteChat = catchAsync(async (req, res, next) => {
     data: rows,
   });
 });
+
+exports.countChats = async () => {
+  const { rows } = await pool.query(`SELECT COUNT(*) FROM chats;`);
+
+  return parseInt(rows[0].count);
+};

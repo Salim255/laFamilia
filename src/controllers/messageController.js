@@ -25,15 +25,15 @@ exports.createMessage = catchAsync(async (req, res, next) => {
 });
 
 exports.getMessages = catchAsync(async (req, res, next) => {
-  const { chat_id } = req.body;
+  const { chatId } = req.params;
 
-  if (isEmpty(chat_id)) {
+  if (isEmpty(chatId)) {
     return next(new AppError("Not chat found", 404));
   }
 
   const { rows } = await pool.query(
-    `SELECT * FROM messages WHERE chat_id=$1 ORDER BY create_at ASC`,
-    [chat_id],
+    `SELECT * FROM messages WHERE chat_id=$1 ORDER BY created_at ASC`,
+    [chatId],
   );
 
   res.status(200).json({

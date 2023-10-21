@@ -16,8 +16,9 @@ afterAll(() => {
 let createdUserId;
 let token;
 let createdPostId;
+let createCommentId;
 
-describe("Posts test handler", () => {
+describe("Comment on post test handler", () => {
   it("create a user account", async () => {
     await request(buildApp())
       .post(`/api/v1/users/signup`)
@@ -47,38 +48,28 @@ describe("Posts test handler", () => {
       });
   });
 
-  it("update post", async () => {
+  it("create comment on a post by user", async () => {
     await request(buildApp())
-      .put(`/api/v1/posts/${createdPostId}`)
-      .send({
-        captions: "Hello Salim",
-      })
+      .post(`/api/v1/posts/${createdPostId}/comments`)
       .set("Authorization", `Bearer ${token}`)
-      .expect(201);
+      .expect(201)
+      .then(async response => {
+        createCommentId = response.body.data.id;
+      });
   });
 
-  it("get all post by user", async () => {
-    await request(buildApp())
-      .get(`/api/v1/posts`)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(200);
-  });
+  it("update comment", async () => {});
 
   it("React to a post", async () => {
     await request(buildApp())
-      .post(`/api/v1/posts/${createdPostId}/reactions`)
+      .post(`/api/v1/posts/${createCommentId}/reactions`)
       .send({
-        type: "post",
+        type: "comment",
         reaction: "like",
       })
       .set("Authorization", `Bearer ${token}`)
       .expect(201);
   });
 
-  it("delete post by user", async () => {
-    await request(buildApp())
-      .delete(`/api/v1/posts/${createdPostId}`)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(204);
-  });
+  it("delete comment", async () => {});
 });
