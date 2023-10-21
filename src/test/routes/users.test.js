@@ -2,23 +2,18 @@ const request = require("supertest");
 
 const buildApp = require("../../app");
 
-const dbTestConfig = require("../../config/dbTst");
-
 const userController = require("../../controllers/userController");
 
 const pool = require("../../config/pool");
 
-/* beforeAll(() => {
-  return pool.connect({
-    host: dbTestConfig.dbHost,
-    port: dbTestConfig.dbPort,
-    database: dbTestConfig.dbDatabase,
-    user: dbTestConfig.dbUser,
-    password: "",
-  });
-}); */
+const Context = require("../context");
 
-beforeAll(() => {
+let context;
+beforeAll(async () => {
+  context = await Context.build();
+});
+
+/* beforeAll(() => {
   return pool.connect({
     host: "postgres",
     port: "5432",
@@ -26,10 +21,10 @@ beforeAll(() => {
     user: "postgres",
     password: "postgres",
   });
-});
+}); */
 
 afterAll(() => {
-  return pool.close();
+  return context.close();
 });
 
 //After running all tests , disconnect from postgres
@@ -37,15 +32,15 @@ afterAll(() => {
 let createdUserId;
 let token;
 describe("Test user controller", () => {
+  //Create user test
   it("create a user", async () => {
     const startingCount = await userController.countUsers();
-
     await request(buildApp())
       .post(`/api/v1/users/signup`)
       .send({
         first_name: "salim",
         last_name: "hassan",
-        email: "nnnnnnnnbb@gmail.com",
+        email: "nnnnnnnnbbbbb@gmail.com",
         password: "3333",
       })
       .expect(200)
@@ -59,16 +54,18 @@ describe("Test user controller", () => {
     expect(finishCount - startingCount).toEqual(1);
   });
 
+  //Login user test
   it("login a user", async () => {
     await request(buildApp())
       .post("/api/v1/users/login")
       .send({
-        email: "nnnnnnnnbb@gmail.com",
+        email: "nnnnnnnnbbbbb@gmail.com",
         password: "3333",
       })
       .expect(200);
   });
 
+  //Update user test
   it("update user", async () => {
     await request(buildApp())
       .put("/api/v1/users")
@@ -80,6 +77,7 @@ describe("Test user controller", () => {
       .expect(200);
   });
 
+  //Get all user test
   it("get all users", async () => {
     await request(buildApp())
       .get("/api/v1/users/")
@@ -87,6 +85,7 @@ describe("Test user controller", () => {
       .expect(200);
   });
 
+  //Delete user test
   it("delete a user", async () => {
     const startingCount = await userController.countUsers();
     await request(buildApp())
