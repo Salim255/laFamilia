@@ -16,8 +16,8 @@ const pool = require("../../config/pool");
     user: dbTestConfig.dbUser,
     password: "",
   });
-});
- */
+}); */
+
 beforeAll(() => {
   return pool.connect({
     host: "postgres",
@@ -76,6 +76,13 @@ describe("Test user controller", () => {
         first_name: "dddd",
         last_name: "mmm",
       })
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
+
+  it("get all users", async () => {
+    await request(buildApp())
+      .get("/api/v1/users/")
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
   });
