@@ -2,8 +2,6 @@ const request = require("supertest");
 
 const buildApp = require("../../app");
 
-const userController = require("../../controllers/userController");
-
 const Context = require("../context");
 
 let context;

@@ -20,9 +20,7 @@ exports.createPost = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      rows,
-    },
+    data: rows[0],
   });
 });
 
@@ -50,9 +48,7 @@ exports.updatePost = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      rows,
-    },
+    data: rows[0],
   });
 });
 
@@ -82,6 +78,6 @@ exports.deletePost = catchAsync(async (req, res, next) => {
 
   res.status(204).json({
     status: "success",
-    data: rows,
+    data: rows[0],
   });
 });
