@@ -92,6 +92,7 @@ module.exports = () => {
 
   //For all https method
   app.all("*", (req, res, next) => {
+    console.log("all routes");
     next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
   });
 
