@@ -69,6 +69,20 @@ describe("Chats test handler", () => {
       .expect(200);
   });
 
+  it("get chatsUser by user", async () => {
+    await request(buildApp())
+      .get(`/api/v1/chatUsers`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
+
+  it("delete chatUser by user and chatUser id", async () => {
+    await request(buildApp())
+      .delete(`/api/v1/chats/1/chatUsers/1`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
+
   it("Delete chats by user", async () => {
     await request(buildApp())
       .delete(`/api/v1/chats/1`)

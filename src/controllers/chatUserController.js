@@ -44,7 +44,6 @@ exports.getChatUser = catchAsync(async (req, res, next) => {
 
 exports.deleteChatUser = catchAsync(async (req, res, next) => {
   const { chatId, chatUserId } = req.params;
-
   const { rows } = await pool.query(`DELETE  FROM chatUsers WHERE user_id = $1  AND chat_id = $2`, [
     chatUserId,
     chatId,
