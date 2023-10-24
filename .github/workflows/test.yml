@@ -1,0 +1,21 @@
+name: deploy-app
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      #check out all of our code inside of our repo
+      - uses: actions/checkpout@v2
+      # To build the image
+      #- run: cd auth && docker -t build crawan/lafamilia .
+      - run: docker build -t crawan/lafamilia .
+      # Login to my docker account
+      - run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      # Push the image that create
+      - run: docker push crawan/lafamilia
