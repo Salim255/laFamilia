@@ -21,6 +21,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 const createToken = userId => {
+  console.log(tokenConfig.tokenJWT, id, "Salim😡😡😡", process.env.JWT_SECRET);
   return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 
