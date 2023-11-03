@@ -1,0 +1,41 @@
+apiVersion: skaffold/v4beta3
+kind:
+  Config
+
+  #This telling skaffold that there is a collection of different config files intended for kubernetes inside of the infra aids directory.
+  #So by adding in this manifest line, we are telling skaffold that we want it to watch all of these different YAML files.
+
+  #Any time that we make a change to one of those files, skaffold going to automatically reapply that config file to our kubernetes cluster. So in other words, it's going to save us from the hassle of having to run up CTL apply F over and over again any time that wwe create a file or make a change to a file.
+
+  #Skaffold is also going to make sure to create all these or apply all this any time that we start skaffold.
+
+  #It's alos going to delete all the config or all the objects files whenever we stop skaffold .
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+
+build:
+  local:
+    #By default whenever skaffold makes a change to one of our images or rebuilds an image, it's going to try to push it up to docker hub, and so we are going to disable it by setting push to false.
+    push: false
+
+  artifacts:
+    #This image for react app
+    #- image: crawan/client
+    #context: client
+    #docker:
+    #  dockerfile: Dockerfile
+    #sync:
+    # manual:
+    #- src: "src/**/*.js"
+    # dest: .
+
+    - image: crawan/user-photos
+      #Context take us directly to the directory in question
+      context: user-profiles
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .

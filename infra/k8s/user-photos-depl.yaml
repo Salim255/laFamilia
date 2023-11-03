@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-photos-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-photos
+  template:
+    metadata:
+      labels:
+        app: user-photos
+    spec:
+      containers:
+        - name: user-photos
+          image: crawan/user-photos
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-photos-srv
+spec:
+  selector:
+    app: user-photos
+  ports:
+    - name: user-photos
+      protocol: TCP
+      port: 6001
+      targetPort: 6001
