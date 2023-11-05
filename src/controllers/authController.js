@@ -21,7 +21,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 const createToken = userId => {
-  console.log(tokenConfig.tokenJWT, id, "Salim😡😡😡", process.env.JWT_SECRET);
+  //console.log(tokenConfig.tokenJWT, id, "Salim😡😡😡", process.env.JWT_SECRET);
   return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 
@@ -74,6 +74,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     [first_name, last_name, email, hashedPassword],
   );
 
+  console.log("====================================");
+  console.log(rows[0].id, "hello ");
+  console.log("====================================");
   //Create token
   const token = createToken(rows[0].id);
 

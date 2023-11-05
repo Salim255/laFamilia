@@ -8,18 +8,57 @@ process.on("uncaughtException", err => {
 });
 
 const app = require("./src/app.js");
+
 require("dotenv").config();
+
 const appConfig = require("./src/config/app");
 
 const dbConfig = require("./src/config/db");
 
 const pool = require("./src/config/pool");
 
+const { default: migrate } = require("node-pg-migrate");
+
 const port = appConfig.appPort || 3000;
 
 let server;
+const autoMigration = async () => {
+  try {
+    // Run our migration programmatically in the new schema
+    await migrate({
+      schema: "public",
 
-pool
+      direction: "up",
+
+      log: () => {}, //By passing empty function to log, there will be no logs to the console
+
+      noLock: true, //By default we should run one migration at the time, we ride that by passing noLock =true, so we can run as many migration we want
+
+      dir: "migrations", //File where our migrations files stored
+
+      /*  databaseUrl: {
+        host: dbTestConfig.dbHost,
+        port: dbTestConfig.dbPort,
+        database: dbTestConfig.dbDatabase,
+        user: roleName,
+        password: roleName,
+      }, */
+      databaseUrl: {
+        host: "main-db-srv",
+        port: dbConfig.dbPort,
+        database: "postgres",
+        user: "postgres",
+        password: "postgres",
+      },
+    });
+  } catch (error) {
+    console.log("====================================");
+    console.log(error);
+    console.log("====================================");
+  }
+};
+autoMigration();
+/* pool
   .connect({
     host: dbConfig.dbHost,
     port: dbConfig.dbPort,
@@ -31,6 +70,25 @@ pool
     server = app().listen(port, () => {
       console.log("====================================");
       console.log(`Server running on port ${port}`);
+      console.log("====================================");
+    });
+  })
+  .catch(err => {
+    console.error(err);
+  }); */
+
+pool
+  .connect({
+    host: "main-db-srv",
+    port: dbConfig.dbPort,
+    database: "postgres",
+    user: "postgres",
+    password: "postgres",
+  })
+  .then(() => {
+    server = app().listen(3000, () => {
+      console.log("====================================");
+      console.log(`Server running on port 3000!!!!`);
       console.log("====================================");
     });
   })

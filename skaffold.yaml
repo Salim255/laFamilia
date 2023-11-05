@@ -32,7 +32,17 @@ build:
 
     - image: crawan/user-photos
       #Context take us directly to the directory in question
-      context: user-profiles
+      context: user-photos-service
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+
+    - image: crawan/main-app
+      #Context take us directly to the directory in question
+      context: .
       docker:
         dockerfile: Dockerfile
       sync:

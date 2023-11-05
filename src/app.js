@@ -47,13 +47,13 @@ module.exports = () => {
   }
 
   //Limit request from same IP, This will allow 100 requests from the same IP in one hour
-  const limiter = rateLimit({
+  /* const limiter = rateLimit({
     max: 100, //Max 100 request par hour
     windowMs: 60 * 60 * 1000, //Time in millisecond
     message: "Too many requests from this IP, please try again in an hour",
   });
-
-  app.use("/api", limiter);
+ */
+  //app.use("/api", limiter);
 
   //Body parser, reading data from body into req.body
   app.use(express.json({ limit: "10kb" }));
