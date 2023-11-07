@@ -77,6 +77,10 @@ autoMigration();
     console.error(err);
   }); */
 
+if (!process.env.JWT_KEY) {
+  throw new Error("JWT_KEY must be defined");
+}
+
 pool
   .connect({
     host: "main-db-srv",
@@ -88,7 +92,7 @@ pool
   .then(() => {
     server = app().listen(3000, () => {
       console.log("====================================");
-      console.log(`Server running on port 3000!!!!`);
+      console.log(`Server running on port 3000!!!!!`);
       console.log("====================================");
     });
   })

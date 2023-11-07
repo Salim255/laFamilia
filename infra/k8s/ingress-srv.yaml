@@ -4,7 +4,7 @@ metadata:
   name: ingress-srv
   #This entire annotation section is what's going to help the ingress controller understand that we are trying to feed it some routing rules, so the ingress controller going to scan continuously all the different objects or all the different config files. So we are throwing into our cluster and it's going to try to find one that has this exact annotation
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.className: nginx
 
     ##We need to add this to use regular expressions
     nginx.ingress.kubernetes.io/use-regex: "true"
