@@ -68,7 +68,7 @@ module.exports = () => {
   app.use(cors(options));
 
   //
-  app.use("/api/v1/users-photos", userPhotosRouter);
+  app.use("/api/v1/add-user-photos", userPhotosRouter);
 
   //For all https method
   app.all("*", (req, res, next) => {

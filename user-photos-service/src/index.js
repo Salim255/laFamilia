@@ -34,7 +34,7 @@ pool
   .then(() => {
     server = app().listen(6001, () => {
       console.log("====================================");
-      console.log(`Server running on port 6001!!!!!!!!`);
+      console.log(`Server running on portt 6001!!!!!!!!`);
       console.log("====================================");
     });
   })

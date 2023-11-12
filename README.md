@@ -87,6 +87,7 @@ in order to check if our
 - npm i hpp
 - npm run migrate create add users table
 - DATABASE_URL=postgres://salimhassanmohamed@localhost:5432/laFamilia npm run migrate up
+- node-nats-streaming
 
 ### In order to set to declare node env variables
 

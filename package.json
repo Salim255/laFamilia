@@ -11,7 +11,9 @@
     "test": "jest --no-cache ",
     "migrate": "node-pg-migrate",
     "start": "nodemon index.js",
-    "debug": "ndb index.js"
+    "debug": "ndb index.js",
+    "listen": "nodemon  listener.js",
+    "publish": "nodemon  publisher.js"
   },
   "repository": {
     "type": "git",
@@ -43,6 +45,7 @@
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "node-nats-streaming": "^0.3.2",
     "node-pg-migrate": "^6.2.2",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",

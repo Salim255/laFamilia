@@ -4,7 +4,7 @@ metadata:
   name: ingress-srv
   #This entire annotation section is what's going to help the ingress controller understand that we are trying to feed it some routing rules, so the ingress controller going to scan continuously all the different objects or all the different config files. So we are throwing into our cluster and it's going to try to find one that has this exact annotation
   annotations:
-    kubernetes.io/ingress.className: nginx
+    kubernetes.io/ingress.class: nginx
 
     ##We need to add this to use regular expressions
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -19,7 +19,7 @@ spec:
       http:
         paths:
           #To create a post
-          - path: "/api/v1/users-photos"
+          - path: /api/v1/add-user-photos
             pathType: Prefix
             backend:
               #The service of posts
@@ -30,7 +30,7 @@ spec:
                   number: 6001
 
           #To create user
-          - path: "/api/v1/?(.*)"
+          - path: /api/v1/users/?(.*)
             pathType: Prefix
             backend:
               #The service of posts
@@ -39,13 +39,3 @@ spec:
                 #The port of posts service
                 port:
                   number: 3000
-            #To get user
-          #- path: "/api/v1/users/login"
-          # pathType: Prefix
-          #backend:
-          #The service of posts
-          # service:
-          # name: main-app-srv
-          #The port of posts service
-          #port:
-          # number: 3000

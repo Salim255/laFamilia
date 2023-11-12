@@ -19,6 +19,7 @@ const pool = require("./src/config/pool");
 
 const { default: migrate } = require("node-pg-migrate");
 
+const NatsWrapper = require("./nats-wrapper");
 const port = appConfig.appPort || 3000;
 
 let server;
@@ -57,6 +58,7 @@ const autoMigration = async () => {
     console.log("====================================");
   }
 };
+
 autoMigration();
 /* pool
   .connect({
@@ -81,6 +83,15 @@ if (!process.env.JWT_KEY) {
   throw new Error("JWT_KEY must be defined");
 }
 
+const connectToNats = async () => {
+  try {
+    console.log("hello 🦺🦺");
+    await NatsWrapper.connect("users", "hddhff", "http://nats-srv:4222");
+  } catch (error) {
+    console.log(error);
+  }
+};
+connectToNats();
 pool
   .connect({
     host: "main-db-srv",

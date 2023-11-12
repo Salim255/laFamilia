@@ -19,7 +19,9 @@ const { promisify } = require("util");
 const catchAsync = require("../utils/catchAsync");
 
 const AppError = require("../utils/appError");
+const NatsWrapper = require("../../nats-wrapper");
 
+const Publisher = require("../events/publish");
 const createToken = userId => {
   //console.log(tokenConfig.tokenJWT, id, "Salim😡😡😡", process.env.JWT_SECRET);
   return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
@@ -75,7 +77,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   );
 
   console.log("====================================");
-  console.log(rows[0].id, "hello ");
+  console.log(rows[0].id, "hello ", Publisher);
   console.log("====================================");
   //Create token
   const token = createToken(rows[0].id);
@@ -92,6 +94,8 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   res.cookie("jwt", token, cookieOptions);
 
+  //const Context = require("../context");
+  await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
   res.status(200).json({
     message: "success",
     data: {
