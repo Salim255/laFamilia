@@ -1,5 +1,6 @@
 const nats = require("node-nats-streaming");
 const { randomBytes } = require("crypto");
+const userImageCreatedListener = require("./events/user-image-created-listenr");
 console.clear();
 //Client to connect to our nats streaming server
 const stan = nats.connect("users", randomBytes(4).toString("hex"), {
@@ -17,16 +18,16 @@ stan.on("connect", () => {
   });
 
   //The option setManualAckMode(true) allow us to retreat received event in case something went wrong during saving data in DB for example
-  const options = stan
+  /*   const options = stan
     .subscriptionOptions()
     .setManualAckMode(true)
     .setDeliverAllAvailable()
-    .setDurableName("orders-service-Queue-group");
+    .setDurableName("orders-service-Queue-group"); */
 
   //this is the object that we're going to listen to and we're going to receive some data through the subscription
-  const subscription = stan.subscribe("user-image:created", "gueue-group-name", options);
+  //const subscription = stan.subscribe("user-image:created", "gueue-group-name", options);
 
-  subscription.on("message", msg => {
+  /*  subscription.on("message", msg => {
     const data = msg.getData();
 
     if (typeof data === "string") {
@@ -37,9 +38,9 @@ stan.on("connect", () => {
     }
     //To inform NATS that we well received the event,then process ended
     msg.ack();
-  });
-
-  //new TicketCreatedListener(stan).listen();
+  }); */
+  //await new Listener.listen();
+  new userImageCreatedListener(stan).listen();
 });
 
 //Intercept terminate or interrupt request to our program, then we close the client gracefully, then the client will not receive event while it's closing
