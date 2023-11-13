@@ -42,7 +42,7 @@ build:
 
     - image: crawan/main-app
       #Context take us directly to the directory in question
-      context: .
+      context: main-service
       docker:
         dockerfile: Dockerfile
       sync:
