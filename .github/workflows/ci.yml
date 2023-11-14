@@ -154,6 +154,7 @@ jobs:
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
         run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/laFamilia-test  npm run migrate up
+        working-directory: ./main-service
 
       - run: npm run format:check
         working-directory: ./main-service
