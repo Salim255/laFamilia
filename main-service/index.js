@@ -110,7 +110,7 @@ pool
   .then(() => {
     server = app().listen(3000, () => {
       console.log("====================================");
-      console.log(`Server running on porttttttttt 3000!!!!!!`);
+      console.log(`Server running on portttt 3000!!!!!!`);
       console.log("====================================");
     });
   })

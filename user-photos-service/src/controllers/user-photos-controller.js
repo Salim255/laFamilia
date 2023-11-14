@@ -5,10 +5,10 @@ exports.getUserPhotos = catchAsync(async (req, res, next) => {
   console.log("====================================");
 
   console.log("====================================");
-  const resl = await createUserPhoto({ userId: 3, photo_url: "Salim" });
+
   res.status(200).json({
     status: "success",
-    data: resl,
+    data: "hello",
   });
 });
 

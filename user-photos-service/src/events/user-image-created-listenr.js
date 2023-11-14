@@ -3,7 +3,7 @@ const Listener = require("./listen");
 const photoController = require("../controllers/user-photos-controller");
 const pool = require("../config/pool");
 
-class userImageCreatedListener extends Listener {
+class UserImageCreatedListener extends Listener {
   subject = "user-image:created";
   queGroupName = "create-image-Queue-group";
 
@@ -12,11 +12,11 @@ class userImageCreatedListener extends Listener {
     if (pool) {
       const { id: userId, photo: photo_url } = data;
 
-      const result = await photoController.createUserPhoto({ userId, photo_url });
-      console.log(result);
+      //const result = await photoController.createUserPhoto({ userId, photo_url });
+
       msg.ack();
     }
   }
 }
 
-module.exports = userImageCreatedListener;
+module.exports = UserImageCreatedListener;
