@@ -22,7 +22,6 @@ const AppError = require("../utils/appError");
 const NatsWrapper = require("../../nats-wrapper");
 
 const Publisher = require("../events/publish");
-const { Pool } = require("pg");
 
 const createToken = userId => {
   console.log("Salim😡😡😡", process.env.JWT_SECRET);

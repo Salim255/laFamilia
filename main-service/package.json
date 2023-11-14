@@ -10,10 +10,10 @@
     "test:dev": "jest --watchAll  --no-cache ",
     "test": "jest --no-cache ",
     "migrate": "node-pg-migrate",
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "debug": "ndb index.js",
-    "listen": "nodemon  listener.js",
-    "publish": "nodemon  publisher.js"
+    "listen": "node  listener.js",
+    "publish": "node  publisher.js"
   },
   "repository": {
     "type": "git",

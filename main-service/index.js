@@ -54,7 +54,7 @@ const autoMigration = async () => {
     });
   } catch (error) {
     console.log("====================================");
-    console.log(error);
+    console.log(error, "Hello connection error🧶🧶🧶");
     console.log("====================================");
   }
 };
@@ -87,11 +87,18 @@ const connectToNats = async () => {
   try {
     console.log("hello 🦺🦺");
     await NatsWrapper.connect("users", "hddhff", "http://nats-srv:4222");
+    NatsWrapper._client.on("close", () => {
+      console.log("NATS connection closed");
+      process.exit();
+    });
+    process.on("SIGINT", () => NatsWrapper._client.close());
+    process.on("SIGTERM", () => NatsWrapper._client.close());
   } catch (error) {
     console.log(error);
   }
 };
 connectToNats();
+
 pool
   .connect({
     host: "main-db-srv",
@@ -103,7 +110,7 @@ pool
   .then(() => {
     server = app().listen(3000, () => {
       console.log("====================================");
-      console.log(`Server running on porttttttttttttt 3000!!!!!!`);
+      console.log(`Server running on porttttttttt 3000!!!!!!`);
       console.log("====================================");
     });
   })

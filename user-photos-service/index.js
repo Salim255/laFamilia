@@ -15,7 +15,7 @@ const appConfig = require("./src/config/app");
 
 const dbConfig = require("./src/config/db");
 
-const pool = require("./src/config/pool.js");
+const pool = require("./src/config/pool");
 
 const { default: migrate } = require("node-pg-migrate");
 
@@ -51,16 +51,38 @@ const autoMigration = async () => {
         user: "postgres",
         password: "postgres",
       },
+
+      /*  databaseUrl: {
+        host: "localhost",
+        port: dbConfig.dbPort,
+        database: "photos-services",
+        user: "salimhassanmohamed",
+        password: "",
+      }, */
     });
   } catch (error) {
     console.log("====================================");
-    console.log(error);
+    console.log(error, "Hello connection error🧶🧶🧶");
     console.log("====================================");
   }
 };
 
 autoMigration();
 
+const connectionOptions1 = {
+  host: "user-photos-db-srv",
+  port: dbConfig.dbPort,
+  database: "postgres",
+  user: "postgres",
+  password: "postgres",
+};
+const connectionOptions2 = {
+  host: "localhost",
+  port: dbConfig.dbPort,
+  database: "photos-services",
+  user: "salimhassanmohamed",
+  password: "",
+};
 pool
   .connect({
     host: "user-photos-db-srv",
@@ -72,7 +94,8 @@ pool
   .then(() => {
     server = app().listen(6001, () => {
       console.log("====================================");
-      console.log(`Server running on porttttttttttt 6001!!!!!!!!!!,`);
+      console.log(`Server running on porttttttttttttttt  6001!!!!!!!!!!,`);
+
       console.log("====================================");
     });
   })

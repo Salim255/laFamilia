@@ -5,7 +5,7 @@ class Pool {
 
   connect(options) {
     this._pool = new pg.Pool(options);
-
+    console.log("Connected to PostgreSql");
     return this._pool.query("SELECT 1 + 1;");
   }
 
