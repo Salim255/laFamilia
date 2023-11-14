@@ -85,38 +85,39 @@ if (!process.env.JWT_KEY) {
 
 const connectToNats = async () => {
   try {
-    console.log("hello 🦺🦺");
     await NatsWrapper.connect("users", "hddhff", "http://nats-srv:4222");
     NatsWrapper._client.on("close", () => {
       console.log("NATS connection closed");
       process.exit();
     });
+
     process.on("SIGINT", () => NatsWrapper._client.close());
     process.on("SIGTERM", () => NatsWrapper._client.close());
+
+    pool
+      .connect({
+        host: "main-db-srv",
+        port: dbConfig.dbPort,
+        database: "postgres",
+        user: "postgres",
+        password: "postgres",
+      })
+      .then(() => {
+        server = app().listen(3000, () => {
+          console.log("====================================");
+          console.log(`Server running on porttttt 3000!!!!!!`);
+          console.log("====================================");
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
   } catch (error) {
     console.log(error);
   }
 };
-connectToNats();
 
-pool
-  .connect({
-    host: "main-db-srv",
-    port: dbConfig.dbPort,
-    database: "postgres",
-    user: "postgres",
-    password: "postgres",
-  })
-  .then(() => {
-    server = app().listen(3000, () => {
-      console.log("====================================");
-      console.log(`Server running on portttt 3000!!!!!!`);
-      console.log("====================================");
-    });
-  })
-  .catch(err => {
-    console.error(err);
-  });
+connectToNats();
 
 //Centralized method to handle all unhandledRejections  in the application, by listing to unhandledRejections events
 process.on("unhandledRejection", err => {

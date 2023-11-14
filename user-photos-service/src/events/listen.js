@@ -1,6 +1,6 @@
 const { Message, Stan } = require("node-nats-streaming");
 const Subjects = require("./subjects");
-const pool = require("../config/pool");
+
 class Listener {
   subject = Subjects.userImageCreated;
   data = "";
@@ -35,7 +35,7 @@ class Listener {
       this.subscriptionOptions(),
     );
     subscription.on("message", msg => {
-      console.log(`Message received: ${this.subject} / ${this.queGroupName}`, pool);
+      console.log(`Message received: ${this.subject} / ${this.queGroupName}`);
       const parsedData = this.parseMessage(msg);
 
       this.onMessage(parsedData, msg);

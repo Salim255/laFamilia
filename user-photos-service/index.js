@@ -19,6 +19,9 @@ const pool = require("./src/config/pool");
 
 const { default: migrate } = require("node-pg-migrate");
 
+const NatsWrapper = require("./nats-wrapper.js");
+const UserImageCreatedListener = require("./src/events/user-image-created-listener");
+
 const port = appConfig.appPort || 6001;
 
 let server;
@@ -69,6 +72,49 @@ const autoMigration = async () => {
 
 autoMigration();
 
+if (!process.env.JWT_KEY) {
+  throw new Error("JWT_KEY must be defined");
+}
+
+const connectToNats = async () => {
+  try {
+    await NatsWrapper.connect("users", "hddhffr", "http://nats-srv:4222");
+    NatsWrapper._client.on("close", () => {
+      console.log("NATS connection closed");
+      process.exit();
+    });
+
+    process.on("SIGINT", () => NatsWrapper._client.close());
+    process.on("SIGTERM", () => NatsWrapper._client.close());
+
+    new UserImageCreatedListener(NatsWrapper._client).listen();
+
+    //Connect to DB
+    pool
+      .connect({
+        host: "user-photos-db-srv",
+        port: dbConfig.dbPort,
+        database: "postgres",
+        user: "postgres",
+        password: "postgres",
+      })
+      .then(() => {
+        server = app().listen(6001, () => {
+          console.log("====================================");
+          console.log(`Server running on porttttttttt  6001!!!!!!!!!!,`);
+
+          console.log("====================================");
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+connectToNats();
+
 const connectionOptions1 = {
   host: "user-photos-db-srv",
   port: dbConfig.dbPort,
@@ -83,25 +129,6 @@ const connectionOptions2 = {
   user: "salimhassanmohamed",
   password: "",
 };
-pool
-  .connect({
-    host: "user-photos-db-srv",
-    port: dbConfig.dbPort,
-    database: "postgres",
-    user: "postgres",
-    password: "postgres",
-  })
-  .then(() => {
-    server = app().listen(6001, () => {
-      console.log("====================================");
-      console.log(`Server running on porttttttttttttttt  6001!!!!!!!!!!,`);
-
-      console.log("====================================");
-    });
-  })
-  .catch(err => {
-    console.error(err);
-  });
 
 //Centralized method to handle all unhandledRejections  in the application, by listing to unhandledRejections events
 process.on("unhandledRejection", err => {

@@ -9,10 +9,6 @@ class Publisher {
 
   publish(data) {
     return new Promise((resolve, reject) => {
-      console.log("====================================");
-      console.log(this.client, "Hellot from publis step🦺🦺", data);
-      console.log("====================================");
-
       this.client?.publish(this.subject, JSON.stringify(data), err => {
         if (err) {
           console.log("====================================");

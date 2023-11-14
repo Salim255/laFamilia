@@ -5,9 +5,7 @@ class Pool {
 
   connect(options) {
     this._pool = new pg.Pool(options);
-    console.log("====================================");
-    console.log("Connected to bdddd 🪢🪢");
-    console.log("====================================");
+
     return this._pool.query("SELECT 1 + 1;");
   }
 

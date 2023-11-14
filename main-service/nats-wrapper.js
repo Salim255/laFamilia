@@ -1,5 +1,4 @@
 const nats = require("node-nats-streaming");
-const { Stan } = require("node-nats-streaming");
 
 class NatsWrapper {
   _client;
@@ -11,7 +10,6 @@ class NatsWrapper {
     return this._client;
   }
   connect(clusterId, clientId, url) {
-    console.log("hello 🦺🦺");
     this._client = nats.connect(clusterId, clientId, { url });
 
     return new Promise((resolve, reject) => {
@@ -26,7 +24,7 @@ class NatsWrapper {
 
       this._client?.on("error", err => {
         console.log("====================================");
-        console.log(err, "hello from nats connection erro");
+        console.log(err, "NATS connection error");
         console.log("====================================");
         reject(err);
       });

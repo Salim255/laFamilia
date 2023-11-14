@@ -14,7 +14,6 @@ exports.getUserPhotos = catchAsync(async (req, res, next) => {
 
 exports.createUserPhoto = async ({ userId, photo_url }) => {
   console.log("====================================");
-  console.log(pool, "hello", userId, photo_url);
 
   console.log("====================================");
   const { rows } = await pool.query(
