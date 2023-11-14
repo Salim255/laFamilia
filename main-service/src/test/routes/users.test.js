@@ -27,7 +27,7 @@ describe("Test user controller", () => {
       .send({
         first_name: "salim",
         last_name: "hassan",
-        email: "nnnnnnnnbbbbb@gmail.com",
+        email: "a@gmail.com",
         password: "3333",
       })
       .expect(200)
@@ -46,7 +46,7 @@ describe("Test user controller", () => {
     await request(buildApp())
       .post("/api/v1/users/login")
       .send({
-        email: "nnnnnnnnbbbbb@gmail.com",
+        email: "a@gmail.com",
         password: "3333",
       })
       .expect(200);
@@ -57,8 +57,8 @@ describe("Test user controller", () => {
     await request(buildApp())
       .put("/api/v1/users")
       .send({
-        first_name: "dddd",
-        last_name: "mmm",
+        first_name: "Salim",
+        last_name: "Hassan",
       })
       .set("Authorization", `Bearer ${token}`)
       .expect(200);

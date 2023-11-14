@@ -16,7 +16,7 @@ const { Pool } = require("pg");
   password: "",
 }; */
 
-const DEFAULT_OPTS = {
+const TEST_OPTS = {
   host: "postgres",
   port: "5432",
   database: "laFamilia-test",
@@ -31,7 +31,7 @@ class Context {
     //We adding a because role name in postgres should start with letter not a number
 
     // Connect to PG as usual
-    await pool.connect(DEFAULT_OPTS);
+    await pool.connect(TEST_OPTS);
 
     // Create a new role, I stand for identifier and L stand for literal value
     await pool.query(format("CREATE ROLE %I WITH LOGIN PASSWORD %L;", roleName, roleName));
