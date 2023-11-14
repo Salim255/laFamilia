@@ -49,3 +49,12 @@ build:
         manual:
           - src: "src/**/*.js"
             dest: .
+    - image: crawan/client
+      #Context take us directly to the directory in question
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
