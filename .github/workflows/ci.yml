@@ -58,8 +58,11 @@ jobs:
       # Performs a clean installation of all dependencies in the `package.json` file
       - name: Logs the folders
         run: ls -a
+        working-directory: ./main-service
+
       - name: Install dependencies
         run: npm ci
+        working-directory: ./main-service
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
@@ -147,18 +150,21 @@ jobs:
         # Performs a clean installation of all dependencies in the `package.json` file
       - name: Install dependencies
         run: npm ci
-
+        working-directory: ./main-service
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
         run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/laFamilia-test  npm run migrate up
-
+        working-directory: ./main-service
       - run: npm run format:check
+        working-directory: ./main-service
       - run: npm test -- --coverage
+        working-directory: ./main-service
         env:
           CI: true
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
+
         with:
           #My artifacts name so we can retrieve under this name
           name: dist-files
