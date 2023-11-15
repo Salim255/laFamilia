@@ -158,10 +158,13 @@ jobs:
 
       - run: npm run format:check
         working-directory: ./main-service
+
       - run: npm test --  --coverage
-        working-directory: ./main-service
+
         env:
           CI: true
+        working-directory: ./main-service
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
 
