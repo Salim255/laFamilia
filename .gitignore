@@ -1,4 +1,6 @@
 *node_modules/*
-*user-rpofiles/node_modules/*
+./main-service/node_modules
+./user-photos-service/node_modules
+
 .husky
 .env
