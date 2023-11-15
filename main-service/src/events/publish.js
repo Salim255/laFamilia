@@ -13,7 +13,7 @@ class Publisher {
         if (err) {
           console.log("====================================");
           console.log("From publish error🧶");
-          console.log("====================================");
+
           return reject(err);
         }
 
