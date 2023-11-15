@@ -87,6 +87,9 @@ class Context {
 
       password: roleName,
     }); */
+    console.log("====================================");
+    console.log("Before  connect to  created schema  🦺🦺🦺", roleName);
+    console.log("====================================");
     await pool.connect({
       host: "postgres",
 
@@ -98,6 +101,10 @@ class Context {
 
       password: roleName,
     });
+
+    console.log("====================================");
+    console.log("After connect to  created schema  🦺🦺🦺", roleName);
+    console.log("====================================");
     return new Context(roleName);
   }
 
