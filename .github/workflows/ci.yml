@@ -57,11 +57,13 @@ jobs:
       # Performs a clean installation of all dependencies in the `package.json` file
       - name: Install dependencies
         run: npm ci
+        working-directory: ./main-service
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
 
         run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres  npm run migrate up
+        working-directory: ./main-service
         #run: node client.js
         #run: sudo systemctl start postgresql.service
         #  echo "Hello salim"
@@ -123,7 +125,7 @@ jobs:
 
         with:
           #Where the cash stored in the home for linux
-          path: ~/.npm
+          path: ~/main-service/.npm
 
           #This key will be used by actions/cache@v1, to retrieve our cash, if it's exist otherwise will be created
 
@@ -137,6 +139,7 @@ jobs:
 
       - name: Use NodeJs
         uses: actions/setup-node@v1
+
         with:
           node-version: "17.x"
 
@@ -144,15 +147,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+        working-directory: ./main-service
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
         run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/laFamilia-test  npm run migrate up
-
+        working-directory: ./main-service
       - run: npm run format:check
+        working-directory: ./main-service
       - run: npm test -- --coverage
         env:
           CI: true
+        working-directory: ./main-service
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
