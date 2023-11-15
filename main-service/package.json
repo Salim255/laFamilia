@@ -11,7 +11,8 @@
     "test": "jest --no-cache ",
     "migrate": "node-pg-migrate",
     "start": "nodemon index.js",
-    "debug": "ndb index.js",
+    "start:dev": "nodemon server.js",
+    "debug": "ndb server.js",
     "listen": "node  listener.js",
     "publish": "node  publisher.js"
   },

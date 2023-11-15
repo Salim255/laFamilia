@@ -78,7 +78,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   //Create token
   const token = createToken(rows[0].id);
-  console.log("Hello debogu", token, pool);
+
   //To send a cookie, all we have to do is to attach it to the response object,
   // So we say res.cookie, and all what we have to do is to specify the name of the cookie, then the data that we want to send in the cookie, options for the cookie
   const cookieOptions = {
@@ -90,7 +90,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   //const Context = require("../context");
-  await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
+  //await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
   res.status(200).json({
     message: "success",
     data: {

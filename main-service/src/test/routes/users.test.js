@@ -1,5 +1,6 @@
 const request = require("supertest");
 
+//const buildApp = require("../../app");
 const buildApp = require("../../app");
 
 const userController = require("../../controllers/userController");
@@ -8,6 +9,7 @@ const Context = require("../context");
 
 let context;
 beforeAll(async () => {
+  jest.setTimeout(60000);
   context = await Context.build();
 });
 

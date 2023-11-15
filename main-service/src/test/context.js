@@ -7,7 +7,7 @@ const { default: migrate } = require("node-pg-migrate");
 const format = require("pg-format");
 
 const dbTestConfig = require("../config/dbTst");
-
+const { Pool } = require("pg");
 /* const DEFAULT_OPTS = {
   host: dbTestConfig.dbHost,
   port: dbTestConfig.dbPort,
