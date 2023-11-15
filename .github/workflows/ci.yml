@@ -57,11 +57,13 @@ jobs:
       # Performs a clean installation of all dependencies in the `package.json` file
       - name: Install dependencies
         run: npm ci
+        working-directory: ./main-service
       - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
 
         run: DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres  npm run migrate up
+        working-directory: ./main-service
         #run: node client.js
         #run: sudo systemctl start postgresql.service
         #  echo "Hello salim"
