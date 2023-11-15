@@ -36,9 +36,14 @@ class Context {
     // Create a new role, I stand for identifier and L stand for literal value
     await pool.query(format("CREATE ROLE %I WITH LOGIN PASSWORD %L;", roleName, roleName));
 
+    console.log("====================================");
+    console.log("Created  role and password 🦺🦺🦺", roleName);
+    console.log("====================================");
     // Create a schema with the same name
     await pool.query(format("CREATE SCHEMA %I AUTHORIZATION %I;", roleName, roleName));
-
+    console.log("====================================");
+    console.log("Created schema 🦺🦺🦺", roleName);
+    console.log("====================================");
     // Disconnect entirely from PG
     await pool.close();
 
