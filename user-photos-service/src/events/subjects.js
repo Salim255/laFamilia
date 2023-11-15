@@ -6,6 +6,4 @@ module.exports = {
   userImageDelete: "user-image:updated",
 };
 
-//const printSubject = (subject: Subjects) => {};
-
 //printSubject(Subjects.TicketCreated);

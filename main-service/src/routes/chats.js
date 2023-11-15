@@ -29,7 +29,7 @@ router.get("/:chatId/messages", authController.protect, messageController.getMes
 //Delete chat
 router.delete("/:chatId", authController.protect, chatController.deleteChat);
 
-//Delete chatUser form chat
+//Delete chatUser from chat
 router.delete(
   "/:chatId/chatUsers/:chatUserId",
   authController.protect,

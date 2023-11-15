@@ -7,7 +7,7 @@ class Listener {
   queGroupName = "";
   msg = Message;
   onMessage(data, msg) {}
-  //client = Stan;
+
   ackWait = 5 * 1000;
 
   constructor(client) {
