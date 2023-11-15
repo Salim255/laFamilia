@@ -12,13 +12,13 @@ class Publisher {
       this.client?.publish(this.subject, JSON.stringify(data), err => {
         if (err) {
           console.log("====================================");
-          console.log("Hello from publish errorrur🧶");
+          console.log("Hello from publish error🧶");
           console.log("====================================");
           return reject(err);
         }
 
         console.log("====================================");
-        console.log("Event published to subject:", this.subject, data);
+        console.log("Event published to subject: ✅", this.subject, data);
         console.log("====================================");
 
         resolve();

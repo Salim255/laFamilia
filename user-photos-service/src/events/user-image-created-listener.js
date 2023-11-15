@@ -10,9 +10,8 @@ class UserImageCreatedListener extends Listener {
     const { id: userId, photo: photo_url } = data;
 
     const result = await photoController.createUserPhoto({ userId, photo_url });
-    console.log("====================================");
-    console.log(data, result);
-    console.log("====================================");
+
+    console.log("From user image created:✅ ", result);
     msg.ack();
   }
 }

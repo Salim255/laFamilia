@@ -101,7 +101,7 @@ const connectToNats = async () => {
       .then(() => {
         server = app().listen(6001, () => {
           console.log("====================================");
-          console.log(`Server running on porttttttttt  6001!!!!!!!!!!,`);
+          console.log(`Server running on portt  6001!!!!!!!!!!,`);
 
           console.log("====================================");
         });
@@ -114,21 +114,6 @@ const connectToNats = async () => {
   }
 };
 connectToNats();
-
-const connectionOptions1 = {
-  host: "user-photos-db-srv",
-  port: dbConfig.dbPort,
-  database: "postgres",
-  user: "postgres",
-  password: "postgres",
-};
-const connectionOptions2 = {
-  host: "localhost",
-  port: dbConfig.dbPort,
-  database: "photos-services",
-  user: "salimhassanmohamed",
-  password: "",
-};
 
 //Centralized method to handle all unhandledRejections  in the application, by listing to unhandledRejections events
 process.on("unhandledRejection", err => {

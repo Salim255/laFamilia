@@ -5,7 +5,6 @@ const UserImageCreatedListener = require("./events/user-image-created-listener")
 const stan = nats.connect("users", "12432", { url: "http:/localhost:4222" });
 
 stan.on("connect", () => {
-  console.log("Listener connected to NATS");
   stan.on("close", () => {
     console.log("NATS connection closed");
     process.exit();

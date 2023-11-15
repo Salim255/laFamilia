@@ -103,7 +103,7 @@ class Context {
     });
 
     console.log("====================================");
-    console.log("After connect to  created schema  🦺🦺🦺", roleName);
+    console.log("After connect  created schema  🦺🦺🦺", roleName);
     console.log("====================================");
     return new Context(roleName);
   }

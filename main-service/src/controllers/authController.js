@@ -90,7 +90,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   //const Context = require("../context");
-  //await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
+  await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
   res.status(200).json({
     message: "success",
     data: {
