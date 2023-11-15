@@ -53,7 +53,7 @@ class Context {
 
       direction: "up",
 
-      log: () => {}, //By passing empty function to log, there will be no logs to the console
+      //log: () => {}, //By passing empty function to log, there will be no logs to the console
 
       noLock: true, //By default we should run one migration at the time, we ride that by passing noLock =true, so we can run as many migration we want
 
