@@ -37,13 +37,6 @@ const autoMigration = async () => {
 
       dir: "migrations", //File where our migrations files stored
 
-      /*  databaseUrl: {
-        host: dbTestConfig.dbHost,
-        port: dbTestConfig.dbPort,
-        database: dbTestConfig.dbDatabase,
-        user: roleName,
-        password: roleName,
-      }, */
       databaseUrl: {
         host: "main-db-srv",
         port: dbConfig.dbPort,
@@ -59,28 +52,11 @@ const autoMigration = async () => {
   }
 };
 
-autoMigration();
-/* pool
-  .connect({
-    host: dbConfig.dbHost,
-    port: dbConfig.dbPort,
-    database: dbConfig.dbDatabase,
-    user: dbConfig.dbUser,
-    password: "",
-  })
-  .then(() => {
-    server = app().listen(port, () => {
-      console.log("====================================");
-      console.log(`Server running on port ${port}`);
-      console.log("====================================");
-    });
-  })
-  .catch(err => {
-    console.error(err);
-  }); */
-
-if (!process.env.JWT_KEY) {
-  throw new Error("JWT_KEY must be defined");
+if (process.env.RUN_ON_K8s === "true") {
+  autoMigration();
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY must be defined");
+  }
 }
 
 const connectToNats = async () => {
@@ -117,7 +93,28 @@ const connectToNats = async () => {
   }
 };
 
-connectToNats();
+if (process.env.RUN_ON_K8s === "true") connectToNats();
+
+if (process.env.RUN_ON_K8s !== "true") {
+  pool
+    .connect({
+      host: dbConfig.dbHost,
+      port: dbConfig.dbPort,
+      database: dbConfig.dbDatabase,
+      user: dbConfig.dbUser,
+      password: "",
+    })
+    .then(() => {
+      server = app().listen(port, () => {
+        console.log("===================================");
+        console.log(`Server running on port ${port}`);
+        console.log("====================================");
+      });
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
 
 //Centralized method to handle all unhandledRejections  in the application, by listing to unhandledRejections events
 process.on("unhandledRejection", err => {

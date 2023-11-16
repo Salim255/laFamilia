@@ -6,4 +6,4 @@ module.exports = {
   userImageDelete: "user-image:updated",
 };
 
-//printSubject(Subjects.TicketCreated);
+//printSubject(Subjects.Ticket

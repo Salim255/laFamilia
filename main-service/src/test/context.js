@@ -1,3 +1,4 @@
+require("dotenv").config();
 const pool = require("../config/pool");
 
 const { randomBytes } = require("crypto");
@@ -7,22 +8,26 @@ const { default: migrate } = require("node-pg-migrate");
 const format = require("pg-format");
 
 const dbTestConfig = require("../config/dbTst");
-const { Pool } = require("pg");
-/* const DEFAULT_OPTS = {
-  host: dbTestConfig.dbHost,
-  port: dbTestConfig.dbPort,
-  database: dbTestConfig.dbDatabase,
-  user: dbTestConfig.dbUser,
-  password: "",
-}; */
 
-const DEFAULT_OPTS = {
-  host: "postgres",
-  port: "5432",
-  database: "laFamilia-test",
-  user: "postgres",
-  password: "postgres",
-};
+let DEFAULT_OPTS;
+
+if (process.env.TEST_TYPE === "local") {
+  DEFAULT_OPTS = {
+    host: dbTestConfig.dbHost,
+    port: dbTestConfig.dbPort,
+    database: dbTestConfig.dbDatabase,
+    user: dbTestConfig.dbUser,
+    password: "",
+  };
+} else {
+  DEFAULT_OPTS = {
+    host: "postgres",
+    port: "5432",
+    database: "laFamilia-test",
+    user: "postgres",
+    password: "postgres",
+  };
+}
 
 class Context {
   static async build() {
@@ -36,14 +41,9 @@ class Context {
     // Create a new role, I stand for identifier and L stand for literal value
     await pool.query(format("CREATE ROLE %I WITH LOGIN PASSWORD %L;", roleName, roleName));
 
-    console.log("====================================");
-    console.log("Created  role and password 🦺🦺🦺", roleName);
-    console.log("====================================");
     // Create a schema with the same name
     await pool.query(format("CREATE SCHEMA %I AUTHORIZATION %I;", roleName, roleName));
-    console.log("====================================");
-    console.log("Created schema 🦺🦺🦺", roleName);
-    console.log("====================================");
+
     // Disconnect entirely from PG
     await pool.close();
 
@@ -59,52 +59,51 @@ class Context {
 
       dir: "migrations", //File where our migrations files stored
 
-      /*  databaseUrl: {
-        host: dbTestConfig.dbHost,
-        port: dbTestConfig.dbPort,
-        database: dbTestConfig.dbDatabase,
-        user: roleName,
-        password: roleName,
-      }, */
-      databaseUrl: {
-        host: "postgres",
-        port: dbTestConfig.dbPort,
-        database: dbTestConfig.dbDatabase,
-        user: roleName,
-        password: roleName,
-      },
+      databaseUrl:
+        process.env.TEST_TYPE === "local"
+          ? {
+              host: dbTestConfig.dbHost,
+              port: dbTestConfig.dbPort,
+              database: dbTestConfig.dbDatabase,
+              user: roleName,
+              password: roleName,
+            }
+          : {
+              host: "postgres",
+              port: dbTestConfig.dbPort,
+              database: dbTestConfig.dbDatabase,
+              user: roleName,
+              password: roleName,
+            },
     });
 
     // Connect to PG as the newly created role
-    /*   await pool.connect({
-      host: dbTestConfig.dbHost,
+    if (process.env.TEST_TYPE === "local") {
+      await pool.connect({
+        host: dbTestConfig.dbHost,
 
-      port: dbTestConfig.dbPort,
+        port: dbTestConfig.dbPort,
 
-      database: dbTestConfig.dbDatabase,
+        database: dbTestConfig.dbDatabase,
 
-      user: roleName,
+        user: roleName,
 
-      password: roleName,
-    }); */
-    console.log("====================================");
-    console.log("Before  connect to  created schema  🦺🦺🦺", roleName);
-    console.log("====================================");
-    await pool.connect({
-      host: "postgres",
+        password: roleName,
+      });
+    } else {
+      await pool.connect({
+        host: "postgres",
 
-      port: dbTestConfig.dbPort,
+        port: dbTestConfig.dbPort,
 
-      database: dbTestConfig.dbDatabase,
+        database: dbTestConfig.dbDatabase,
 
-      user: roleName,
+        user: roleName,
 
-      password: roleName,
-    });
+        password: roleName,
+      });
+    }
 
-    console.log("====================================");
-    console.log("After connect  created schema  🦺🦺🦺", roleName);
-    console.log("====================================");
     return new Context(roleName);
   }
 

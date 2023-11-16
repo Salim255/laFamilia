@@ -1,7 +1,5 @@
 const pool = require("../config/pool");
 
-const isEmpty = require("../utils/isEmpty");
-
 const catchAsync = require("../utils/catchAsync");
 
 exports.createReaction = catchAsync(async (req, res, next) => {
