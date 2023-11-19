@@ -9,6 +9,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import { Colors } from "./src/constants/colors";
 import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
 import { useContext } from "react";
+import IconButton from "./src/components/ui/IconButton";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ function AuthStack() {
 }
 
 function AuthenticatedStack() {
+  const authCtx = useContext(AuthContext);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -36,7 +38,22 @@ function AuthenticatedStack() {
         contentStyle: { backgroundColor: Colors.primary100 },
       }}
     >
-      <Stack.Screen name="Welcome" component={HomeScreen} />
+      <Stack.Screen
+        name="Welcome"
+        component={HomeScreen}
+        options={{
+          headerRight: tintColor => (
+            <IconButton
+              size={24}
+              icon="exit"
+              color={tintColor}
+              onPress={() => {
+                authCtx.logout();
+              }}
+            />
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 }
