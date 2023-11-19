@@ -6,12 +6,16 @@ async function authenticate(mode, email, password) {
     email: email,
     password: password,
   });
+
+  const token = response?.data?.data?.token;
+
+  return token;
 }
 
 export async function createUser(email, password) {
-  await authenticate("signup", email, password);
+  return authenticate("signup", email, password);
 }
 
 export async function loginUser(email, password) {
-  await authenticate("login", email, password);
+  return authenticate("login", email, password);
 }
