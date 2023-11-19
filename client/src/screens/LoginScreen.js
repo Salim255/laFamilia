@@ -16,9 +16,9 @@ function LoginScreen() {
       const token = loginUser(email, password);
       authCtx.authenticate(token);
     } catch (error) {
+      setIsAuthenticating(false);
       Alert.alert("Authentication failed!", "Could not log you in. Please try again later!");
     }
-    setIsAuthenticating(false);
   }
   if (isAuthenticating) {
     return <LoadingOverlay message={"Login you in ..."} />;
