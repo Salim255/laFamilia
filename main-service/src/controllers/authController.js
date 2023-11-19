@@ -61,19 +61,22 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!validator.isEmail(email) || isEmpty(password) || isEmpty(first_name) || isEmpty(last_name)) {
+  if (!validator.isEmail(email) || isEmpty(password)) {
     return next(new AppError("Create user information error", 401));
   }
 
+  console.log("====================================");
+  console.log(email, password);
+  console.log("====================================");
   const hashedPassword = await bcrypt.hash(password, 12);
 
   const { rows } = await pool.query(
-    `INSERT INTO users (first_name, last_name, email, password)
+    `INSERT INTO users ( email, password)
          VALUES 
-            ($1, $2, $3, $4) RETURNING id, created_at,updated_at, first_name,photo,email ;`,
-    [first_name, last_name, email, hashedPassword],
+            ($1, $2) RETURNING id, created_at,updated_at, first_name,photo,email ;`,
+    [email, hashedPassword],
   );
 
   //Create token

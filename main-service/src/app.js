@@ -32,11 +32,12 @@ const options = {
   origin: "*",
 
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
 };
 
 module.exports = () => {
   const app = express();
-
+  app.use(cors(options));
   // 1) Global middleware
   //Set security HTTP headers,The best use of helmet is to use t early in middleware stack
   app.use(helmet());
@@ -74,8 +75,6 @@ module.exports = () => {
   ); */
 
   app.use(hpp());
-
-  app.use(cors(options));
 
   //
   app.use("/api/v1/users", userRouter);
