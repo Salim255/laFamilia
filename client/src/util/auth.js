@@ -1,18 +1,17 @@
 import axios from "axios";
+
+async function authenticate(mode, email, password) {
+  const url = `http://localhost:4000/api/v1/users/${mode}`;
+  const response = await axios.post(url, {
+    email: email,
+    password: password,
+  });
+}
+
 export async function createUser(email, password) {
-  const response = await axios
-    .post("http://localhost:4000/api/v1/users/signup", {
-      email: email,
-      password: password,
-    })
-    .then(res => {
-      console.log("====================================");
-      console.log(res);
-      console.log("====================================");
-    })
-    .catch(err => {
-      console.log("====================================");
-      console.log(err);
-      console.log("====================================");
-    });
+  await authenticate("signup", email, password);
+}
+
+export async function loginUser(email, password) {
+  await authenticate("login", email, password);
 }
