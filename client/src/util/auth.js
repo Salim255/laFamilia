@@ -6,8 +6,13 @@ async function authenticate(mode, email, password) {
     email: email,
     password: password,
   });
+  let token;
+  if (mode === "login") {
+    token = response?.data?.token;
+    return token;
+  }
 
-  const token = response?.data?.data?.token;
+  token = response?.data?.data?.token;
 
   return token;
 }
