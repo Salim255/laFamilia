@@ -8,5 +8,9 @@ describe("", () => {
     const wrapper = render(<AuthForm />);
     wrapper.getByTestId("form-id");
     wrapper.getByTestId("input-section");
+    wrapper.getByText("Email Address");
+    wrapper.getByText("Confirm Email Address");
+    wrapper.getByText(" Password ");
+    wrapper.getByText("Confirm Password ");
   });
 });
