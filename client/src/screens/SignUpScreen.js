@@ -1,7 +1,7 @@
-import { View } from "react-native";
+import AuthContent from "../components/Auth/AuthContent";
 
-function signUpScrren() {
-  return <View testID="sign-up-screen"></View>;
+function SignUpScreen() {
+  return <AuthContent />;
 }
 
-export default signUpScrren;
+export default SignUpScreen;

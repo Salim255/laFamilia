@@ -9,12 +9,12 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
   const [enteredPassword, setEnteredPassword] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
 
-  /*   const {
+  const {
     email: emailIsInvalid,
     confirmEmail: emailsDontMatch,
     password: passwordIsInvalid,
     confirmPassword: passwordsDontMatch,
-  } = credentialsInvalid; */
+  } = credentialsInvalid;
 
   function updateInputValueHandler(inputType, enteredValue) {
     switch (inputType) {
@@ -49,6 +49,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           onUpdateValue={updateInputValueHandler.bind(this, "email")}
           value={enteredEmail}
           keyboardType="email-address"
+          isInvalid={emailIsInvalid}
         />
         {!isLogin && (
           <Input
@@ -56,18 +57,21 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
             onUpdateValue={updateInputValueHandler.bind(this, "confirmEmail")}
             value={enteredConfirmEmail}
             keyboardType="email-address"
+            isInvalid={emailsDontMatch}
           />
         )}
         <Input
           label="Password"
           onUpdateValue={updateInputValueHandler.bind(this, "password")}
           value={enteredPassword}
+          isInvalid={passwordIsInvalid}
         />
         {!isLogin && (
           <Input
             label="Confirm Password"
             onUpdateValue={updateInputValueHandler.bind(this, "confirmPassword")}
             value={enteredConfirmPassword}
+            isInvalid={passwordsDontMatch}
           />
         )}
         <View style={styles.buttons}>

@@ -6,7 +6,7 @@
   ],
 }; */
 module.exports = {
-  preset: "react-native",
+  preset: "jest-expo",
   verbose: true,
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   transformIgnorePatterns: [

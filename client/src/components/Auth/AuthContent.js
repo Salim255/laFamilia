@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { Alert, View, Text, Pressable, StyleSheet, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -7,7 +7,7 @@ import AuthForm from "./AuthForm";
 import { LinearGradient } from "expo-linear-gradient";
 
 function AuthContent({ isLogin, onAuthenticate }) {
-  //const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
