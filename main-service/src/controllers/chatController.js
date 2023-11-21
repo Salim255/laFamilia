@@ -12,7 +12,7 @@ exports.createChat = catchAsync(async (req, res, next) => {
   const { rows: users } = await pool.query(`SELECT * FROM users`);
 
   //1)Check if we have at least two users before creating a chat
-  if (isEmpty(usersId) || usersId.length < 2) {
+  if (isEmpty(usersId) || usersId.length < 1) {
     return next(new AppError("Chat needs to have at least two users", 401));
   }
 

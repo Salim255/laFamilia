@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const Friend = () => {
+const Friend = ({ friend }) => {
+  console.log("====================================");
+  console.log(friend);
+  console.log("====================================");
   return (
     <View>
-      <Text>Friend</Text>
+      <Text>Friend: {friend.id}</Text>
     </View>
   );
 };

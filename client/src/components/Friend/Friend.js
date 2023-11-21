@@ -3,7 +3,7 @@ import { View, Text, FlatList } from "react-native";
 import { useGlobalContext } from "../../store/auth-context";
 import Friend from "./FrindItem";
 const FriendList = () => {
-  const { chats, fetchChats } = useGlobalContext();
+  const { chats, fetchChats, fetchFriends, friends } = useGlobalContext();
   console.log("====================================");
   console.log(chats);
   console.log("====================================");
@@ -16,8 +16,8 @@ const FriendList = () => {
     <View>
       <Text>Fiend list</Text>
       <View>
-        {chats.map(item => {
-          return <Friend key={item.id} />;
+        {friends.map(item => {
+          return <Friend key={item.id} friend={item} />;
         })}
       </View>
     </View>

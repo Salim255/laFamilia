@@ -3,10 +3,19 @@ import axios from "axios";
 
 import { useContext, createContext, useReducer, useState, useEffect } from "react";
 import reducer from "./reducers/chats_reducer";
-import { GET_CHATS_BEGIN, GET_CHATS_SUCCESS, GET_CHATS_ERROR } from "./actions/chats_actions";
+import {
+  GET_CHATS_BEGIN,
+  GET_CHATS_SUCCESS,
+  GET_CHATS_ERROR,
+  GET_FRIENDS_BEGIN,
+  GET_FRIENDS_SUCCESS,
+  GET_FRIENDS_ERROR,
+} from "./actions/chats_actions";
 
 const initialState = {
   fetchingIsBegin: false,
+  fetchFriendsBegin: false,
+  friends: [],
   chats: [],
 };
 
@@ -52,16 +61,23 @@ function AuthContextProvider({ children }) {
 
   const deleteChat = async () => {};
 
-  const getChats = async () => {
-    const url = `http://localhost:4000/api/v1/chats`;
-    let token = await AsyncStorage.getItem("token");
-    console.log(token);
-    const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
-    console.log(response.data.data);
+  const fetchFriends = async () => {
+    dispatch({ type: GET_FRIENDS_BEGIN });
+    try {
+      const url = `http://localhost:4000/api/v1/users`;
+      let token = await AsyncStorage.getItem("token");
+      console.log(token);
+      const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+      console.log(response.data.data, "friends");
+      dispatch({ type: GET_FRIENDS_SUCCESS, payload: response.data.data });
+    } catch (error) {
+      dispatch({ type: GET_FRIENDS_ERROR });
+    }
   };
 
   useEffect(() => {
     fetchChats();
+    fetchFriends();
   }, []);
   const value = {
     token: authToken,
@@ -72,6 +88,7 @@ function AuthContextProvider({ children }) {
     createDualChat: createDualChat,
     createGroupeChat: createGroupeChat,
     deleteChat: deleteChat,
+    fetchFriends: fetchFriends,
   };
   return <AuthContext.Provider value={{ ...state, ...value }}>{children}</AuthContext.Provider>;
 }
