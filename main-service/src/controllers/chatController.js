@@ -82,7 +82,7 @@ exports.getChatsByUser = catchAsync(async (req, res, next) => {
 
       COALESCE(JSON_AGG( users.* ) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
 
-      JSON_AGG(messages.*)   AS messages
+      JSON_AGG(DISTINCT messages.*)   AS messages
 
       FROM chats
 

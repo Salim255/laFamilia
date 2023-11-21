@@ -1,0 +1,3 @@
+export const GET_CHATS_BEGIN = "GET_CHATS_BEGIN";
+export const GET_CHATS_SUCCESS = "GET_CHATS_SUCCESS";
+export const GET_CHATS_ERROR = "GET_CHATS_ERROR";

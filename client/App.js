@@ -12,6 +12,7 @@ import { Colors } from "./src/constants/colors";
 import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
 import { useContext, useEffect, useState } from "react";
 import IconButton from "./src/components/ui/IconButton";
+import { ChatsProvider } from "./src/store/contexts/chats-context";
 
 const Stack = createNativeStackNavigator();
 
