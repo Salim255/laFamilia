@@ -3,22 +3,46 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { useGlobalContext } from "../store/auth-context";
 
+import Button from "../components/ui/Button";
 import FriendList from "../components/Friend/Friend";
 import Messenger from "../components/Messenger/Messenger";
+
 function HomeScreen() {
-  const { chats, fetchChats } = useGlobalContext();
+  const { chats, fetchChats, setCurrentChat } = useGlobalContext();
   console.log("====================================");
-  console.log(chats);
+  console.log(chats, "From home screen 👹👹");
   console.log("====================================");
-  // const chatCtx = useContext(AuthContext);
+  const openChat = chat => {
+    console.log("====================================");
+    console.log("Chat opend", chat);
+    console.log("====================================");
+    setCurrentChat(chat);
+  };
   useEffect(() => {
     fetchChats();
   }, []);
+  let screen = (
+    <View>
+      <Text>Loading</Text>
+    </View>
+  );
+  if (chats.length === 0) {
+    return screen;
+  }
   return (
     <View>
-      <Text>Welcome</Text>
-      <FriendList />
-      <Messenger />
+      <Text>Chats</Text>
+      {chats.map(chat => {
+        return (
+          <View key={chat.id}>
+            <Text>Chat : {chat.id}</Text>
+            <Button onPress={() => openChat(chat)}>
+              Last message: {chat?.messages[chat?.messages?.length - 1].content}
+            </Button>
+          </View>
+        );
+      })}
+      {/*  <Messenger /> */}
     </View>
   );
 }

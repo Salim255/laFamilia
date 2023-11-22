@@ -5,6 +5,9 @@ import {
   GET_FRIENDS_BEGIN,
   GET_FRIENDS_SUCCESS,
   GET_FRIENDS_ERROR,
+  SET_CURRENT_CHAT_SUCCESS,
+  SET_CURRENT_CHAT_BEGIN,
+  SET_CURRENT_CHAT_ERROR,
 } from "../actions/chats_actions";
 
 const chats_reducer = (state, action) => {
@@ -20,6 +23,10 @@ const chats_reducer = (state, action) => {
   if (action.type === GET_FRIENDS_BEGIN) {
     return { ...state, fetchingIsBegin: true };
   }
+
+  if (action.type === GET_FRIENDS_SUCCESS) {
+    return { ...state, friends: action.payload };
+  }
   if (action.type === GET_FRIENDS_SUCCESS) {
     return { ...state, friends: action.payload };
   }
@@ -27,6 +34,17 @@ const chats_reducer = (state, action) => {
     return { ...state };
   }
 
+  //
+  SET_CURRENT_CHAT_BEGIN;
+  if (action.type === SET_CURRENT_CHAT_BEGIN) {
+    return { ...state, settingCurrentChat: true };
+  }
+  if (action.type === SET_CURRENT_CHAT_SUCCESS) {
+    return { ...state, currentChat: action.payload, settingCurrentChat: false };
+  }
+  if (action.type === SET_CURRENT_CHAT_ERROR) {
+    return { ...state, settingCurrentChat: false };
+  }
   throw new Error(`No Matching "${action.type}" - action type`);
 };
 

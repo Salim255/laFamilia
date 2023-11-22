@@ -10,11 +10,16 @@ import {
   GET_FRIENDS_BEGIN,
   GET_FRIENDS_SUCCESS,
   GET_FRIENDS_ERROR,
+  SET_CURRENT_CHAT_SUCCESS,
+  SET_CURRENT_CHAT_ERROR,
+  SET_CURRENT_CHAT_BEGIN,
 } from "./actions/chats_actions";
 
 const initialState = {
   fetchingIsBegin: false,
   fetchFriendsBegin: false,
+  currentChat: [],
+  settingCurrentChat: false,
   friends: [],
   chats: [],
 };
@@ -75,6 +80,18 @@ function AuthContextProvider({ children }) {
     }
   };
 
+  const setCurrentChat = async chat => {
+    //SET_CURRENT_CHAT_SUCCESS
+    dispatch({ type: SET_CURRENT_CHAT_BEGIN });
+    try {
+      console.log("====================================");
+      console.log("Hello from set current chat 👹👹👹");
+      console.log("====================================");
+      dispatch({ type: SET_CURRENT_CHAT_SUCCESS, payload: chat });
+    } catch (error) {
+      dispatch({ type: SET_CURRENT_CHAT_ERROR });
+    }
+  };
   useEffect(() => {
     fetchChats();
     fetchFriends();
@@ -89,6 +106,7 @@ function AuthContextProvider({ children }) {
     createGroupeChat: createGroupeChat,
     deleteChat: deleteChat,
     fetchFriends: fetchFriends,
+    setCurrentChat: setCurrentChat,
   };
   return <AuthContext.Provider value={{ ...state, ...value }}>{children}</AuthContext.Provider>;
 }

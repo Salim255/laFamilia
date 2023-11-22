@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { View, Text, FlatList } from "react-native";
 import { useGlobalContext } from "../../store/auth-context";
-import Friend from "./FrindItem";
-const FriendList = () => {
-  const { chats, fetchChats, fetchFriends, friends } = useGlobalContext();
+
+const FriendList = ({ chat }) => {
+  //const { chats, fetchChats, fetchFriends, friends } = useGlobalContext();
   console.log("====================================");
-  console.log(chats);
+  console.log(chat, "Hello 👹👹");
   console.log("====================================");
   // const chatCtx = useContext(AuthContext);
   useEffect(() => {
@@ -16,9 +16,7 @@ const FriendList = () => {
     <View>
       <Text>Fiend list</Text>
       <View>
-        {friends.map(item => {
-          return <Friend key={item.id} friend={item} />;
-        })}
+        <Text>Hello</Text>
       </View>
     </View>
   );
