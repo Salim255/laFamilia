@@ -96,3 +96,5 @@ in order to check if our
 - NODE_ENV='development' nodemon index.js
 
 - "test": "jest --watchAll --no-cache ",
+
+- npm install socket.io

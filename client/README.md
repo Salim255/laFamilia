@@ -9,3 +9,4 @@
 - npx expo install @react-native-async-storage/async-storage
 - expo install expo-app-loading
 - npx expo install @expo/webpack-config@^19.0.0
+- npm install socket.io-client

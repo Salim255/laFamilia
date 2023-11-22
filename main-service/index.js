@@ -20,7 +20,12 @@ const pool = require("./src/config/pool.js");
 const { default: migrate } = require("node-pg-migrate");
 
 const NatsWrapper = require("./nats-wrapper.js");
+
 const port = appConfig.appPort || 3000;
+
+//////
+
+////
 
 let server;
 const autoMigration = async () => {
@@ -105,7 +110,13 @@ if (process.env.RUN_ON_K8s !== "true") {
       password: "",
     })
     .then(() => {
-      server = app().listen(port, () => {
+      //////
+      const http = require("http");
+      server = http.createServer(app());
+      const SocketServer = require("./src/socket");
+      SocketServer(server);
+      ////
+      server = server.listen(port, () => {
         console.log("===================================");
         console.log(`Server running on port ${port}`);
         console.log("====================================");
