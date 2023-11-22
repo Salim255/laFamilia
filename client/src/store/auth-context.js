@@ -85,7 +85,7 @@ function AuthContextProvider({ children }) {
     dispatch({ type: SET_CURRENT_CHAT_BEGIN });
     try {
       console.log("====================================");
-      console.log("Hello from set current chat 👹👹👹");
+      console.log("Set current 👹👹👹", chat);
       console.log("====================================");
       dispatch({ type: SET_CURRENT_CHAT_SUCCESS, payload: chat });
     } catch (error) {

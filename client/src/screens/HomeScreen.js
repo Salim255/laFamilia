@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useGlobalContext } from "../store/auth-context";
@@ -9,6 +9,8 @@ import Messenger from "../components/Messenger/Messenger";
 
 function HomeScreen() {
   const { chats, fetchChats, setCurrentChat } = useGlobalContext();
+  const [openM, setOpenM] = useState(false);
+
   console.log("====================================");
   console.log(chats, "From home screen 👹👹");
   console.log("====================================");
@@ -17,6 +19,7 @@ function HomeScreen() {
     console.log("Chat opend", chat);
     console.log("====================================");
     setCurrentChat(chat);
+    setOpenM(true);
   };
   useEffect(() => {
     fetchChats();
@@ -42,7 +45,7 @@ function HomeScreen() {
           </View>
         );
       })}
-      {/*  <Messenger /> */}
+      <Messenger />
     </View>
   );
 }

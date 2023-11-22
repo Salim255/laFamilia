@@ -40,6 +40,9 @@ const chats_reducer = (state, action) => {
     return { ...state, settingCurrentChat: true };
   }
   if (action.type === SET_CURRENT_CHAT_SUCCESS) {
+    console.log("====================================");
+    console.log(action.payload, "Current chat from reducer");
+    console.log("====================================");
     return { ...state, currentChat: action.payload, settingCurrentChat: false };
   }
   if (action.type === SET_CURRENT_CHAT_ERROR) {
