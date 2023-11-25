@@ -1,47 +1,44 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>signup</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-list class="signup">
-    <ion-item class="signup__item">
+<form class="form">
+  <ion-list class="info">
+    <ion-item class="info__item" *ngIf="!isLogin">
       <ion-input labelPlacement="floating" value="First name" class="signup__item--input">
         <div slot="label">First Name <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
-    <ion-item class="signup__item">
+    <ion-item class="info__item" *ngIf="!isLogin">
       <ion-input labelPlacement="floating" value="Last name" class="signup__item--input">
         <div slot="label">Last Name <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
 
-    <ion-item class="signup__item">
+    <ion-item class="info__item">
       <ion-input labelPlacement="floating" value="Email" class="signup__item--input">
         <div slot="label">Email <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
-    <ion-item class="signup__item">
+    <ion-item class="info__item" *ngIf="!isLogin">
       <ion-input labelPlacement="floating" value="Email confirm" class="signup__item--input">
         <div slot="label">Email Confirm<ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
-    <ion-item class="signup__item">
+    <ion-item class="info__item">
       <ion-input labelPlacement="floating" value="Password" class="signup__item--input">
         <div slot="label">Password <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
-    <ion-item class="signup__item">
+    <ion-item class="info__item" *ngIf="!isLogin">
       <ion-input labelPlacement="floating" value="Password Confirm" class="signup__item--input">
         <div slot="label">Password Confirm <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
   </ion-list>
 
-  <div class="signup__btn">
-    <ion-button (click)="switch()" color="secondary" class="signup__btn--body">
-      Switch signup to login From
-    </ion-button>
+  <div class="form__btns">
+    <div class="form__btns--switch">
+      <ion-button (click)="switch()" color="primary" fill="clear">
+        Switch to {{ isLogin ? "SignUp" : "Login" }}
+      </ion-button>
+    </div>
+    <div class="form__btns--confirm"><ion-button>Confirm</ion-button></div>
   </div>
-</ion-content>
+</form>

@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{isLogin ? 'Login' :'SignUp'}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="auth">
+    <div class="auth__form">
+      <app-auth-form
+        [isLogin]="isLogin"
+        class="auth__form--content"
+        (switchHandler)="switch()"
+      ></app-auth-form>
+    </div>
+  </div>
+</ion-content>
