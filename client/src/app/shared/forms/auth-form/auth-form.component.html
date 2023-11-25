@@ -1,33 +1,85 @@
-<form class="form">
+<form class="form" #f="ngForm" (submit)="onSubmit(f)">
   <ion-list class="info">
     <ion-item class="info__item" *ngIf="!isLogin">
-      <ion-input labelPlacement="floating" value="First name" class="signup__item--input">
+      <ion-input
+        (input)="onChange($event)"
+        labelPlacement="floating"
+        value="{{ first_name }}"
+        ngModel
+        [(ngModel)]="first_name"
+        name="first_name"
+        class="signup__item--input"
+      >
         <div slot="label">First Name <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
     <ion-item class="info__item" *ngIf="!isLogin">
-      <ion-input labelPlacement="floating" value="Last name" class="signup__item--input">
+      <ion-input
+        (input)="onChange($event)"
+        labelPlacement="floating"
+        value="{{ last_name }}"
+        ngModel
+        [(ngModel)]="last_name"
+        name="last_name"
+        class="signup__item--input"
+      >
         <div slot="label">Last Name <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
 
     <ion-item class="info__item">
-      <ion-input labelPlacement="floating" value="Email" class="signup__item--input">
+      <ion-input
+        (input)="onChange($event)"
+        labelPlacement="floating"
+        value="{{ email }}"
+        ngModel
+        [(ngModel)]="email"
+        name="email"
+        class="signup__item--input"
+      >
         <div slot="label">Email <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
     <ion-item class="info__item" *ngIf="!isLogin">
-      <ion-input labelPlacement="floating" value="Email confirm" class="signup__item--input">
+      <ion-input
+        (input)="onChange($event)"
+        labelPlacement="floating"
+        value="{{ confirm_email }}"
+        ngModel
+        [(ngModel)]="confirm_email"
+        name="email_confirm"
+        class="signup__item--input"
+      >
         <div slot="label">Email Confirm<ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
     <ion-item class="info__item">
-      <ion-input labelPlacement="floating" value="Password" class="signup__item--input">
-        <div slot="label">Password <ion-text color="danger">(Required)</ion-text></div>
+      <ion-input
+        (input)="onChange($event)"
+        labelPlacement="floating"
+        value="{{ password }}"
+        ngModel
+        [(ngModel)]="password"
+        name="password"
+        class="signup__item--input"
+        #passwordCtrl="ngModel"
+      >
+        <div slot="label">
+          Password
+          <ion-text color="danger" *ngIf="passwordCtrl.touched">(Required)</ion-text>
+        </div>
       </ion-input>
     </ion-item>
     <ion-item class="info__item" *ngIf="!isLogin">
-      <ion-input labelPlacement="floating" value="Password Confirm" class="signup__item--input">
+      <ion-input
+        (input)="onChange($event)"
+        labelPlacement="floating"
+        ngModel
+        [(ngModel)]="password_confirm"
+        value="{{ password_confirm }}"
+        name="password confirm"
+        class="signup__item--input"
+      >
         <div slot="label">Password Confirm <ion-text color="danger">(Required)</ion-text></div>
       </ion-input>
     </ion-item>
@@ -39,6 +91,6 @@
         Switch to {{ isLogin ? "SignUp" : "Login" }}
       </ion-button>
     </div>
-    <div class="form__btns--confirm"><ion-button>Confirm</ion-button></div>
+    <div class="form__btns--confirm"><ion-button type="submit">Confirm</ion-button></div>
   </div>
 </form>

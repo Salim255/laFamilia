@@ -34,6 +34,9 @@ const correctPassword = async (candidatePassword, userPassword) => {
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
+  console.log("====================================");
+  console.log(email, password);
+  console.log("====================================");
   if (!validator.isEmail(email) || isEmpty(password)) {
     return next(new AppError("Please provide a valid email and password", 400));
   }
@@ -61,22 +64,19 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, first_name, last_name } = req.body;
 
   if (!validator.isEmail(email) || isEmpty(password)) {
     return next(new AppError("Create user information error", 401));
   }
 
-  console.log("====================================");
-  console.log(email, password);
-  console.log("====================================");
   const hashedPassword = await bcrypt.hash(password, 12);
 
   const { rows } = await pool.query(
-    `INSERT INTO users ( email, password)
+    `INSERT INTO users ( email, password,first_name, last_name)
          VALUES 
-            ($1, $2) RETURNING id, created_at,updated_at, first_name,photo,email ;`,
-    [email, hashedPassword],
+            ($1, $2, $3, $4) RETURNING id, created_at,updated_at, first_name,photo,email ;`,
+    [email, hashedPassword, first_name, last_name],
   );
 
   //Create token
