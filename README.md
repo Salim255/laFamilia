@@ -98,3 +98,7 @@ in order to check if our
 - "test": "jest --watchAll --no-cache ",
 
 - npm install socket.io
+
+## Client
+
+- npm install @capacitor/preferences
