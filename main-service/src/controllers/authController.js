@@ -56,10 +56,15 @@ exports.login = catchAsync(async (req, res, next) => {
 
   //If everything ok, send token to client
   const token = createToken(user[0].id);
-
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+  let data = {
+    token,
+    id: user[0].id,
+    expiresIn: expiration.exp,
+  };
   res.status(200).json({
     message: "success",
-    token,
+    data,
   });
 });
 
@@ -97,12 +102,15 @@ exports.signup = catchAsync(async (req, res, next) => {
     await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
   }
 
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+  let data = {
+    token,
+    id: rows[0].id,
+    expiresIn: expiration.exp,
+  };
   res.status(200).json({
     message: "success",
-    data: {
-      token: token,
-      user: rows[0],
-    },
+    data,
   });
 });
 

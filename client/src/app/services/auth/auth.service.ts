@@ -1,11 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, tap } from "rxjs";
+import { BehaviorSubject, Observable, Subscription, map, tap } from "rxjs";
 import { environment as devEnvironment } from "src/environments/environment";
+import { User } from "src/app/models/user/user.model";
 
-interface User {
+interface Auth {
   id: number;
   token: string;
+  expiresIn: Date;
 }
 interface authData {
   first_name: string;
@@ -19,20 +21,40 @@ interface authData {
 })
 export class AuthService {
   private ENV = devEnvironment;
+  private user = new BehaviorSubject<User | null>(null);
   constructor(private http: HttpClient) {}
 
   authenticate(mode: boolean, data: authData) {
-    console.log("====================================");
-    console.log(mode, data, this.ENV.apiURL);
-    console.log("====================================");
     let dataToSend = mode ? { email: data.email, password: data.password } : data;
+
     return this.http.post<any>(`${this.ENV.apiURL}/${mode ? "login" : "signup"}`, dataToSend).pipe(
-      tap(userData => {
-        console.log(userData, "👽👽👽");
+      tap(response => {
+        this.setAuthData(response?.data);
       }),
     );
   }
 
+  private setAuthData(authData: Auth) {
+    const expirationTime = new Date(new Date().getTime() + +authData.expiresIn * 1000);
+    let userId = authData.id;
+
+    const buildUser = new User(userId, authData.token, expirationTime);
+
+    this.user.next(buildUser);
+  }
+
+  get userIsAuthenticated() {
+    return this.user.asObservable().pipe(
+      map(user => {
+        console.log(user);
+
+        if (user) {
+          return !!user.token;
+        }
+        return false;
+      }),
+    );
+  }
   autoLogin() {}
   logout() {}
 }

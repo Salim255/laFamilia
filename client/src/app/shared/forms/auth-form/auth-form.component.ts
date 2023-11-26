@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth/auth.service";
 @Component({
   selector: "app-auth-form",
   templateUrl: "./auth-form.component.html",
   styleUrls: ["./auth-form.component.scss"],
 })
-export class AuthFormComponent implements OnInit {
+export class AuthFormComponent {
   @Input() isLogin: boolean = true;
   @Output() switchHandler = new EventEmitter();
   constructor(private authService: AuthService) {}
@@ -16,8 +17,9 @@ export class AuthFormComponent implements OnInit {
   confirm_email: string = "";
   password: string = "";
   password_confirm: string = "";
+  //
+  private authSub!: Subscription;
 
-  ngOnInit() {}
   switch() {
     this.switchHandler.emit();
   }
@@ -43,10 +45,19 @@ export class AuthFormComponent implements OnInit {
         console.log(err);
       },
       next: res => {
-        console.log("====================================");
-        console.log(res);
-        console.log("====================================");
+        this.authSub = this.authService.userIsAuthenticated.subscribe(data => {
+          console.log("====================================");
+          console.log(data);
+          console.log("====================================");
+        });
       },
     });
+  }
+
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  ngOnDestroy(): void {
+    if (this.authSub) {
+      this.authSub.unsubscribe();
+    }
   }
 }
