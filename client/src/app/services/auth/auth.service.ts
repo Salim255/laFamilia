@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, Observable, Subscription, from, map, tap } from "rxjs";
+import { BehaviorSubject, from, map, tap } from "rxjs";
 import { Preferences } from "@capacitor/preferences";
 import { environment as devEnvironment } from "../../../environments/environment";
 import { environment as prodEnvironment } from "../../../environments/environment.prod";
@@ -30,11 +30,13 @@ export class AuthService implements OnDestroy {
   authenticate(mode: boolean, data: authData) {
     let dataToSend = mode ? { email: data.email, password: data.password } : data;
 
-    return this.http.post<any>(`${this.ENV.apiURL}/${mode ? "login" : "signup"}`, dataToSend).pipe(
-      tap(response => {
-        this.setAuthData(response?.data);
-      }),
-    );
+    return this.http
+      .post<any>(`${this.ENV.apiURL}/users/${mode ? "login" : "signup"}`, dataToSend)
+      .pipe(
+        tap(response => {
+          this.setAuthData(response?.data);
+        }),
+      );
   }
 
   private setAuthData(authData: Auth) {
@@ -72,8 +74,6 @@ export class AuthService implements OnDestroy {
   get userIsAuthenticated() {
     return this.user.asObservable().pipe(
       map(user => {
-        console.log(user);
-
         if (user) {
           return !!user.token;
         }
@@ -137,7 +137,6 @@ export class AuthService implements OnDestroy {
   ngOnDestroy(): void {
     if (this.activeLogoutTimer) {
       clearTimeout(this.activeLogoutTimer);
-      //To clear any timeout, to prevent memory loop
     }
   }
 }

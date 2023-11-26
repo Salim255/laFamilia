@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AuthService } from "src/app/services/auth/auth.service";
-import { CanLoad, Route, Router, UrlSegment, UrlTree } from "@angular/router";
+import { CanLoad, Route, Router, UrlSegment } from "@angular/router";
 import { Observable, of, switchMap, take, tap } from "rxjs";
 
 @Injectable({
@@ -12,9 +12,6 @@ export class AuthGuard implements CanLoad {
     return this.authService.userIsAuthenticated.pipe(
       take(1),
       switchMap(isAuthenticated => {
-        console.log("====================================");
-        console.log(isAuthenticated, "Hello auht");
-        console.log("====================================");
         if (!isAuthenticated) {
           return this.authService.autoLogin();
         } else {

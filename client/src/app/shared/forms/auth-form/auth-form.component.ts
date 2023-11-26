@@ -46,10 +46,7 @@ export class AuthFormComponent implements OnDestroy {
         console.log(err);
       },
       next: res => {
-        this.authSub = this.authService.userIsAuthenticated.subscribe(data => {
-          console.log("====================================");
-          console.log(data);
-          console.log("====================================");
+        this.authSub = this.authService.userIsAuthenticated.subscribe(() => {
           this.router.navigateByUrl("/tabs/home");
         });
       },

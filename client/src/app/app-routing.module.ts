@@ -8,10 +8,7 @@ const routes: Routes = [
     redirectTo: "tabs",
     pathMatch: "full",
   },
-  /*  {
-    path: "signup",
-    loadChildren: () => import("./pages/signup/signup.module").then(m => m.SignupPageModule),
-  }, */
+
   {
     path: "auth",
     loadChildren: () => import("./pages/auth/auth.module").then(m => m.AuthPageModule),
