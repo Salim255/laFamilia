@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth/auth.service";
@@ -7,7 +7,7 @@ import { AuthService } from "src/app/services/auth/auth.service";
   templateUrl: "./auth-form.component.html",
   styleUrls: ["./auth-form.component.scss"],
 })
-export class AuthFormComponent {
+export class AuthFormComponent implements OnDestroy {
   @Input() isLogin: boolean = true;
   @Output() switchHandler = new EventEmitter();
   constructor(private authService: AuthService) {}
@@ -54,7 +54,6 @@ export class AuthFormComponent {
     });
   }
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnDestroy(): void {
     if (this.authSub) {
       this.authSub.unsubscribe();
