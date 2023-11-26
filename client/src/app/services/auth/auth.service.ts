@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Observable, Subscription, from, map, tap } from "rxjs";
 import { Preferences } from "@capacitor/preferences";
-import { environment as devEnvironment } from "src/environments/environment";
+import { environment as devEnvironment } from "../../../environments/environment";
+import { environment as prodEnvironment } from "../../../environments/environment.prod";
 import { User } from "src/app/models/user/user.model";
 
 interface Auth {
@@ -20,8 +21,8 @@ interface authData {
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
-  private ENV = devEnvironment;
+export class AuthService implements OnDestroy {
+  private ENV = devEnvironment.production ? prodEnvironment : devEnvironment;
   private user = new BehaviorSubject<User | null>(null);
   activeLogoutTimer: any;
   constructor(private http: HttpClient) {}
@@ -122,8 +123,10 @@ export class AuthService {
         return userToReturn;
       }),
       tap(user => {
-        this.user.next(user);
-        this.autoLogout(user!.tokenDuration);
+        if (!user) {
+          this.user.next(user);
+          this.autoLogout(user!.tokenDuration);
+        }
       }),
       map(user => {
         return !!user;
@@ -131,7 +134,6 @@ export class AuthService {
     );
   }
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnDestroy(): void {
     if (this.activeLogoutTimer) {
       clearTimeout(this.activeLogoutTimer);

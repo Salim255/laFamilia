@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth/auth.service";
 @Component({
@@ -10,7 +11,7 @@ import { AuthService } from "src/app/services/auth/auth.service";
 export class AuthFormComponent implements OnDestroy {
   @Input() isLogin: boolean = true;
   @Output() switchHandler = new EventEmitter();
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
   first_name: string = "";
   last_name: string = "";
   email: string = "";
@@ -49,6 +50,7 @@ export class AuthFormComponent implements OnDestroy {
           console.log("====================================");
           console.log(data);
           console.log("====================================");
+          this.router.navigateByUrl("/tabs/home");
         });
       },
     });
