@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ChatsService } from "../../services/chats/chats.service";
+import { Route, Router } from "@angular/router";
 
 @Component({
   selector: "app-chats",
@@ -9,7 +10,7 @@ import { ChatsService } from "../../services/chats/chats.service";
 export class ChatsPage implements OnInit {
   isLoading: boolean = false;
   chats!: any;
-  constructor(private chatService: ChatsService) {}
+  constructor(private chatService: ChatsService, private router: Router) {}
 
   ngOnInit() {
     this.chatService.getChats.subscribe(chats => {
@@ -22,5 +23,12 @@ export class ChatsPage implements OnInit {
     this.chatService.fetchChats().subscribe(chats => {
       this.isLoading = false;
     });
+  }
+
+  openChat(item: any) {
+    if (item) {
+      this.chatService.currentChat = item;
+      this.router.navigateByUrl("/tabs/messenger");
+    }
   }
 }

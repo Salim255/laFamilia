@@ -20,7 +20,9 @@ exports.up = pgm => {
 
         email VARCHAR(50) NOT NULL UNIQUE,
 
-        password VARCHAR NOT NULL
+        password VARCHAR NOT NULL,
+
+        role VARCHAR(20) NOT NULL DEFAULT 'user' 
         
                   );
     `,

@@ -102,3 +102,6 @@ in order to check if our
 ## Client
 
 - npm install @capacitor/preferences
+- npm install @capacitor/ios
+- npx cap add ios
+- npx cap open ios

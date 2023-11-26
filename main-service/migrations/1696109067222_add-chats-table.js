@@ -11,7 +11,8 @@ exports.up = pgm => {
   
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   
-            type VARCHAR(25) NOT NULL DEFAULT 'dual'  
+            type VARCHAR(25) NOT NULL DEFAULT 'dual'  ,
+            chat_name VARCHAR(25)
   
   
                       );

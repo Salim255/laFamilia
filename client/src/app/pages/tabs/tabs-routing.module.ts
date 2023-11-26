@@ -22,6 +22,11 @@ const routes: Routes = [
       },
     ],
   },
+
+  {
+    path: "messenger",
+    loadChildren: () => import("../messenger/messenger.module").then(m => m.MessengerPageModule),
+  },
 ];
 
 @NgModule({

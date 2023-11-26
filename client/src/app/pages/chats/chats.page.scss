@@ -1,0 +1,31 @@
+.chat-item {
+  margin: 1.2rem 0;
+  &__btn {
+    width: 100%;
+    display: flex;
+
+    &--avatar {
+      height: 4rem;
+      width: 4rem;
+    }
+    &--label {
+      margin-right: auto;
+      margin-left: 2%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+
+      text-align: left;
+      .top-text {
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: capitalize;
+      }
+      .bottom-text {
+        font-size: 16px;
+        font-weight: 500;
+        color: rgba($color: #000000, $alpha: 0.5);
+      }
+    }
+  }
+}

@@ -56,67 +56,13 @@ export class ChatsService {
   get getCurrentChat() {
     return this.currentChat;
   }
-  sendMessage(message: string) {
-    return from(Preferences.get({ key: "authData" })).pipe(
-      map(storedData => {
-        if (!storedData || !storedData.value) {
-          return null;
-        }
-
-        const parseData = JSON.parse(storedData.value) as {
-          id: number;
-          _token: string;
-          tokenExpirationDate: string;
-        };
-
-        return parseData._token;
-      }),
-      switchMap(token => {
-        return this.http.post<any>(
-          `${this.ENV.apiURL}/messages`,
-          { chat_id: this.currentChat.id, message: message },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
-      }),
-      tap(chats => {
-        this.fetchChats();
-      }),
-    );
-  }
-
-  fetchChatByChatId(chatId: number) {
-    return from(Preferences.get({ key: "authData" })).pipe(
-      map(storedData => {
-        if (!storedData || !storedData.value) {
-          return null;
-        }
-
-        const parseData = JSON.parse(storedData.value) as {
-          id: number;
-          _token: string;
-          tokenExpirationDate: string;
-        };
-
-        return parseData._token;
-      }),
-      switchMap(token => {
-        return this.http.get<any>(`${this.ENV.apiURL}/chats/${chatId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      }),
-      tap(chat => {
-        console.log("====================================");
-        console.log(chat);
-        console.log("====================================");
-        this.currentChat = chat.data.data;
-      }),
-    );
-  }
   get getChats() {
     return this.chats.asObservable().pipe(
       map(data => {
+        console.log("====================================");
+        console.log(data, "🔥🔥🔥");
+        console.log("====================================");
+
         return data;
       }),
     );

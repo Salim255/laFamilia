@@ -27,7 +27,7 @@ export class AuthFormComponent implements OnDestroy {
 
   onChange(event: any) {}
   onSubmit(form: NgForm) {
-    console.log(form);
+    console.log(form, "From");
     if (!form.valid) {
       return;
     }
