@@ -27,6 +27,10 @@ const routes: Routes = [
     path: "messenger",
     loadChildren: () => import("../messenger/messenger.module").then(m => m.MessengerPageModule),
   },
+  {
+    path: "profiles",
+    loadChildren: () => import("../profiles/profiles.module").then(m => m.ProfilesPageModule),
+  },
 ];
 
 @NgModule({

@@ -19,11 +19,8 @@ exports.createChatUser = catchAsync(async (req, res, next) => {
     JOIN chats On chats.id = $1 WHERE chat_id=$1`,
     [createdChatId],
   );
-
-  res.status(200).json({
-    status: "success",
-    data: rows,
-  });
+  req.chat_id = createdChatId;
+  next();
 });
 
 exports.getChatUser = catchAsync(async (req, res, next) => {

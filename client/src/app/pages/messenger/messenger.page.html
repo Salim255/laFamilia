@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header collapse="condense">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button [routerLink]="['/tabs/chats']" icon="arrow-back"></ion-back-button>
+      <ion-back-button [routerLink]="['/tabs/chats']" icon="arrow-back" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>
       <div class="content">
@@ -14,7 +14,7 @@
           </ion-avatar>
         </div>
         <ion-label class="content__label">
-          <ion-text> {{chat.type==="group" ? chat.type: chat.users[0].email}}</ion-text>
+          <ion-text>{{chat.users[0].first_name}}</ion-text>
         </ion-label>
       </div>
     </ion-title>
@@ -22,16 +22,18 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list lines="none" *ngFor="let item of chat.messages; ">
-    <div lines="none">
-      <ion-text class="receiver" class="left">{{item.content}} left message </ion-text>
-    </div>
-    <div *ngFor="let item of chat.messages; " lines="none">
-      <ion-text class="receiver" class="right">{{item.content}} right message </ion-text>
+  <ion-list lines="none" ngx-auto-scroll lock-y-offset="10" observe-attributes>
+    <div *ngFor="let item of chat.messages; ">
+      <ion-text *ngIf="chat.chatuser[0].user_id !== item.fromuserid" class="left"
+        >{{item.content}} {{chat.chatuser[0].user_id === item.fromuserid}}
+      </ion-text>
+      <ion-text class="right" *ngIf="chat.chatuser[0].user_id === item.fromuserid"
+        >{{item.content}}
+      </ion-text>
     </div>
   </ion-list>
-  <form #f="ngForm" (submit)="onSubmit(f)">
-    <div>
+  <form #f="ngForm" (submit)="onSubmit(f)" class="form">
+    <div class="form__text">
       <ion-textarea
         (input)="onChange($event)"
         labelPlacement="floating"
@@ -41,6 +43,6 @@
         [(ngModel)]="message"
       ></ion-textarea>
     </div>
-    <ion-button type="submit"> send </ion-button>
+    <div class="form__btn"><ion-button type="submit"> send </ion-button></div>
   </form>
 </ion-content>

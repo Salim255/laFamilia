@@ -15,6 +15,7 @@ router.post(
   authController.protect,
   chatController.createChat,
   chatUserController.createChatUser,
+  messageController.createMessage,
 );
 
 //Update chat

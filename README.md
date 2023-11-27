@@ -105,3 +105,5 @@ in order to check if our
 - npm install @capacitor/ios
 - npx cap add ios
 - npx cap open ios
+- npm install socket.io-client
+- npm install ngx-auto-scroll

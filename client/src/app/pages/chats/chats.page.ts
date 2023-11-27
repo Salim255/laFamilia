@@ -25,6 +25,9 @@ export class ChatsPage implements OnInit {
     });
   }
 
+  addChat() {
+    this.router.navigateByUrl("/tabs/profiles");
+  }
   openChat(item: any) {
     if (item) {
       this.chatService.currentChat = item;

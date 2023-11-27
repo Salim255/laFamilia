@@ -38,23 +38,50 @@ ion-list {
   ion-text {
     font-size: 20px;
     font-weight: bold;
-
     padding: 1rem;
+
     border-radius: 2rem;
     display: block;
   }
   .right {
     width: 80%;
     margin-left: auto;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
     background: rgb(2, 2, 2);
     color: #ffff;
   }
   .left {
     width: 80%;
     margin-right: auto;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
     background: rgb(223, 222, 222);
     color: #4b4b4b;
+  }
+}
+
+.form {
+  width: 100%;
+  background: rgb(188, 188, 195);
+  position: fixed;
+  bottom: -5%;
+  left: 50;
+  transform: translate(0, -50%);
+  height: 5rem;
+  display: flex;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  gap: 1rem;
+  &__text {
+    margin: auto;
+    flex: 1;
+    background: white;
+    border-radius: 2rem;
+    padding: 0.3rem 1rem;
+  }
+  &__btn {
+    align-self: center;
   }
 }

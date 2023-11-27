@@ -125,6 +125,9 @@ export class AuthService implements OnDestroy {
       tap(user => {
         if (!user) {
           this.user.next(user);
+          console.log("====================================");
+          console.log(user, "User");
+          console.log("====================================");
           this.autoLogout(user!.tokenDuration);
         }
       }),

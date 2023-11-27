@@ -16,7 +16,7 @@ exports.up = pgm => {
     
               content VARCHAR(255)  ,
               
-              fromUserId INTEGER,
+              from_user_id INTEGER,
   
               chat_id INTEGER NOT NULL REFERENCES chats(id) ON DELETE CASCADE
                         );

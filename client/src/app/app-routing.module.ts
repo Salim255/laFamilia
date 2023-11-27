@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import("./pages/tabs/tabs.module").then(m => m.TabsPageModule),
     canLoad: [AuthGuard],
   },
+  {
+    path: 'profiles',
+    loadChildren: () => import('./pages/profiles/profiles.module').then( m => m.ProfilesPageModule)
+  },
 ];
 
 @NgModule({
