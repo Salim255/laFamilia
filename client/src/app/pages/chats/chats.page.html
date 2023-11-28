@@ -6,7 +6,7 @@
 
 <ion-content [fullscreen]="true" class="no-scroll">
   <ion-list lines="none">
-    <ion-item *ngFor="let item of chats; let index = index" class="chat-item">
+    <div *ngFor="let item of chats; let index = index" class="chat-item">
       <ion-button class="chat-item__btn" fill="clear" (click)="openChat(item)">
         <ion-avatar slot="start" class="chat-item__btn--avatar">
           <img
@@ -16,17 +16,17 @@
         </ion-avatar>
         <ion-label class="chat-item__btn--label">
           <ion-text class="top-text">
-            {{item.type==="group" ? item.type: item.users[0].email}}</ion-text
+            {{item.type==="group" ? item.type: item.users[0].first_name}}</ion-text
           >
           <ion-text class="bottom-text">{{item.messages[item.messages.length-1].content}}</ion-text>
           <!--  -->
         </ion-label>
       </ion-button>
-    </ion-item>
+    </div>
   </ion-list>
 
   <section class="add-chat">
-    <ion-button size="small" (click)="addChat()"
+    <ion-button size="small" fill="clear" (click)="addChat()"
       ><ion-icon name="chatbox-ellipses-outline"></ion-icon
     ></ion-button>
   </section>

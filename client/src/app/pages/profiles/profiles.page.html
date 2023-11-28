@@ -12,7 +12,7 @@
 <ion-content [fullscreen]="true">
   <main>
     <ion-list lines="none">
-      <ion-item *ngFor="let item of profiles; let index = index" class="chat-item">
+      <div *ngFor="let item of profiles; let index = index" class="chat-item">
         <ion-button class="chat-item__btn" fill="clear" (click)="onCreateDualChat(item)">
           <ion-avatar slot="start" class="chat-item__btn--avatar">
             <img
@@ -26,7 +26,7 @@
             <!--  -->
           </ion-label>
         </ion-button>
-      </ion-item>
+      </div>
     </ion-list>
   </main>
 </ion-content>

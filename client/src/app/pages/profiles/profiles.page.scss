@@ -1,42 +1,38 @@
-.chat-item {
-  margin: 1.2rem 0;
-  &__btn {
-    width: 100%;
-    display: flex;
+ion-list {
+  margin-top: 2rem;
+  .chat-item {
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    --padding-top: 0 !important;
+    --padding-bottom: 0 !important;
 
-    &--avatar {
-      height: 4rem;
-      width: 4rem;
-    }
-    &--label {
-      margin-right: auto;
-      margin-left: 2%;
+    &__btn {
+      width: 100%;
       display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
 
-      text-align: left;
-      .top-text {
-        font-size: 24px;
-        font-weight: bold;
-        text-transform: capitalize;
+      --padding-start: 0 !important;
+      --padding-end: 0 !important;
+      --padding-top: 0 !important;
+      --padding-bottom: 0 !important;
+      padding: 0.2rem;
+      &--avatar {
+        height: 3rem;
+        width: 3rem;
       }
-      .bottom-text {
-        font-size: 16px;
-        font-weight: 500;
-        color: rgba($color: #000000, $alpha: 0.5);
+      &--label {
+        margin-right: auto;
+        margin-left: 2%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        text-align: left;
+        .top-text {
+          font-size: 1rem;
+          font-weight: bold;
+          text-transform: capitalize;
+        }
       }
     }
-  }
-}
-
-ion-content {
-  .add-chat {
-    height: 3rem;
-    width: 4rem;
-
-    position: fixed;
-    bottom: 1rem;
-    right: 0;
   }
 }

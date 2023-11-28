@@ -17,7 +17,7 @@ ion-content {
   height: 100vh;
   ion-list {
     .item {
-      margin: 3rem 0;
+      margin: 1rem 0;
       &__avatar {
         margin: 0.5rem 1rem;
         display: flex;
@@ -100,7 +100,7 @@ ion-content {
         }
       }
       ion-img {
-        height: 25rem;
+        height: 20rem;
         object-fit: cover;
       }
     }
