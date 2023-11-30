@@ -75,7 +75,7 @@ const connectToNats = async () => {
     process.on("SIGINT", () => NatsWrapper._client.close());
     process.on("SIGTERM", () => NatsWrapper._client.close());
     //Going to connect to db after connection to Nats
-    // Just a text
+
     await pool
       .connect({
         host: "main-db-srv",
