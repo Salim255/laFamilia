@@ -1,0 +1,39 @@
+name: deploy-main-db-service
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "main-service-db/**" #We tell that we want to run this only when there are changes in main-service directory
+  #This will run whenever oui push or merge into master brunch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      #check out all of our code inside of our repo
+      - uses: actions/checkout@v2
+      # To build the image
+      - run: cd main-service-db && docker build -t crawan/main-db .
+
+      # Login to dockerhub account
+
+      - run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      # Push built image to dockerhub
+      - run: docker push  crawan/main-db
+      #install doctl into our running github container
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # Get the cluster config and save it inside the container
+      # So this will give us a pre initialized copy of all the context information we need, should also make that the active context on doctl as well
+      #Get (or download) the cluster config file
+      - run: doctl kubernetes cluster kubeconfig save la-familia
+
+      #Update deployment
+      # We tell the deployment to update itself and use the latest image that  we just pushed to Docker hub
+      # The command that we going to use to restart a deployment is
+      - run: kubectl rollout restart deployment main-db-depl
