@@ -1,4 +1,5 @@
 export const environment = {
-  production: false,
-  apiURL: "https://lafamilia.dev/api/v1",
+  production: true,
+  // apiURL: "https://lafamilia.dev/api/v1",
+  apiURL: "https://www.sharing-prod.xyz/api/v1",
 };
