@@ -117,7 +117,7 @@ if (process.env.RUN_ON_K8s !== "true") {
       ////
       server = server.listen(port, () => {
         console.log("===================================");
-        console.log(`Server running on port ${port}`);
+        console.log(`Server running on port!!! ${port}`);
         console.log("====================================");
       });
     })
