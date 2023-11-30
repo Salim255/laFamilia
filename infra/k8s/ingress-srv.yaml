@@ -47,5 +47,7 @@ spec:
               service:
                 name: client-srv
                 #The port of posts service
+
                 port:
                   number: 80
+# Just  a text to trigger infra

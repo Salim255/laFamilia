@@ -1,0 +1,27 @@
+name: deploy-manifests
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "infra/**" #We tell that we want to run this only when there are changes in main-service directory
+  #This will run whenever oui push or merge into master brunch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      #check out all of our code inside of our repo
+      - uses: actions/checkout@v2
+
+      #install doctl into our running github container
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # Get the cluster config and save it inside the container
+      # So this will give us a pre initialized copy of all the context information we need, should also make that the active context on doctl as well
+      #Get (or download) the cluster config file
+      - run: doctl kubernetes cluster kubeconfig save la-familia
+
+      #Apply infra  deployments files
+
+      - run: kubectl apply -f infra/k8s

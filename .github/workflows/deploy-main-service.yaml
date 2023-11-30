@@ -24,17 +24,16 @@ jobs:
 
       # Push built image to dockerhub
       - run: docker push  crawan/main-app
-# name: install doctl into our running github container
-#- uses: digitalocean/action-doctl@v2
-# with:
-#   token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-# Get the cluster config and save it inside the container
-# So this will give us a pre initialized copy of all the context information we need, should also make that the active context on doctl as well
-#name: Get the cluster config file
-#- run: doctl kubernetes cluster kubeconfig save lafamilia
+      #install doctl into our running github container
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # Get the cluster config and save it inside the container
+      # So this will give us a pre initialized copy of all the context information we need, should also make that the active context on doctl as well
+      #Get (or download) the cluster config file
+      - run: doctl kubernetes cluster kubeconfig save la-familia
 
-# name: update deployment
-# We tell the deployment to update itself and use the latest image that  we just pushed to Docker hub
-
-# The command that we going to use to restart a deployment is
-# - run: kubectl rollout restart deployment server-depl
+      #Update deployment
+      # We tell the deployment to update itself and use the latest image that  we just pushed to Docker hub
+      # The command that we going to use to restart a deployment is
+      - run: kubectl rollout restart deployment main-depl
