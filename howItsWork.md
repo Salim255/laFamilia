@@ -2,7 +2,7 @@
 
 - 1- run->: code /etc/hosts
 
-- 2- run->: Kubectl create secret generic jwt-secret –from-literal=jwt=asdf
+- 2- run->: Kubectl create secret generic jwt-secret –-from-literal=jwt=asdf
 
 - 3- add to file opened in step 1: your PC ID + lafamilia.dev
 

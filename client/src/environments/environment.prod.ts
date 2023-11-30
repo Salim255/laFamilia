@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiURL: "http://localhost:4000/api/v1/users",
+  apiURL: "https://lafamilia.dev/api/v1",
 };

@@ -28,10 +28,11 @@ module.exports = () => {
   const app = express();
 
   // 1) Global middleware
-  //Set security HTTP headers,The best use of helmet is to use t early in middleware stack
+  //Set security HTTP headers,The best use of helmet is to use  early in middleware stack
   app.use(helmet());
 
   //Development logging, we use morgan to log the http method, the url, status code, the time it took to response , the response in bit
+
   if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
   }

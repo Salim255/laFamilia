@@ -64,13 +64,11 @@ const autoMigration = async () => {
       }, */
     });
   } catch (error) {
-    console.log("====================================");
     console.log(error, "Hello connection error🧶🧶🧶");
-    console.log("====================================");
   }
 };
 
-autoMigration();
+//autoMigration();
 
 if (!process.env.JWT_KEY) {
   throw new Error("JWT_KEY must be defined");
@@ -90,7 +88,7 @@ const connectToNats = async () => {
     new UserImageCreatedListener(NatsWrapper._client).listen();
 
     //Connect to DB
-    pool
+    await pool
       .connect({
         host: "user-photos-db-srv",
         port: dbConfig.dbPort,
@@ -100,7 +98,6 @@ const connectToNats = async () => {
       })
       .then(() => {
         server = app().listen(6001, () => {
-          console.log("=================================");
           console.log(`Server running on port  6001 `);
         });
       })

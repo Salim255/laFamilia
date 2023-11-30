@@ -11,7 +11,6 @@ class Publisher {
     return new Promise((resolve, reject) => {
       this.client?.publish(this.subject, JSON.stringify(data), err => {
         if (err) {
-          console.log("====================================");
           console.log("From publish error🧶");
 
           return reject(err);

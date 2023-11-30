@@ -47,7 +47,7 @@ module.exports = () => {
     app.use(morgan("dev"));
   }
 
-  //Limit request from same IP, This will allow 100 requests from the same IP in one hour
+  //Limit request from same IP This will allow 100 requests from the same IP in one hour
   /* const limiter = rateLimit({
     max: 100, //Max 100 request par hour
     windowMs: 60 * 60 * 1000, //Time in millisecond
@@ -63,6 +63,7 @@ module.exports = () => {
   //This will clean any user input from malicious HTML code with some JavaScript code attached to it .
   // So xss module will convert any HTML symbols into HTML entity
   //Like  "<div id=`bad`>Bad</div>" =>  "&lt;div id=`bad`>Bad&lt;/div>"
+
   app.use(xss());
 
   //Prevent params pollution, by clearing up the query string

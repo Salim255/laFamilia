@@ -29,6 +29,7 @@ export class AuthService implements OnDestroy {
 
   authenticate(mode: boolean, data: authData) {
     let dataToSend = mode ? { email: data.email, password: data.password } : data;
+    console.log(this.ENV.apiURL);
 
     return this.http
       .post<any>(`${this.ENV.apiURL}/users/${mode ? "login" : "signup"}`, dataToSend)
@@ -128,7 +129,8 @@ export class AuthService implements OnDestroy {
           console.log("====================================");
           console.log(user, "User");
           console.log("====================================");
-          this.autoLogout(user!.tokenDuration);
+          this.logout();
+          //this.autoLogout(user!.tokenDuration);
         }
       }),
       map(user => {

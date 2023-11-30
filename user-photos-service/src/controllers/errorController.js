@@ -3,7 +3,7 @@ const AppError = require("../utils/appError");
 require("dotenv").config();
 
 const handleInvalIdIdDB = err => {
-  //"Key (post_id)=(2) is not present in table \"posts\".",
+  //"Key (post_id)=(2) is not present
   let value = err.detail.match(/\(([^()]*)\)/g);
   value = value.map(x => x.replace(/[()]/g, ""));
 

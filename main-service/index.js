@@ -58,7 +58,7 @@ const autoMigration = async () => {
 };
 
 if (process.env.RUN_ON_K8s === "true") {
-  autoMigration();
+  //autoMigration()
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be defined");
   }
@@ -74,8 +74,8 @@ const connectToNats = async () => {
 
     process.on("SIGINT", () => NatsWrapper._client.close());
     process.on("SIGTERM", () => NatsWrapper._client.close());
-
-    pool
+    //Going to connect to db
+    await pool
       .connect({
         host: "main-db-srv",
         port: dbConfig.dbPort,
@@ -85,9 +85,7 @@ const connectToNats = async () => {
       })
       .then(() => {
         server = app().listen(3000, () => {
-          console.log("====================================");
           console.log(`Server running on port 3000!`);
-          console.log("====================================");
         });
       })
       .catch(err => {
