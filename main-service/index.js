@@ -57,11 +57,13 @@ const autoMigration = async () => {
   }
 };
 
-if (process.env.RUN_ON_K8s === "true") {
+if (!process.env.RUN_ON) {
   //autoMigration()
-  if (!process.env.JWT_KEY) {
-    throw new Error("JWT_KEY must be defined");
-  }
+  throw new Error("RUN_KEY must be defined");
+}
+
+if (!process.env.JWT_KEY) {
+  throw new Error("JWT_KEY must be defined");
 }
 
 const connectToNats = async () => {
@@ -100,9 +102,9 @@ const connectToNats = async () => {
   }
 };
 
-if (process.env.RUN_ON_K8s === "true") connectToNats();
+if (process.env.RUN_ON) connectToNats();
 
-if (process.env.RUN_ON_K8s !== "true") {
+if (!process.env.RUN_ON_K8s) {
   console.log("====================================");
   console.log("Not K8s , k!", process.env.RUN_ON_K8s);
   console.log("====================================");
