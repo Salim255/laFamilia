@@ -114,7 +114,7 @@ connectToNats();
 process.on("unhandledRejection", err => {
   console.log(err.name, err.message);
 
-  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
+  console.log("UNHANDLED REJECTION! 💥 Shutting down.....");
   //Now we exit the application after unhandledRejections nicely be close the server then exit the application
   server.close(() => {
     //By running server close, we the server a time to finish all request that still pending or being handled at the time.
