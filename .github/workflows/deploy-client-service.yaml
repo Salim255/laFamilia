@@ -13,7 +13,7 @@ jobs:
       #check out all of our code inside of our repo
       - uses: actions/checkout@v2
       # To build the image
-      - run: client && docker build -t crawan/client .
+      - run: cd client && docker build -t crawan/client .
 
       # Login to dockerhub account
 
