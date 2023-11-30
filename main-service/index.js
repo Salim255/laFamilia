@@ -65,6 +65,9 @@ if (process.env.RUN_ON_K8s === "true") {
 }
 
 const connectToNats = async () => {
+  console.log("====================================");
+  console.log("Try connect to Nats");
+  console.log("====================================");
   try {
     await NatsWrapper.connect("users", "hddhff", "http://nats-srv:4222");
     NatsWrapper._client.on("close", () => {
