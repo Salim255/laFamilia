@@ -104,7 +104,7 @@ const connectToNats = async () => {
 
 if (process.env.RUN_ON) connectToNats();
 
-if (!process.env.RUN_ON_K8s) {
+if (!process.env.RUN_ON) {
   console.log("====================================");
   console.log("Not K8s , k!", process.env.RUN_ON_K8s);
   console.log("====================================");
