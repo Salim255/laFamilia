@@ -23,7 +23,7 @@ jobs:
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       # Push built image to dockerhub
-      - run: docker push  crawan/main-app .
+      - run: docker push  crawan/main-app
 # name: install doctl into our running github container
 #- uses: digitalocean/action-doctl@v2
 # with:
