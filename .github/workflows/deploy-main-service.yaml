@@ -13,7 +13,7 @@ jobs:
       #check out all of our code inside of our repo
       - uses: actions/checkout@v2
       # To build the image
-      - run: cd main-service && docker -t build crawan/main-app .
+      - run: cd main-service && docker build -t crawan/main-app .
 
       # Login to dockerhub account
 
