@@ -9,3 +9,6 @@ RUN npm install
 COPY . .
 
 CMD [ "npm", "start" ]
+
+
+#Trigger main service workflow
