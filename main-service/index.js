@@ -103,6 +103,9 @@ const connectToNats = async () => {
 if (process.env.RUN_ON_K8s === "true") connectToNats();
 
 if (process.env.RUN_ON_K8s !== "true") {
+  console.log("====================================");
+  console.log("Not K8s , k!", process.env.RUN_ON_K8s);
+  console.log("====================================");
   pool
     .connect({
       host: dbConfig.dbHost,
