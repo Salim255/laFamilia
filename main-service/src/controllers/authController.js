@@ -34,6 +34,9 @@ const correctPassword = async (candidatePassword, userPassword) => {
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
+  console.log("====================================");
+  console.log(email, password);
+  console.log("====================================");
   if (!validator.isEmail(email) || isEmpty(password)) {
     return next(new AppError("Please provide a valid email and password", 400));
   }
@@ -53,27 +56,32 @@ exports.login = catchAsync(async (req, res, next) => {
 
   //If everything ok, send token to client
   const token = createToken(user[0].id);
-
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+  let data = {
+    token,
+    id: user[0].id,
+    expiresIn: expiration.exp,
+  };
   res.status(200).json({
     message: "success",
-    token,
+    data,
   });
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { email, password, first_name, last_name } = req.body;
 
-  if (!validator.isEmail(email) || isEmpty(password) || isEmpty(first_name) || isEmpty(last_name)) {
+  if (!validator.isEmail(email) || isEmpty(password)) {
     return next(new AppError("Create user information error", 401));
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
   const { rows } = await pool.query(
-    `INSERT INTO users (first_name, last_name, email, password)
+    `INSERT INTO users ( email, password,first_name, last_name)
          VALUES 
             ($1, $2, $3, $4) RETURNING id, created_at,updated_at, first_name,photo,email ;`,
-    [first_name, last_name, email, hashedPassword],
+    [email, hashedPassword, first_name, last_name],
   );
 
   //Create token
@@ -94,12 +102,15 @@ exports.signup = catchAsync(async (req, res, next) => {
     await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
   }
 
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+  let data = {
+    token,
+    id: rows[0].id,
+    expiresIn: expiration.exp,
+  };
   res.status(200).json({
     message: "success",
-    data: {
-      token: token,
-      user: rows[0],
-    },
+    data,
   });
 });
 

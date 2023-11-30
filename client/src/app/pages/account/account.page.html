@@ -1,0 +1,92 @@
+<ion-header collapse="condense">
+  <ion-toolbar>
+    <ion-title size="large">account</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <main class="account-container">
+    <section class="account-container__details">
+      <div class="account-container__details--avatar">
+        <ion-avatar slot="start">
+          <img
+            alt="Silhouette of a person's head"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg"
+          />
+        </ion-avatar>
+        <ion-label> Salim Hassan</ion-label>
+      </div>
+
+      <div class="account-container__details--edit">
+        <ion-button fill="clear" size="small"
+          ><ion-icon name="create-outline"></ion-icon
+        ></ion-button>
+      </div>
+    </section>
+
+    <section class="account-container__info">
+      <div class="account-container__info--header">
+        <ion-text>details</ion-text>
+      </div>
+      <div class="account-container__info--location">
+        <ion-icon name="location-outline"></ion-icon>
+        <div>
+          <ion-text>From <span>Lille, France</span></ion-text>
+        </div>
+      </div>
+    </section>
+    <section class="account-container__posts">
+      <ion-list>
+        <div *ngFor="let item of [1,2,3,4,5,6,7,8]" class="item">
+          <div class="item__avatar">
+            <ion-avatar slot="start">
+              <img
+                alt="Silhouette of a person's head"
+                src="https://ionicframework.com/docs/img/demos/avatar.svg"
+              />
+            </ion-avatar>
+            <ion-label class="chat-item__btn--label"> Salim Hassan</ion-label>
+          </div>
+          <ion-img
+            src="https://images.unsplash.com/photo-1701084412727-1f3e01088a5f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8"
+            alt="post-image"
+          >
+          </ion-img>
+          <section class="item__reactions">
+            <ion-icon name="heart-outline" class="item__reactions--like"></ion-icon>
+
+            <ion-icon name="chatbubbles-outline" class="item__reactions--comment"></ion-icon>
+          </section>
+          <section class="item__details-section">
+            <div class="item__details-section--reacted-users-list">
+              <section class="users-container">
+                <div class="users-container__imgs">
+                  <img
+                    src="https://images.unsplash.com/photo-1614429620642-8394077f0723?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cG9lcGxlfGVufDB8fDB8fHww"
+                    alt="user"
+                    *ngFor="let item of [1, 2, 3]"
+                  />
+                </div>
+
+                <div class="users-container__text">
+                  <ion-text>Liked by Salim and 7 others</ion-text>
+                </div>
+              </section>
+            </div>
+            <section class="item__details-section--post-description">
+              <div class="content">
+                <ion-text>
+                  <span class="content__span">Salim Hassan</span> Contrary to popular belief, Lorem
+                  Ipsum is not simply random text. It has roots in a piece of classical Latin
+                </ion-text>
+              </div>
+            </section>
+            <section class="item__details-section--post-comments">
+              <ion-text> View 3 comments </ion-text>
+            </section>
+          </section>
+        </div>
+      </ion-list>
+    </section>
+  </main>
+</ion-content>

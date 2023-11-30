@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>signup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list class="signup">
+    <ion-item class="signup__item">
+      <ion-input labelPlacement="floating" value="First name" class="signup__item--input">
+        <div slot="label">First Name <ion-text color="danger">(Required)</ion-text></div>
+      </ion-input>
+    </ion-item>
+    <ion-item class="signup__item">
+      <ion-input labelPlacement="floating" value="Last name" class="signup__item--input">
+        <div slot="label">Last Name <ion-text color="danger">(Required)</ion-text></div>
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="signup__item">
+      <ion-input labelPlacement="floating" value="Email" class="signup__item--input">
+        <div slot="label">Email <ion-text color="danger">(Required)</ion-text></div>
+      </ion-input>
+    </ion-item>
+    <ion-item class="signup__item">
+      <ion-input labelPlacement="floating" value="Email confirm" class="signup__item--input">
+        <div slot="label">Email Confirm<ion-text color="danger">(Required)</ion-text></div>
+      </ion-input>
+    </ion-item>
+    <ion-item class="signup__item">
+      <ion-input labelPlacement="floating" value="Password" class="signup__item--input">
+        <div slot="label">Password <ion-text color="danger">(Required)</ion-text></div>
+      </ion-input>
+    </ion-item>
+    <ion-item class="signup__item">
+      <ion-input labelPlacement="floating" value="Password Confirm" class="signup__item--input">
+        <div slot="label">Password Confirm <ion-text color="danger">(Required)</ion-text></div>
+      </ion-input>
+    </ion-item>
+  </ion-list>
+
+  <div class="signup__btn">
+    <ion-button (click)="switch()" color="secondary" class="signup__btn--body">
+      Switch signup to login From
+    </ion-button>
+  </div>
+</ion-content>

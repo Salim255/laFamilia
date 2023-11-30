@@ -15,6 +15,7 @@ router.post(
   authController.protect,
   chatController.createChat,
   chatUserController.createChatUser,
+  messageController.createMessage,
 );
 
 //Update chat
@@ -26,6 +27,7 @@ router.get("/", authController.protect, chatController.getChatsByUser);
 //Get messages by chat id
 router.get("/:chatId/messages", authController.protect, messageController.getMessages);
 
+router.get("/:chatId", authController.protect, chatController.getChatByChatId);
 //Delete chat
 router.delete("/:chatId", authController.protect, chatController.deleteChat);
 

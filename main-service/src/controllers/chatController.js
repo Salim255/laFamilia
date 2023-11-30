@@ -7,12 +7,12 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 exports.createChat = catchAsync(async (req, res, next) => {
-  const { chatType, usersId } = req.body;
+  const { chatType, usersId, chat_name } = req.body;
 
   const { rows: users } = await pool.query(`SELECT * FROM users`);
 
   //1)Check if we have at least two users before creating a chat
-  if (isEmpty(usersId) || usersId.length < 2) {
+  if (isEmpty(usersId) || usersId.length < 1) {
     return next(new AppError("Chat needs to have at least two users", 401));
   }
 
@@ -31,39 +31,64 @@ exports.createChat = catchAsync(async (req, res, next) => {
 
   //4-1)Create group chat
   if (!isEmpty(chatType)) {
-    const { rows } = await pool.query(`INSERT INTO chats (type) VALUES($1) RETURNING id, type;`, [
-      chatType,
-    ]);
+    const { rows } = await pool.query(
+      `INSERT INTO chats, chat_name=$2 (type,chat_name) VALUES($1) RETURNING id, type;`,
+      [chatType, chat_name],
+    );
 
     createdChat = rows[0];
   } else if (isEmpty(chatType)) {
     //If chat of type dual, check if the two users already in chat or not
+    console.log("Hollo 💥");
+    let result;
 
-    const { rows: partnerPared } = await pool.query(
-      `SELECT chats.* ,
-        
-         JSON_AGG(chatUsers.*) AS chatUsers
-  
-         FROM chats
-  
-         JOIN chatUsers On chats.id=chatUsers.chat_id
-  
-         JOIN users ON users.id=$1
-  
-         WHERE chats.type='dual' AND chatUsers.user_id=$2
-  
-         GROUP BY chats.id 
-        
+    result = await pool.query(
+      `SELECT chat_id
+        FROM chatUsers
+         WHERE user_id IN ($1, $2)
+          GROUP BY chat_id
+          HAVING COUNT(DISTINCT user_id) = 2
      `,
       [req.user.id, usersId[1]],
     );
 
+    console.log(result, "In try");
+
+    console.log(result, "De la 🌈🌈🌈");
+
+    /*  const { rows: partnerPared } = await pool.query(
+      `SELECT chat_id
+
+      FROM  chatUsers 
+
+      WHERE user_id=$1
+
+      INTERSECT
+
+      SELECT chat_id
+
+      FROM  chatUsers 
+
+      WHERE user_id=$2
+   
+     `,
+      [req.user.id],
+      [usersId[1]],
+    ); */
+
+    /*   SELECT COUNT(*)
+FROM users
+WHERE (username = 'Alice' OR username = 'Bob') -- Replace with actual usernames
+  AND score IN (SELECT score FROM users WHERE username = 'Alice' OR username = 'Bob'); */
+
+    //console.log(partnerPared, "Hello", req.user.id, usersId[1]);
     //If they are in chat, then return
-    if (!isEmpty(partnerPared)) {
+    console.log(result, "Result");
+    if (result) {
       return next(new AppError("You are already in chat with this user ", 401));
     }
 
-    const { rows } = await pool.query(`INSERT INTO chats VALUES(DEFAULT) RETURNING id, type;`);
+    const { rows } = await pool.query(`INSERT INTO chats VALUES(DEFAULT) RETURNING id, type`);
     createdChat = rows[0];
   }
 
@@ -76,28 +101,74 @@ exports.createChat = catchAsync(async (req, res, next) => {
 
 exports.getChatsByUser = catchAsync(async (req, res, next) => {
   const { rows } = await pool.query(
-    `SELECT   chats.*,
+    `SELECT   chats.* , 
 
-      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE chatUsers.user_id=$1)) AS chatUser,
+      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE   chatUsers.user_id=$1 )) AS chatUser,
 
       COALESCE(JSON_AGG( users.* ) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
 
-      JSON_AGG(messages.*)   AS messages
+      JSON_AGG(DISTINCT messages.*) AS messages
 
       FROM chats
+      
+     
 
-      JOIN chatUsers ON chats.id = chatUsers.chat_id 
+      JOIN chatUsers ON chats.id = chatUsers.chat_id   
 
       JOIN users ON chatUsers.user_id = users.id
 
       JOIN messages ON messages.chat_id = chats.id
-
+      
+   
+       
       GROUP BY chats.id
 
       ORDER BY chats.id ;
+
+    
       
        `,
     [req.user.id],
+  );
+
+  let data = rows.filter(chat => chat.chatuser != null);
+  res.status(200).json({
+    status: "success",
+    data: data,
+  });
+});
+
+exports.getChatByChatId = catchAsync(async (req, res, next) => {
+  const { chatId } = req.params;
+  const { rows } = await pool.query(
+    `SELECT   chats.* , 
+
+      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE   chatUsers.user_id=$1 )) AS chatUser,
+
+      COALESCE(JSON_AGG( users.* ) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
+
+      JSON_AGG(DISTINCT messages.*) AS messages
+
+      FROM chats
+      
+     
+
+      JOIN chatUsers ON chats.id = chatUsers.chat_id   
+
+      JOIN users ON chatUsers.user_id = users.id
+
+      JOIN messages ON messages.chat_id = chats.id
+      
+      WHERE chats.id = $2
+       
+      GROUP BY chats.id
+
+      ORDER BY chats.id ;
+
+    
+      
+       `,
+    [req.user.id, chatId],
   );
 
   res.status(200).json({
@@ -105,7 +176,6 @@ exports.getChatsByUser = catchAsync(async (req, res, next) => {
     data: rows,
   });
 });
-
 exports.deleteChat = catchAsync(async (req, res, next) => {
   const { chatId } = req.params;
 

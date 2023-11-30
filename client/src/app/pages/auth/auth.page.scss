@@ -1,0 +1,23 @@
+ion-content {
+  //--ion-background-color: var(--ion-color-primary);
+  ion-title {
+    //--ion-background-color: var(--ion-color-primary);
+    color: var(--ion-color-primary);
+  }
+
+  .auth {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    &__form {
+      display: flex;
+      width: 100%;
+      &--content {
+        width: 90%;
+        margin: auto;
+      }
+    }
+  }
+}

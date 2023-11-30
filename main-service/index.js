@@ -20,7 +20,12 @@ const pool = require("./src/config/pool.js");
 const { default: migrate } = require("node-pg-migrate");
 
 const NatsWrapper = require("./nats-wrapper.js");
+
 const port = appConfig.appPort || 3000;
+
+//////
+
+////
 
 let server;
 const autoMigration = async () => {
@@ -53,7 +58,7 @@ const autoMigration = async () => {
 };
 
 if (process.env.RUN_ON_K8s === "true") {
-  autoMigration();
+  //autoMigration()
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be defined");
   }
@@ -69,8 +74,8 @@ const connectToNats = async () => {
 
     process.on("SIGINT", () => NatsWrapper._client.close());
     process.on("SIGTERM", () => NatsWrapper._client.close());
-
-    pool
+    //Going to connect to db
+    await pool
       .connect({
         host: "main-db-srv",
         port: dbConfig.dbPort,
@@ -80,9 +85,7 @@ const connectToNats = async () => {
       })
       .then(() => {
         server = app().listen(3000, () => {
-          console.log("====================================");
           console.log(`Server running on port 3000!`);
-          console.log("====================================");
         });
       })
       .catch(err => {
@@ -105,7 +108,13 @@ if (process.env.RUN_ON_K8s !== "true") {
       password: "",
     })
     .then(() => {
-      server = app().listen(port, () => {
+      //////
+      const http = require("http");
+      server = http.createServer(app());
+      const SocketServer = require("./src/socket");
+      SocketServer(server);
+      ////
+      server = server.listen(port, () => {
         console.log("===================================");
         console.log(`Server running on port ${port}`);
         console.log("====================================");

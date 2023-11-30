@@ -1,0 +1,38 @@
+ion-list {
+  margin-top: 2rem;
+  .chat-item {
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    --padding-top: 0 !important;
+    --padding-bottom: 0 !important;
+
+    &__btn {
+      width: 100%;
+      display: flex;
+
+      --padding-start: 0 !important;
+      --padding-end: 0 !important;
+      --padding-top: 0 !important;
+      --padding-bottom: 0 !important;
+      padding: 0.2rem;
+      &--avatar {
+        height: 3rem;
+        width: 3rem;
+      }
+      &--label {
+        margin-right: auto;
+        margin-left: 2%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        text-align: left;
+        .top-text {
+          font-size: 1rem;
+          font-weight: bold;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}

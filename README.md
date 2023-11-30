@@ -96,3 +96,14 @@ in order to check if our
 - NODE_ENV='development' nodemon index.js
 
 - "test": "jest --watchAll --no-cache ",
+
+- npm install socket.io
+
+## Client
+
+- npm install @capacitor/preferences
+- npm install @capacitor/ios
+- npx cap add ios
+- npx cap open ios
+- npm install socket.io-client
+- npm install ngx-auto-scroll

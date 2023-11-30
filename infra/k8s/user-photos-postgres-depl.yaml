@@ -14,10 +14,14 @@ spec:
     spec:
       containers:
         - name: user-photos-db
-          image: postgres
+          image: crawan/posts-db
+          imagePullPolicy: Never
           env:
-            - name: POSTGRES_PASSWORD
-              value: postgres
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 
 ---
 apiVersion: v1

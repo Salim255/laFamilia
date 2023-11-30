@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 
 exports.createChatUser = catchAsync(async (req, res, next) => {
   const { createdChatId, usersIdList } = req.body;
-
+  console.log(createdChatId, usersIdList);
   for (let i = 0; i < usersIdList.length; i++) {
     const { rows } = await pool.query(
       `INSERT INTO chatUsers (user_id, chat_id) VALUES($1, $2) RETURNING *;`,
@@ -13,17 +13,14 @@ exports.createChatUser = catchAsync(async (req, res, next) => {
   }
 
   const { rows } = await pool.query(
-    `SELECT chatUsers.id AS  chatUser_id, user_id, chat_id,first_name,last_name,photo,type
+    `SELECT chatUsers.id AS  chatUser_id , user_id, chat_id,type
     FROM chatUsers
     JOIN users ON users.id = chatUsers.user_id 
     JOIN chats On chats.id = $1 WHERE chat_id=$1`,
     [createdChatId],
   );
-
-  res.status(200).json({
-    status: "success",
-    data: rows[0],
-  });
+  req.chat_id = createdChatId;
+  next();
 });
 
 exports.getChatUser = catchAsync(async (req, res, next) => {
