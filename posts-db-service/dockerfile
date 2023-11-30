@@ -12,3 +12,6 @@ COPY posts.sql /docker-entrypoint-initdb.d/
 
 # Expose PostgreSQL default port
 EXPOSE 5432
+
+
+#Just to trigger workflow
