@@ -77,7 +77,6 @@ module.exports = () => {
 
   app.use(hpp());
 
-  //
   app.use("/api/v1/users", userRouter);
 
   app.use("/api/v1/posts", postRouter);
