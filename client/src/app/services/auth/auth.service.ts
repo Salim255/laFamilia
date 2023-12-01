@@ -22,7 +22,7 @@ interface authData {
   providedIn: "root",
 })
 export class AuthService implements OnDestroy {
-  private ENV = devEnvironment.production ? prodEnvironment : devEnvironment;
+  private ENV = prodEnvironment.production ? prodEnvironment : devEnvironment;
   private user = new BehaviorSubject<User | null>(null);
   activeLogoutTimer: any;
   constructor(private http: HttpClient) {}
