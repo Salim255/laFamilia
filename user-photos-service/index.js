@@ -64,7 +64,7 @@ const autoMigration = async () => {
       }, */
     });
   } catch (error) {
-    console.log(error, "Hello connection error🧶🧶🧶");
+    console.log(error, "Hello connection error🧶");
   }
 };
 
