@@ -98,7 +98,7 @@ const connectToNats = async () => {
       })
       .then(() => {
         server = app().listen(6001, () => {
-          console.log(`Server running on port  6001 `);
+          console.log(`Server running on port  6001 !!!! `);
         });
       })
       .catch(err => {
