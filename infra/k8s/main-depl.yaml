@@ -16,7 +16,6 @@ spec:
         - name: main-app
           image: crawan/main-app
           ##imagePullPolicy: Never
-
           env:
             - name: JWT_KEY
               valueFrom:
