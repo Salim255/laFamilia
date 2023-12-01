@@ -91,7 +91,7 @@ const connectToNats = async () => {
     await pool
       .connect({
         host: "user-photos-db-srv",
-        port: dbConfig.dbPort,
+        port: 5432,
         database: "postgres",
         user: "postgres",
         password: "postgres",
