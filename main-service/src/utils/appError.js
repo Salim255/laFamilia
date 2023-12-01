@@ -15,4 +15,5 @@ class AppError extends Error {
   }
 }
 
+// Just try to trigger workflow
 module.exports = AppError;
