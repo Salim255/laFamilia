@@ -27,7 +27,7 @@ spec:
                 secretKeyRef:
                   name: run-on
                   key: RUN_KEY
-#Just to trigger
+
 ---
 apiVersion: v1
 kind: Service
