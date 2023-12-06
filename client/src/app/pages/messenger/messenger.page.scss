@@ -3,26 +3,26 @@ ion-header {
     ion-buttons {
       height: 6rem;
     }
-    ion-title {
-      height: 6rem;
-      .content {
-        display: flex;
 
-        &__avatar {
-          ion-avatar {
-            height: 4rem;
-            width: 4rem;
-          }
+    .content {
+      display: flex;
+
+      gap: 0.5rem;
+      &__avatar {
+        ion-avatar {
+          height: 3rem;
+          width: 3rem;
         }
-        &__label {
-          display: flex;
-          ion-text {
-            margin: auto;
-            font-size: 20px;
-            font-weight: bold;
-            text-transform: capitalize;
-            margin-left: 20%;
-          }
+      }
+      &__label {
+        align-self: center;
+        display: flex;
+        ion-text {
+          margin: auto;
+          font-size: 20px;
+          font-weight: bold;
+          text-transform: capitalize;
+          margin-left: 20%;
         }
       }
     }
@@ -32,7 +32,7 @@ ion-header {
 ion-list {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+
   padding: 1rem;
 
   ion-text {

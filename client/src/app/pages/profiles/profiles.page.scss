@@ -1,3 +1,46 @@
+ion-header {
+  ion-toolbar {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0.2rem;
+    .search-section {
+      display: flex;
+
+      &__custom-searchbar {
+        flex: 1;
+        position: relative;
+        button {
+          position: absolute;
+          top: 50%;
+          right: 3%;
+          transform: translate(0%, -50%);
+          background: var(--ion-color-secondary-shade);
+          ion-icon {
+            font-size: 2rem;
+            color: var(--ion-color-medium-shade);
+            transition: all 0.2s ease;
+            &:active {
+              transform: scale(1.1);
+            }
+          }
+        }
+        input {
+          border: none;
+          background: var(--ion-color-secondary-shade);
+          padding: 0.2rem 1rem;
+          border-radius: 2rem;
+          height: 3rem;
+          width: 100%;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+}
+
 ion-list {
   margin-top: 2rem;
   .chat-item {

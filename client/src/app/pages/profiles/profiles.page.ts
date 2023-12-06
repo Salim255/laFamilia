@@ -15,6 +15,8 @@ interface Profile {
 })
 export class ProfilesPage implements OnInit {
   profiles: any = null;
+  searchTerm: string = "";
+  showClearBtn: boolean = false;
   constructor(
     private profileService: ProfilesService,
     private router: Router,
@@ -48,5 +50,20 @@ export class ProfilesPage implements OnInit {
     };
     this.chatService.currentChat = fakeChat;
     this.router.navigateByUrl("/tabs/messenger", { replaceUrl: true });
+  }
+
+  clearSearch() {
+    this.searchTerm = "";
+    this.showClearBtn = false;
+  }
+
+  onInputChange(event: any): void {
+    // Access the changed value using event.target.value
+    this.searchTerm = event.target.value;
+    if (this.searchTerm.length > 0) {
+      this.showClearBtn = true;
+    } else {
+      this.showClearBtn = false;
+    }
   }
 }
