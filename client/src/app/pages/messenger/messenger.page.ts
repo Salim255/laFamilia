@@ -3,6 +3,7 @@ import { ChatsService } from "src/app/services/chats/chats.service";
 import { NgForm } from "@angular/forms";
 import { Observable } from "rxjs";
 import io from "socket.io-client";
+import { AuthService } from "src/app/services/auth/auth.service";
 @Component({
   selector: "app-messenger",
   templateUrl: "./messenger.page.html",
@@ -13,7 +14,7 @@ export class MessengerPage implements OnInit, AfterViewInit {
   isLoading: boolean = false;
   message: string = "";
   socket: any;
-  constructor(private chatService: ChatsService) {
+  constructor(private chatService: ChatsService, private authService: AuthService) {
     this.socket = io("http://localhost:4000");
   }
 
@@ -33,8 +34,25 @@ export class MessengerPage implements OnInit, AfterViewInit {
     }
 
     if (this.chat.fakeChat) {
+      console.log(this.chat, "Hello this chat ");
+
+      //
+      let loggedUserIdObs = new Observable();
+      let localUserId;
+      loggedUserIdObs = this.authService.userId;
+      loggedUserIdObs.subscribe(data => {
+        console.log(data, "logged user Data id ");
+        localUserId = data;
+      });
+
+      ///
       let createChatObs = new Observable();
-      createChatObs = this.chatService.createChat();
+
+      let chatInfo = { usersId: [localUserId, this.chat.chatUser[0].id], content: this.message };
+      console.log("====================================");
+      console.log(chatInfo, "Data to send");
+      console.log("====================================");
+      createChatObs = this.chatService.createDualChat(chatInfo);
 
       createChatObs.subscribe({
         error: err => {
@@ -50,10 +68,10 @@ export class MessengerPage implements OnInit, AfterViewInit {
           console.log("====================================");
           console.log(res, res.data.chat_id);
           console.log("====================================");
-          let chatId = res.data.chat_id;
-          let sendMessageObs = new Observable();
-          sendMessageObs = this.chatService.sendMessage(this.message, chatId);
-          sendMessageObs.subscribe({
+          // let chatId = res.data.chat_id;
+          //let sendMessageObs = new Observable();
+          // sendMessageObs = this.chatService.sendMessage(this.message, chatId);
+          /*   sendMessageObs.subscribe({
             error: err => {
               console.log(err);
             },
@@ -63,13 +81,15 @@ export class MessengerPage implements OnInit, AfterViewInit {
               this.chat = this.chatService.getCurrentChat;
               this.message = "";
             },
-          });
+          }); */
         },
       });
     }
-    let sebndObs = new Observable();
-    sebndObs = this.chatService.sendMessage(this.message, this.chat.id);
-    sebndObs.subscribe({
+
+    //////
+    /*   let sendObs = new Observable();
+    sendObs = this.chatService.sendMessage(this.message, this.chat.id);
+    sendObs.subscribe({
       error: err => {
         console.log(err);
       },
@@ -79,7 +99,7 @@ export class MessengerPage implements OnInit, AfterViewInit {
         this.chat = this.chatService.getCurrentChat;
         this.message = "";
       },
-    });
+    }); */
   }
   ionViewWillEnter() {
     this.isLoading = true;

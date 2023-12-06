@@ -42,7 +42,7 @@ export class ChatsService {
         return parseData._token;
       }),
       switchMap(token => {
-        return this.http.get<any>(`${this.ENV.apiURL}/chats`, {
+        return this.http.get<any>(`${this.ENV.apiURLDev}/chats`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }),
@@ -80,7 +80,7 @@ export class ChatsService {
       }),
       switchMap(token => {
         return this.http.post<any>(
-          `${this.ENV.apiURL}/messages`,
+          `${this.ENV.apiURLDev}/messages`,
           { chat_id: chatId, content: message },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -120,7 +120,7 @@ export class ChatsService {
         return parseData._token;
       }),
       switchMap(token => {
-        return this.http.get<any>(`${this.ENV.apiURL}/chats/${chatId}`, {
+        return this.http.get<any>(`${this.ENV.apiURLDev}/chats/${chatId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }),
@@ -140,7 +140,7 @@ export class ChatsService {
     );
   }
 
-  createChat() {
+  createDualChat(data: any) {
     return from(Preferences.get({ key: "authData" })).pipe(
       map(storedData => {
         if (!storedData || !storedData.value) {
@@ -153,16 +153,14 @@ export class ChatsService {
           tokenExpirationDate: string;
         };
 
-        return { token: parseData._token, userId: parseData.id };
+        return parseData._token;
       }),
-      switchMap((data: any) => {
-        return this.http.post<any>(
-          `${this.ENV.apiURL}/chats`,
-          { usersId: [this.currentChat.id, data.userId] },
-          {
-            headers: { Authorization: `Bearer ${data.token}` },
-          },
-        );
+      switchMap((token: any) => {
+        console.log(data, "Hello from data", token);
+
+        return this.http.post<any>(`${this.ENV.apiURLDev}/chats`, data, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       }),
       tap(data => {
         console.log("====================================");

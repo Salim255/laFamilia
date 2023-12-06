@@ -24,10 +24,17 @@
 <ion-content [fullscreen]="true">
   <ion-list lines="none" ngx-auto-scroll lock-y-offset="10" observe-attributes>
     <div *ngFor="let item of chat.messages; ">
-      <ion-text *ngIf="chat.chatuser[0].user_id !== item.fromuserid" class="left"
-        >{{item.content}} {{chat.chatuser[0].user_id === item.fromuserid}}
+      <ion-text
+        *ngIf="chat.chatuser[0].user_id !== item.from_user_id
+      "
+        class="left"
+        >{{item.content}}
       </ion-text>
-      <ion-text class="right" *ngIf="chat.chatuser[0].user_id === item.fromuserid"
+      <ion-text
+        class="right"
+        *ngIf="chat.chatuser[0]?.user_id === item.from_user_id
+
+      "
         >{{item.content}}
       </ion-text>
     </div>

@@ -24,10 +24,10 @@ const NatsWrapper = require("../../nats-wrapper");
 const Publisher = require("../events/publish");
 
 const createToken = userId => {
-  return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
+  /*   return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
     expiresIn: "90d",
-  });
-  /*  return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP }); */
+  }); */
+  return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 
 const correctPassword = async (candidatePassword, userPassword) => {
@@ -36,10 +36,6 @@ const correctPassword = async (candidatePassword, userPassword) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-
-  console.log("====================================");
-  console.log(email, password);
-  console.log("====================================");
   if (!validator.isEmail(email) || isEmpty(password)) {
     return next(new AppError("Please provide a valid email and password", 400));
   }
@@ -60,8 +56,8 @@ exports.login = catchAsync(async (req, res, next) => {
   //If everything ok, send token to client
   const token = createToken(user[0].id);
 
-  const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
-  /*  const expiration = jwt.verify(token, tokenConfig.tokenJWT); */
+  //const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
   let data = {
     token,
     id: user[0].id,
@@ -132,7 +128,9 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError("You are not logged in! Please log in to get access.", 401));
   }
   //2)Verification token
-
+  console.log("====================================");
+  console.log(process.env.JWT_SECRET);
+  console.log("====================================");
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   //3)Check if user still exist
