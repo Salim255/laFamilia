@@ -17,6 +17,7 @@ exports.createChat = catchAsync(async (req, res, next) => {
   }
 
   //2)Check that all usersId still hold their account
+  let result;
   for (let i = 0; i < usersId.length; i++) {
     result = users.filter(element => element.id == usersId[i]);
 
@@ -38,11 +39,7 @@ exports.createChat = catchAsync(async (req, res, next) => {
 
     createdChat = rows[0];
   } else if (isEmpty(chatType)) {
-    //If chat of type dual, check if the two users already in chat or not
-    console.log("Hollo 💥");
-    let result;
-
-    result = await pool.query(
+    const { rows: result } = await pool.query(
       `SELECT chat_id
         FROM chatUsers
          WHERE user_id IN ($1, $2)
@@ -52,39 +49,9 @@ exports.createChat = catchAsync(async (req, res, next) => {
       [req.user.id, usersId[1]],
     );
 
-    console.log(result, "In try");
-
-    console.log(result, "De la 🌈🌈🌈");
-
-    /*  const { rows: partnerPared } = await pool.query(
-      `SELECT chat_id
-
-      FROM  chatUsers 
-
-      WHERE user_id=$1
-
-      INTERSECT
-
-      SELECT chat_id
-
-      FROM  chatUsers 
-
-      WHERE user_id=$2
-   
-     `,
-      [req.user.id],
-      [usersId[1]],
-    ); */
-
-    /*   SELECT COUNT(*)
-FROM users
-WHERE (username = 'Alice' OR username = 'Bob') -- Replace with actual usernames
-  AND score IN (SELECT score FROM users WHERE username = 'Alice' OR username = 'Bob'); */
-
-    //console.log(partnerPared, "Hello", req.user.id, usersId[1]);
     //If they are in chat, then return
-    console.log(result, "Result");
-    if (result) {
+
+    if (result.length > 0) {
       return next(new AppError("You are already in chat with this user ", 401));
     }
 
@@ -95,7 +62,7 @@ WHERE (username = 'Alice' OR username = 'Bob') -- Replace with actual usernames
   req.body.createdChatId = createdChat.id;
 
   req.body.usersIdList = usersId;
-
+  console.log(usersId, "Hello Just before go to chatUser");
   next();
 });
 

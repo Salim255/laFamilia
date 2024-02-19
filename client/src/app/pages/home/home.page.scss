@@ -13,6 +13,30 @@
     text-transform: capitalize;
   }
 }
+#main-content {
+  ion-header {
+    ion-toolbar {
+      display: flex;
+
+      ion-buttons {
+      }
+
+      div {
+        flex: 1;
+        width: 100%;
+
+        display: flex;
+        padding-right: 0.5rem;
+        ion-text {
+          margin-left: auto;
+          font-family: cursive;
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
 ion-content {
   height: 100vh;
   ion-list {

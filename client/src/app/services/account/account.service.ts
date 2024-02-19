@@ -6,7 +6,7 @@ import { environment as prodEnvironment } from "../../../environments/environmen
 import { Preferences } from "@capacitor/preferences";
 import { BehaviorSubject, from, map, switchMap, tap } from "rxjs";
 
-interface Profile {
+interface Account {
   id: number;
   first_name: string;
   last_name: string;
@@ -15,13 +15,13 @@ interface Profile {
 @Injectable({
   providedIn: "root",
 })
-export class ProfilesService {
+export class AccountService {
   private ENV = devEnvironment.production ? prodEnvironment : devEnvironment;
-  profiles = new BehaviorSubject<Profile[] | null>(null);
+  account = new BehaviorSubject<Account[] | null>(null);
 
   constructor(private http: HttpClient) {}
 
-  fetchProfiles() {
+  fetchUser() {
     return from(Preferences.get({ key: "authData" })).pipe(
       map(storedData => {
         if (!storedData || !storedData.value) {
@@ -34,26 +34,22 @@ export class ProfilesService {
           tokenExpirationDate: string;
         };
 
-        return parseData._token;
+        return { token: parseData._token, id: parseData.id };
       }),
-      switchMap(token => {
-        return this.http.get<any>(`${this.ENV.apiURLDev}/users`, {
-          headers: { Authorization: `Bearer ${token}` },
+      switchMap(data => {
+        return this.http.get<any>(`${this.ENV.apiURLDev}/users/${data?.id}`, {
+          headers: { Authorization: `Bearer ${data?.token}` },
         });
       }),
-      tap(profiles => {
-        this.profiles.next(profiles.data);
+      tap(data => {
+        this.account.next(data.data);
       }),
     );
   }
 
-  get getProfiles() {
-    return this.profiles.asObservable().pipe(
+  get getAccount() {
+    return this.account.asObservable().pipe(
       map(data => {
-        console.log("====================================");
-        console.log(data, "🔥🔥🔥");
-        console.log("====================================");
-
         return data;
       }),
     );

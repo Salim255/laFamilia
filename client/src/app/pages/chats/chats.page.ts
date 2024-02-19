@@ -10,6 +10,8 @@ import { Route, Router } from "@angular/router";
 export class ChatsPage implements OnInit {
   isLoading: boolean = false;
   chats!: any;
+  searchTerm: string = "";
+  showClearBtn: boolean = false;
   constructor(private chatService: ChatsService, private router: Router) {}
 
   ngOnInit() {
@@ -32,6 +34,21 @@ export class ChatsPage implements OnInit {
     if (item) {
       this.chatService.currentChat = item;
       this.router.navigateByUrl("/tabs/messenger");
+    }
+  }
+
+  clearSearch() {
+    this.searchTerm = "";
+    this.showClearBtn = false;
+  }
+
+  onInputChange(event: any): void {
+    // Access the changed value using event.target.value
+    this.searchTerm = event.target.value;
+    if (this.searchTerm.length > 0) {
+      this.showClearBtn = true;
+    } else {
+      this.showClearBtn = false;
     }
   }
 }

@@ -31,7 +31,7 @@ export class AuthService implements OnDestroy {
     let dataToSend = mode ? { email: data.email, password: data.password } : data;
 
     return this.http
-      .post<any>(`${this.ENV.apiURL}/users/${mode ? "login" : "signup"}`, dataToSend)
+      .post<any>(`${this.ENV.apiURLDev}/users/${mode ? "login" : "signup"}`, dataToSend)
       .pipe(
         tap(response => {
           this.setAuthData(response?.data);
@@ -44,8 +44,10 @@ export class AuthService implements OnDestroy {
     let userId = authData.id;
 
     const buildUser = new User(userId, authData.token, expirationTime);
+    console.log(buildUser);
 
     this.user.next(buildUser);
+    this.autoLogout(buildUser.tokenDuration);
     this.storeAuthData(buildUser);
   }
 
@@ -85,7 +87,13 @@ export class AuthService implements OnDestroy {
   get userId() {
     return this.user.asObservable().pipe(
       map(user => {
+        console.log("====================================");
+        console.log(user, "From user service auth ");
+        console.log("====================================");
         if (user) {
+          console.log("====================================");
+          console.log(user, "From user service auth ");
+          console.log("====================================");
           return user.id;
         }
         return null;
@@ -123,13 +131,10 @@ export class AuthService implements OnDestroy {
         return userToReturn;
       }),
       tap(user => {
-        if (!user) {
+        if (user) {
           this.user.next(user);
-          console.log("====================================");
-          console.log(user, "User");
-          console.log("====================================");
-          this.logout();
-          //this.autoLogout(user!.tokenDuration);
+
+          this.autoLogout(user.tokenDuration);
         }
       }),
       map(user => {

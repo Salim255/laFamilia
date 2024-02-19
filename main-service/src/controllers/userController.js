@@ -27,6 +27,20 @@ exports.getUsers = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getUserById = catchAsync(async (req, res, next) => {
+  const { userId } = req.params;
+  console.log(userId);
+  const { rows } = await pool.query(
+    `SELECT last_name, first_name, id, photo FROM users WHERE id=$1;`,
+    [userId],
+  );
+
+  console.log(rows);
+  res.status(200).json({
+    status: "success",
+    data: rows,
+  });
+});
 exports.deleteUser = catchAsync(async (req, res, next) => {
   const { rows } = await pool.query(`DELETE FROM users WHERE id = $1`, [req.user.id]);
 
