@@ -1103,8 +1103,8 @@ grafana:
     portName: http-web
 
     ##My customs
-    type: NodePort
-    nodePort: 30008
+    type: LoadBalancer
+    #nodePort: 30008
 
   serviceMonitor:
     # If true, a ServiceMonitor CRD is created for a prometheus operator
