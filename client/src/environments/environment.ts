@@ -3,8 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
-
+  production: false,
   apiURLK8s: "https://lafamilia.dev/api/v1",
   apiURL: "http://www.sharing-prod.xyz/api/v1",
   apiURLDev: "http://localhost:4000/api/v1",
