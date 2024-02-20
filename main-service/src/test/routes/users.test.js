@@ -33,9 +33,11 @@ describe("Test user controller", () => {
         password: "3333",
       })
       .expect(200)
-      .then(async response => {
-        createdUserId = response._body.data.user.id;
-        token = response._body.data.token;
+      .then(response => {
+        if (response) {
+          createdUserId = response._body.data.id;
+          token = response._body.data.token;
+        }
       });
 
     const finishCount = await userController.countUsers();

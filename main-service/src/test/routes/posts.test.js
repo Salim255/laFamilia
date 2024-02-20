@@ -28,8 +28,8 @@ describe("Posts test handler", () => {
         password: "3333",
       })
       .expect(200)
-      .then(async response => {
-        createdUserId = response._body.data.user.id;
+      .then(response => {
+        createdUserId = response._body.data.id;
         token = response._body.data.token;
       });
   });

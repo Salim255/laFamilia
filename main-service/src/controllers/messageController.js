@@ -10,7 +10,7 @@ exports.createMessage = catchAsync(async (req, res, next) => {
   const { chat_id, content } = req.body;
 
   const fromUserId = req.user.id;
-  console.log(req.body, "Hello from body");
+
   const { rows: createdMessage } = await pool.query(
     `INSERT INTO messages (chat_id, content, from_user_id) VALUES($1, $2, $3) RETURNING *;`,
     [chat_id, content, fromUserId],

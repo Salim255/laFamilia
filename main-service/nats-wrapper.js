@@ -17,8 +17,6 @@ class NatsWrapper {
         console.log("====================================");
         console.log("Connected to NATS");
 
-        
-
         resolve();
       });
 
