@@ -31,7 +31,7 @@ jobs:
       # Get the cluster config and save it inside the container
       # So this will give us a pre initialized copy of all the context information we need, should also make that the active context on doctl as well
       #Get (or download) the cluster config file
-      - run: doctl kubernetes cluster kubeconfig save la-familia
+      - run: doctl kubernetes cluster kubeconfig save lafamia
 
       #Update deployment
       # We tell the deployment to update itself and use the latest image that  we just pushed to Docker hub
