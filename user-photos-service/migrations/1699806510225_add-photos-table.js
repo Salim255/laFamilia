@@ -23,4 +23,7 @@ exports.up = pgm => {
   );
 };
 
-exports.down = pgm => {};
+exports.down = pgm => {
+  pgm.sql(`       DROP TABLE  photos;
+      `);
+};
