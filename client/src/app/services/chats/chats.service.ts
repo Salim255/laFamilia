@@ -86,7 +86,7 @@ export class ChatsService {
       }),
       switchMap(token => {
         return this.http.post<any>(
-          `${this.ENV.apiURLDev}/messages`,
+          `${this.ENV.apiURL}/messages`,
           { chat_id: chatId, content: message },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -127,7 +127,7 @@ export class ChatsService {
       switchMap(token => {
         console.log("chatId", chatId);
 
-        return this.http.get<any>(`${this.ENV.apiURLDev}/chats/${chatId}`, {
+        return this.http.get<any>(`${this.ENV.apiURL}/chats/${chatId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }),
@@ -168,7 +168,7 @@ export class ChatsService {
       switchMap((token: any) => {
         console.log(data, "Hello from data", token);
 
-        return this.http.post<any>(`${this.ENV.apiURLDev}/chats`, data, {
+        return this.http.post<any>(`${this.ENV.apiURL}/chats`, data, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }),
