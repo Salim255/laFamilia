@@ -31,7 +31,7 @@ export class AuthService implements OnDestroy {
     let dataToSend = mode ? { email: data.email, password: data.password } : data;
 
     return this.http
-      .post<any>(`${this.ENV.apiURLDev}/users/${mode ? "login" : "signup"}`, dataToSend)
+      .post<any>(`${this.ENV.apiURL}/users/${mode ? "login" : "signup"}`, dataToSend)
       .pipe(
         tap(response => {
           this.setAuthData(response?.data);

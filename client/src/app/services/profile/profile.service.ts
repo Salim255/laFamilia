@@ -37,7 +37,7 @@ export class ProfilesService {
         return parseData._token;
       }),
       switchMap(token => {
-        return this.http.get<any>(`${this.ENV.apiURLDev}/users`, {
+        return this.http.get<any>(`${this.ENV.apiURL}/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }),
