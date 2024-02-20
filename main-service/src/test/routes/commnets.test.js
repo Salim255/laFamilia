@@ -29,8 +29,8 @@ describe("Comment on post test handler", () => {
         password: "3333",
       })
       .expect(200)
-      .then(async response => {
-        createdUserId = response._body.data.user.id;
+      .then(response => {
+        createdUserId = response._body.data.id;
         token = response._body.data.token;
       });
   });
@@ -43,7 +43,7 @@ describe("Comment on post test handler", () => {
       })
       .set("Authorization", `Bearer ${token}`)
       .expect(201)
-      .then(async response => {
+      .then(response => {
         createdPostId = response._body.data.id;
       });
   });
@@ -53,12 +53,12 @@ describe("Comment on post test handler", () => {
       .post(`/api/v1/posts/${createdPostId}/comments`)
       .set("Authorization", `Bearer ${token}`)
       .expect(201)
-      .then(async response => {
+      .then(response => {
         createCommentId = response.body.data.id;
       });
   });
 
-  it("update comment", async () => {});
+  //it("update comment", async () => {});
 
   it("React to a post", async () => {
     await request(buildApp())

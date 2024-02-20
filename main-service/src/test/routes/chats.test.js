@@ -15,7 +15,7 @@ afterAll(() => {
   return context.close();
 });
 
-let createdUsersId = [];
+let partnerId;
 let token;
 
 describe("Chats test handler", () => {
@@ -29,9 +29,7 @@ describe("Chats test handler", () => {
         password: "3333",
       })
       .expect(200)
-      .then(async response => {
-        createdUsersId.push(response._body.data.user.id);
-
+      .then(response => {
         token = response._body.data.token;
       });
   });
@@ -46,8 +44,8 @@ describe("Chats test handler", () => {
         password: "3333",
       })
       .expect(200)
-      .then(async response => {
-        createdUsersId.push(response._body.data.user.id);
+      .then(response => {
+        partnerId = response._body.data.id;
       });
   });
 
@@ -59,7 +57,7 @@ describe("Chats test handler", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         chatType: "group",
-        usersId: createdUsersId,
+        partnerId: partnerId,
       })
       .expect(200);
 

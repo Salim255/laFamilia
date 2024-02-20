@@ -10,6 +10,7 @@ exports.createDualChat = catchAsync(async (req, res, next) => {
   const { partnerId } = req.body;
 
   //1)Check if we have at least two users before creating a chat
+
   if (isEmpty(partnerId)) {
     return next(new AppError("Chat needs to have at least two users", 401));
   }
@@ -45,7 +46,7 @@ exports.createDualChat = catchAsync(async (req, res, next) => {
 
   const { rows } = await pool.query(`INSERT INTO chats VALUES(DEFAULT) RETURNING id, type`);
   createdChat = rows[0];
-  console.log(" created chat id , ☄️🌏🌍");
+
   req.body.chat_id = createdChat.id;
 
   req.body.usersIdList = [req.user.id, partnerId];
@@ -65,8 +66,6 @@ exports.getChatsByUser = catchAsync(async (req, res, next) => {
 
       FROM chats
       
-     
-
       JOIN chatUsers ON chats.id = chatUsers.chat_id   
 
       JOIN users ON chatUsers.user_id = users.id

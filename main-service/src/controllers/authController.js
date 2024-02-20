@@ -129,9 +129,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError("You are not logged in! Please log in to get access.", 401));
   }
   //2)Verification token
-  console.log("====================================");
-  console.log(process.env.JWT_SECRET);
-  console.log("====================================");
+
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   //3)Check if user still exist
