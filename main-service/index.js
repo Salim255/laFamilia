@@ -119,7 +119,7 @@ if (!process.env.RUN_ON) {
       password: "",
     })
     .then(() => {
-      ////////////////////
+      //////////////////////////
       const http = require("http");
       server = http.createServer(app());
       const SocketServer = require("./src/socket");
