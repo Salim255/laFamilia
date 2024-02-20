@@ -46,7 +46,7 @@ spec:
               #The service of posts
               service:
                 name: client-srv
-                #The port of posts service
+                #The port of posts service///
 
                 port:
                   number: 80

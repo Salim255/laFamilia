@@ -13,7 +13,7 @@ afterAll(() => {
   return context.close();
 });
 
-let createdUsersId = [];
+let partnerId;
 let token;
 let createdChatId;
 describe("Chats test handler", () => {
@@ -27,9 +27,7 @@ describe("Chats test handler", () => {
         password: "3333",
       })
       .expect(200)
-      .then(async response => {
-        createdUsersId.push(response._body.data.user.id);
-
+      .then(response => {
         token = response._body.data.token;
       });
   });
@@ -44,8 +42,8 @@ describe("Chats test handler", () => {
         password: "3333",
       })
       .expect(200)
-      .then(async response => {
-        createdUsersId.push(response._body.data.user.id);
+      .then(response => {
+        partnerId = response._body.data.id;
       });
   });
 
@@ -55,11 +53,11 @@ describe("Chats test handler", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         chatType: "group",
-        usersId: createdUsersId,
+        partnerId: partnerId,
       })
       .expect(200)
-      .then(async response => {
-        createdChatId = response.body.data.chat_id;
+      .then(response => {
+        createdChatId = response.body.data.id;
       });
   });
 
@@ -69,7 +67,7 @@ describe("Chats test handler", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         chat_id: createdChatId,
-        message: "Hello world!",
+        content: "Hello world!",
       })
       .expect(200);
   });
