@@ -6,63 +6,50 @@ const catchAsync = require("../utils/catchAsync");
 
 const AppError = require("../utils/appError");
 
-exports.createChat = catchAsync(async (req, res, next) => {
-  const { chatType, usersId, chat_name } = req.body;
-
-  const { rows: users } = await pool.query(`SELECT * FROM users`);
+exports.createDualChat = catchAsync(async (req, res, next) => {
+  const { partnerId } = req.body;
 
   //1)Check if we have at least two users before creating a chat
-  if (isEmpty(usersId) || usersId.length < 1) {
+  if (isEmpty(partnerId)) {
     return next(new AppError("Chat needs to have at least two users", 401));
   }
 
-  //2)Check that all usersId still hold their account
-  let result;
-  for (let i = 0; i < usersId.length; i++) {
-    result = users.filter(element => element.id == usersId[i]);
+  const { rows: users } = await pool.query(`SELECT * FROM users WHERE id=$1 OR id=$2`, [
+    partnerId,
+    req.user.id,
+  ]);
 
-    if (isEmpty(result)) {
-      return next(new AppError("One user or more not exist any more", 401));
-    }
+  //1)Check if we have at least two users before creating a chat
+  if (users.length < 2) {
+    return next(new AppError("Chat needs to have at least two users", 401));
   }
 
   //4)Create chat based on type
-
   let createdChat;
 
-  //4-1)Create group chat
-  if (!isEmpty(chatType)) {
-    const { rows } = await pool.query(
-      `INSERT INTO chats, chat_name=$2 (type,chat_name) VALUES($1) RETURNING id, type;`,
-      [chatType, chat_name],
-    );
-
-    createdChat = rows[0];
-  } else if (isEmpty(chatType)) {
-    const { rows: result } = await pool.query(
-      `SELECT chat_id
+  //Check if they are not already in a chat
+  const { rows: result } = await pool.query(
+    `SELECT chat_id
         FROM chatUsers
          WHERE user_id IN ($1, $2)
           GROUP BY chat_id
           HAVING COUNT(DISTINCT user_id) = 2
      `,
-      [req.user.id, usersId[1]],
-    );
+    [req.user.id, partnerId],
+  );
 
-    //If they are in chat, then return
-
-    if (result.length > 0) {
-      return next(new AppError("You are already in chat with this user ", 401));
-    }
-
-    const { rows } = await pool.query(`INSERT INTO chats VALUES(DEFAULT) RETURNING id, type`);
-    createdChat = rows[0];
+  //If they are in chat, then return
+  if (result.length > 0) {
+    return next(new AppError("You are already in chat with this user ", 401));
   }
 
-  req.body.createdChatId = createdChat.id;
+  const { rows } = await pool.query(`INSERT INTO chats VALUES(DEFAULT) RETURNING id, type`);
+  createdChat = rows[0];
+  console.log(" created chat id , ☄️🌏🌍");
+  req.body.chat_id = createdChat.id;
 
-  req.body.usersIdList = usersId;
-  console.log(usersId, "Hello Just before go to chatUser");
+  req.body.usersIdList = [req.user.id, partnerId];
+
   next();
 });
 
@@ -70,7 +57,7 @@ exports.getChatsByUser = catchAsync(async (req, res, next) => {
   const { rows } = await pool.query(
     `SELECT   chats.* , 
 
-      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE   chatUsers.user_id=$1 )) AS chatUser,
+      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE   chatUsers.user_id!=$1 )) AS chatUser,
 
       COALESCE(JSON_AGG( users.* ) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
 

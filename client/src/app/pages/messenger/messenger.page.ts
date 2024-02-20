@@ -4,26 +4,39 @@ import { NgForm } from "@angular/forms";
 import { Observable } from "rxjs";
 import io from "socket.io-client";
 import { AuthService } from "src/app/services/auth/auth.service";
+import { SocketService } from "src/app/services/socket/socket.service";
 @Component({
   selector: "app-messenger",
   templateUrl: "./messenger.page.html",
   styleUrls: ["./messenger.page.scss"],
 })
-export class MessengerPage implements OnInit, AfterViewInit {
+export class MessengerPage implements OnInit {
   chat: any;
   isLoading: boolean = false;
   message: string = "";
   socket: any;
-  constructor(private chatService: ChatsService, private authService: AuthService) {
-    this.socket = io("http://localhost:4000");
+  constructor(
+    private chatService: ChatsService,
+    private authService: AuthService,
+    private socketService: SocketService,
+  ) {
+    //this.socket = io("http://localhost:4000");
   }
 
   ngOnInit() {
-    this.chat = this.chatService.getCurrentChat;
-    console.log(this.chat);
-    this.socket.on("refreshPage", () => {
-      this.chat = this.chatService.getCurrentChat;
+    this.isLoading = true;
+    /*  this.chatService.getCurrentChat.subscribe(data => {
+      this.chat = data;
+      this.isLoading = false;
     });
+ */
+    /*  this.socket.on("refreshPage", () => {
+      console.log(this.chat, "Log from socket 🍎🍎");
+      this.chatService.getCurrentChat.subscribe(data => {
+        console.log(this.chat, "Log from socket 🍎🍎");
+        this.chat = data;
+      });
+    }); */
   }
 
   onChange(event: any) {}
@@ -34,24 +47,13 @@ export class MessengerPage implements OnInit, AfterViewInit {
     }
 
     if (this.chat.fakeChat) {
-      console.log(this.chat, "Hello this chat ");
-
       //
-      let loggedUserIdObs = new Observable();
-      let localUserId;
-      loggedUserIdObs = this.authService.userId;
-      loggedUserIdObs.subscribe(data => {
-        console.log(data, "logged user Data id ");
-        localUserId = data;
-      });
 
       ///
       let createChatObs = new Observable();
 
-      let chatInfo = { usersId: [localUserId, this.chat.chatUser[0].id], content: this.message };
-      console.log("====================================");
-      console.log(chatInfo, "Data to send");
-      console.log("====================================");
+      let chatInfo = { partnerId: this.chat?.chatUser[0]?.id, content: this.message };
+
       createChatObs = this.chatService.createDualChat(chatInfo);
 
       createChatObs.subscribe({
@@ -59,35 +61,18 @@ export class MessengerPage implements OnInit, AfterViewInit {
           console.log(err);
         },
         next: (res: any) => {
-          /*  {
-            "chatuser_id": 3,
-            "user_id": 1,
-            "chat_id": 2,
-            "type": "dual"
-        } */
-          console.log("====================================");
-          console.log(res, res.data.chat_id);
-          console.log("====================================");
-          // let chatId = res.data.chat_id;
-          //let sendMessageObs = new Observable();
-          // sendMessageObs = this.chatService.sendMessage(this.message, chatId);
-          /*   sendMessageObs.subscribe({
-            error: err => {
-              console.log(err);
-            },
-            next: data => {
-              console.log(this.chat);
-              this.socket.emit("refresh", {});
-              this.chat = this.chatService.getCurrentChat;
-              this.message = "";
-            },
-          }); */
+          this.chatService.getCurrentChat.subscribe(data => {
+            this.chat = data;
+            console.log("This must be last log", this.chat);
+          });
         },
       });
+
+      return;
     }
 
     //////
-    /*   let sendObs = new Observable();
+    let sendObs = new Observable();
     sendObs = this.chatService.sendMessage(this.message, this.chat.id);
     sendObs.subscribe({
       error: err => {
@@ -95,20 +80,25 @@ export class MessengerPage implements OnInit, AfterViewInit {
       },
       next: data => {
         console.log(this.chat);
-        this.socket.emit("refresh", {});
-        this.chat = this.chatService.getCurrentChat;
+        //this.socket.emit("refresh", {});
+        if (data) {
+          this.chatService.getCurrentChat.subscribe(data => {
+            this.chat = data;
+          });
+        }
+
+        this.socketService.sendMessage(this.message);
         this.message = "";
       },
-    }); */
+    });
   }
   ionViewWillEnter() {
     this.isLoading = true;
-    this.chat = this.chatService.getCurrentChat;
-    this.isLoading = false;
-  }
-  ngAfterViewInit() {
-    console.log("====================================");
-    console.log("Hello");
-    console.log("====================================");
+    this.chatService.getCurrentChat.subscribe(data => {
+      this.chat = data;
+
+      this.isLoading = false;
+      console.log(this.chat, "Hello");
+    });
   }
 }

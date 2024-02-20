@@ -50,10 +50,6 @@ export class ProfilesService {
   get getProfiles() {
     return this.profiles.asObservable().pipe(
       map(data => {
-        console.log("====================================");
-        console.log(data, "🔥🔥🔥");
-        console.log("====================================");
-
         return data;
       }),
     );

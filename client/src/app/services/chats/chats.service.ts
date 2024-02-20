@@ -5,24 +5,16 @@ import { environment as devEnvironment } from "../../../environments/environment
 import { environment as prodEnvironment } from "../../../environments/environment.prod";
 import { Preferences } from "@capacitor/preferences";
 import { BehaviorSubject, Observable, from, map, switchMap, tap } from "rxjs";
+import { Chat } from "src/app/models/chat/chat.model";
 
-interface Chats {
-  id: number;
-  type: string;
-  created_at: Date;
-  updated_at: Date;
-  messages: any;
-  chatUser: any;
-  users: any;
-  fakeChat: false;
-}
 @Injectable({
   providedIn: "root",
 })
 export class ChatsService {
   private ENV = devEnvironment.production ? prodEnvironment : devEnvironment;
-  chats = new BehaviorSubject<Chats[] | null>(null);
-  currentChat: any = null;
+  chats = new BehaviorSubject<Chat[] | null>(null);
+  currentChat = new BehaviorSubject<Chat | null>(null);
+  fakeChat: any = null;
   activeLogoutTimer: any;
   constructor(private http: HttpClient) {}
 
@@ -47,25 +39,39 @@ export class ChatsService {
         });
       }),
       tap(chats => {
-        console.log(chats);
-        let fetchChats = chats.data;
-        this.chats.next(fetchChats);
+        let fetchedChats = chats.data;
+        this.chats.next(fetchedChats);
       }),
     );
   }
 
-  get getCurrentChat() {
-    return this.currentChat;
+  setCurrentChat(chat: any) {
+    console.log(chat);
+
+    const buildChat = new Chat(
+      chat.id,
+      chat.type,
+      chat.created_at,
+      chat.updated_at,
+      chat.messages,
+      chat.chatuser,
+      chat.users,
+      chat.fakeChat,
+    );
+    this.currentChat.next(buildChat);
   }
+
+  get getCurrentChat() {
+    return this.currentChat.asObservable().pipe(
+      map(data => {
+        return data;
+      }),
+    );
+  }
+
   sendMessage(message: string, chatId: number) {
-    console.log("====================================");
-    console.log("Hello ", message, chatId);
-    console.log("====================================");
     return from(Preferences.get({ key: "authData" })).pipe(
       map(storedData => {
-        console.log("====================================");
-        console.log("from 💥💥💥", storedData, "Hello ");
-        console.log("====================================");
         if (!storedData || !storedData.value) {
           return null;
         }
@@ -88,17 +94,16 @@ export class ChatsService {
         );
       }),
       tap(data => {
-        console.log("====================================");
-        console.log(data);
-        console.log("====================================");
-        this.fetchChats();
-        let obs = new Observable();
-        obs = this.fetchChatByChatId(chatId);
-        obs.subscribe((data: any) => {
-          console.log("====================================");
-          console.log(data.data[0]);
-          console.log("====================================");
-          this.currentChat = data.data[0];
+        //To fetch all chats
+        let obsChatFetching = new Observable();
+        obsChatFetching = this.fetchChats();
+        obsChatFetching.subscribe();
+
+        //To fetch current chat
+        let chatByIdObs = new Observable();
+        chatByIdObs = this.fetchChatByChatId(chatId);
+        chatByIdObs.subscribe((data: any) => {
+          this.setCurrentChat(data.data[0]);
         });
       }),
     );
@@ -120,15 +125,17 @@ export class ChatsService {
         return parseData._token;
       }),
       switchMap(token => {
+        console.log("chatId", chatId);
+
         return this.http.get<any>(`${this.ENV.apiURLDev}/chats/${chatId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }),
       tap(chat => {
         console.log("====================================");
-        console.log(chat, "Hello from updated chat 💥💥💥💥");
+        console.log(chat, "chat by id");
         console.log("====================================");
-        this.currentChat = chat.data.data;
+        //this.currentChat = chat.data.data;
       }),
     );
   }
@@ -141,6 +148,9 @@ export class ChatsService {
   }
 
   createDualChat(data: any) {
+    console.log("====================================");
+    console.log(data, "Hello Data before send Chat with messages ");
+
     return from(Preferences.get({ key: "authData" })).pipe(
       map(storedData => {
         if (!storedData || !storedData.value) {
@@ -165,7 +175,10 @@ export class ChatsService {
       tap(data => {
         console.log("====================================");
         console.log(data);
-        console.log("Hello we start create chat 💥💥", data);
+        console.log("Created chat Data 🌈🌈☂️☂️🌊🌊💦💧 💥💥", data);
+        this.setCurrentChat(data?.data);
+        //1) Get created chat
+        //2) Replace currentChat with created chat
       }),
     );
   }

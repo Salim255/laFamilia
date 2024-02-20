@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ChatsService } from "../../services/chats/chats.service";
+import { SocketService } from "src/app/services/socket/socket.service";
 import { Route, Router } from "@angular/router";
 
 @Component({
@@ -12,7 +13,11 @@ export class ChatsPage implements OnInit {
   chats!: any;
   searchTerm: string = "";
   showClearBtn: boolean = false;
-  constructor(private chatService: ChatsService, private router: Router) {}
+  constructor(
+    private chatService: ChatsService,
+    private router: Router,
+    private socketService: SocketService,
+  ) {}
 
   ngOnInit() {
     this.chatService.getChats.subscribe(chats => {
@@ -32,7 +37,11 @@ export class ChatsPage implements OnInit {
   }
   openChat(item: any) {
     if (item) {
-      this.chatService.currentChat = item;
+      console.log("====================================");
+      console.log(item);
+      console.log("====================================");
+      this.chatService.setCurrentChat(item);
+      this.socketService.userJoinedChat(item?.chatuser[0]);
       this.router.navigateByUrl("/tabs/messenger");
     }
   }

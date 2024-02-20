@@ -59,7 +59,7 @@ const autoMigration = async () => {
 
 if (process.env.RUN_ON_K8s === "true") {
   if (!process.env.RUN_ON) {
-    //autoMigration()
+    autoMigration();
     throw new Error("RUN_KEY must be defined");
   }
 
@@ -104,7 +104,7 @@ const connectToNats = async () => {
   }
 };
 
-//if (process.env.RUN_ON) connectToNats();
+if (process.env.RUN_ON) connectToNats();
 
 if (!process.env.RUN_ON) {
   console.log("====================================");
@@ -124,7 +124,7 @@ if (!process.env.RUN_ON) {
       server = http.createServer(app());
       const SocketServer = require("./src/socket");
       SocketServer(server);
-      ////
+      /////////////////
       server = server.listen(port, () => {
         console.log("===================================");
         console.log(`Server running on port!!! ${port}`);

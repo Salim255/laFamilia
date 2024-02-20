@@ -9,15 +9,15 @@ const chatUserController = require("../controllers/chatUserController");
 const authController = require("../controllers/authController");
 
 const messageController = require("../controllers/messageController");
-//Create chat
+//Create chat dual chat
 router.post(
   "/",
   authController.protect,
-  chatController.createChat,
+  chatController.createDualChat,
   chatUserController.createChatUser,
-  messageController.createMessage,
 );
 
+router.get("/test", chatUserController.testRequest);
 //Update chat
 router.post("/:chatId", async (req, res) => {});
 

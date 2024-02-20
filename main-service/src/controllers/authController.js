@@ -27,6 +27,7 @@ const createToken = userId => {
   /*   return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
     expiresIn: "90d",
   }); */
+  //
   return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 

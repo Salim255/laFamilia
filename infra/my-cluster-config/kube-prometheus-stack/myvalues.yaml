@@ -1,0 +1,6 @@
+grafana:
+  adminPassword: admin
+  service:
+    ##My customs
+    type: NodePort
+    nodePort: 30008
