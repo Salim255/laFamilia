@@ -37,7 +37,7 @@ export class ProfilesPage implements OnInit {
       id: item.id,
       type: "dual",
       messages: null,
-      chatUser: [{ id: item.id }],
+      chatuser: [{ id: item.id }],
       users: [
         {
           id: item.id,
@@ -48,7 +48,7 @@ export class ProfilesPage implements OnInit {
       ],
       fakeChat: true,
     };
-    this.chatService.currentChat = fakeChat;
+    this.chatService.setCurrentChat(fakeChat);
     this.router.navigateByUrl("/tabs/messenger", { replaceUrl: true });
   }
 

@@ -3,12 +3,12 @@ const pool = require("../config/pool");
 const catchAsync = require("../utils/catchAsync");
 
 exports.createChatUser = catchAsync(async (req, res, next) => {
-  const { createdChatId, usersIdList } = req.body;
-
+  const { chat_id, usersIdList } = req.body;
+  console.log(usersIdList, "Hlooo 🌈🌈🍎🍎🍎🍎");
   for (let i = 0; i < usersIdList.length; i++) {
     const { rows } = await pool.query(
       `INSERT INTO chatUsers (user_id, chat_id) VALUES($1, $2) RETURNING *;`,
-      [usersIdList[i], createdChatId],
+      [usersIdList[i], chat_id],
     );
   }
 
@@ -17,10 +17,88 @@ exports.createChatUser = catchAsync(async (req, res, next) => {
     FROM chatUsers
     JOIN users ON users.id = chatUsers.user_id 
     JOIN chats On chats.id = $1 WHERE chat_id=$1`,
-    [createdChatId],
+    [chat_id],
   );
-  req.chat_id = createdChatId;
-  next();
+
+  //Create first message
+  const { content } = req.body;
+  const fromUserId = req.user.id;
+  const { rows: createdMessage } = await pool.query(
+    `INSERT INTO messages (chat_id, content, from_user_id) VALUES($1, $2, $3) RETURNING *;`,
+    [chat_id, content, fromUserId],
+  );
+
+  //Return newly created chat
+  const { rows: getChat } = await pool.query(
+    `SELECT   chats.* , 
+
+    COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE   chatUsers.user_id!=$1 )) AS chatUser,
+
+    COALESCE(JSON_AGG( users.* ) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
+
+    JSON_AGG(DISTINCT messages.*) AS messages
+
+    FROM chats
+    
+   
+    JOIN chatUsers ON chatUsers.chat_id =chats.id   
+
+    JOIN users ON chatUsers.user_id = users.id
+
+    JOIN messages ON messages.chat_id = chats.id
+    
+   WHERE chats.id=$2
+     
+    GROUP BY chats.id
+
+    ORDER BY chats.id ;
+    
+     `,
+    [req.user.id, chat_id],
+  );
+
+  console.log("====================================");
+  console.log(req.user.id, chat_id, "Hello KALAb🍎🍎🍎🌊🌊🌊🌊", getChat[0]);
+  console.log("====================================");
+  res.status(200).json({
+    status: "Success",
+    data: getChat[0],
+  });
+});
+
+exports.testRequest = catchAsync(async (req, res, next) => {
+  const { rows } = await pool.query(
+    `SELECT   chats.* , 
+
+      COALESCE(JSON_AGG(DISTINCT chatUsers.*) FILTER (WHERE   chatUsers.user_id!=$1 )) AS chatUser,
+
+      COALESCE(JSON_AGG( users.* ) FILTER (WHERE chatUsers.user_id!=$1))  AS users,
+
+      JSON_AGG(DISTINCT messages.*) AS messages
+
+      FROM chats
+      
+     
+      JOIN chatUsers ON chatUsers.chat_id =chats.id   
+
+      JOIN users ON chatUsers.user_id = users.id
+
+      JOIN messages ON messages.chat_id = chats.id
+      
+     WHERE chats.id=$2
+       
+      GROUP BY chats.id
+
+      ORDER BY chats.id ;
+      
+       `,
+    [7, 47],
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: rows[0],
+  });
 });
 
 exports.getChatUser = catchAsync(async (req, res, next) => {

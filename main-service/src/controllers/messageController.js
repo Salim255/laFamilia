@@ -7,14 +7,16 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 exports.createMessage = catchAsync(async (req, res, next) => {
-  const { createdChatId, content } = req.body;
+  const { chat_id, content } = req.body;
 
   const fromUserId = req.user.id;
-
+  console.log(req.body, "Hello from body");
   const { rows: createdMessage } = await pool.query(
     `INSERT INTO messages (chat_id, content, from_user_id) VALUES($1, $2, $3) RETURNING *;`,
-    [createdChatId, content, fromUserId],
+    [chat_id, content, fromUserId],
   );
+
+  //Cet chat
 
   res.status(200).json({
     status: "success",
