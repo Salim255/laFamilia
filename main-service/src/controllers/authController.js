@@ -88,7 +88,9 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   //Create token
   const token = createToken(rows[0].id);
-
+  console.log("====================================");
+  console.log("👹👹👹👹👹", token);
+  console.log("====================================");
   //To send a cookie, all we have to do is to attach it to the response object,
   // So we say res.cookie, and all what we have to do is to specify the name of the cookie, then the data that we want to send in the cookie, options for the cookie
   const cookieOptions = {
@@ -106,14 +108,15 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   /*   const expiration = jwt.verify(token, tokenConfig.tokenJWT); */
   const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
+  console.log("====================================");
+  console.log(expiration, "👹👹👹👹👹");
+  console.log("====================================");
   let data = {
     token,
     id: rows[0].id,
     expiresIn: expiration.exp,
   };
-  console.log("====================================");
-  console.log(data, "👹👹👹👹👹");
-  console.log("====================================");
+
   res.status(200).json({
     message: "success",
     data,
