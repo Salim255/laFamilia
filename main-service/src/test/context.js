@@ -23,7 +23,7 @@ if (process.env.TEST_TYPE === "local") {
   DEFAULT_OPTS = {
     host: "postgres",
     port: "5432",
-    database: "laFamilia-test",
+    database: "postgres",
     user: "postgres",
     password: "postgres",
   };

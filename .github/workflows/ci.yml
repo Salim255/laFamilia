@@ -95,7 +95,7 @@ jobs:
         # Provide the password for postgres
         env:
           # optional (defaults to `postgres`)
-          POSTGRES_DB: laFamilia-test
+          POSTGRES_DB: postgres
           # required
           POSTGRES_PASSWORD: postgres
           # optional (defaults to `5432`)
