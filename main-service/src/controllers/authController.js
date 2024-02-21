@@ -129,17 +129,20 @@ exports.protect = catchAsync(async (req, res, next) => {
   //1)Getting token and check of it's there
   let token;
 
+  console.log("Hello from protect 👹👹👹");
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1];
   }
 
   if (!token) {
-    console.log("Hello from not token 👹👹👹");
     return next(new AppError("You are not logged in! Please log in to get access.", 401));
   }
   //2)Verification token
 
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decoded = await promisify(jwt.verify)(
+    token,
+    "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk",
+  );
 
   //3)Check if user still exist
   const { rows } = await pool.query(`SELECT * FROM users  WHERE id = $1;`, [decoded.id]);
