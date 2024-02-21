@@ -119,7 +119,6 @@ jobs:
       APP_PORT: ${{secrets.DB_PORT}}
       JWT_SECRET: ${{secrets.JWT_SECRET}}
       JWT_EXPIRATION: ${{secrets.JWT_EXPIRATION}}
-      TEST_TYPE: ${{secrets.TEST_TYPE}}
 
       # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
