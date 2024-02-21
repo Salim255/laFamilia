@@ -63,8 +63,8 @@ if (process.env.RUN_ON_K8s === "true") {
     throw new Error("RUN_KEY must be defined");
   }
 
-  if (!process.env.JWT_KEY) {
-    throw new Error("JWT_KEY must be defined");
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET must be defined");
   }
 }
 
