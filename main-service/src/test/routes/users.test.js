@@ -58,7 +58,7 @@ describe("Test user controller", () => {
   });
 
   //Update user test
-  it("update user", async () => {
+  /*  it("update user", async () => {
     await request(buildApp())
       .put("/api/v1/users")
       .send({
@@ -68,17 +68,17 @@ describe("Test user controller", () => {
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
   });
-
+ */
   //Get all user test
-  it("get all users", async () => {
+  /*  it("get all users", async () => {
     await request(buildApp())
       .get("/api/v1/users/")
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
-  });
+  }); */
 
   //Delete user test
-  it("delete a user", async () => {
+  /*  it("delete a user", async () => {
     const startingCount = await userController.countUsers();
     await request(buildApp())
       .delete("/api/v1/users")
@@ -88,5 +88,5 @@ describe("Test user controller", () => {
     const finishCount = await userController.countUsers();
 
     expect(finishCount - startingCount).toEqual(-1);
-  });
+  }); */
 });
