@@ -48,7 +48,8 @@ export class AuthService implements OnDestroy {
   }
 
   private setAuthData(authData: Auth) {
-    const expirationTime = new Date(new Date().getTime() + +authData.expiresIn * 1000);
+    //const expirationTime = new Date(new Date().getTime() + +authData.expiresIn * 1000);
+    const expirationTime = new Date(new Date().getTime() + +authData.expiresIn);
     let userId = authData.id;
 
     const buildUser = new User(userId, authData.token, expirationTime);
@@ -61,7 +62,6 @@ export class AuthService implements OnDestroy {
   }
 
   private storeAuthData = async (dataToStore: User) => {
-    console.log(dataToStore, "Three response  👹👹👹");
     const data = JSON.stringify(dataToStore);
 
     await Preferences.set({
@@ -97,13 +97,7 @@ export class AuthService implements OnDestroy {
   get userId() {
     return this.user.asObservable().pipe(
       map(user => {
-        console.log("====================================");
-        console.log(user, "From user service auth ");
-        console.log("====================================");
         if (user) {
-          console.log("====================================");
-          console.log(user, "From user service auth ");
-          console.log("====================================");
           return user.id;
         }
         return null;

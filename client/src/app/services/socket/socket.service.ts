@@ -14,7 +14,7 @@ export class SocketService {
   private socket: any;
 
   constructor() {
-    this.socket = io("http://localhost:4000");
+    //this.socket = io("http://localhost:4000");
   }
 
   // Add methods for emitting and listening to socket events
