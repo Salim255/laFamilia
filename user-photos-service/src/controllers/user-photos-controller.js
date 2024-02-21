@@ -4,7 +4,7 @@ const pool = require("../config/pool");
 exports.getUserPhotos = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
-    data: "hello",
+    data: "hello world",
   });
 });
 
