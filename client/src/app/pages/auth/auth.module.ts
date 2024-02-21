@@ -8,11 +8,11 @@ import { AuthPageRoutingModule } from "./auth-routing.module";
 
 import { AuthPage } from "./auth.page";
 
-import { AuthFormComponent } from "src/app/shared/forms/auth-form/auth-form.component";
+import { SharedModule } from "src/app/shared/shared.module";
 import { AuthInputComponent } from "src/app/shared/inputs/auth-input/auth-input.component";
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, AuthPageRoutingModule],
-  declarations: [AuthPage, AuthFormComponent, AuthInputComponent],
+  declarations: [AuthPage, SharedModule, AuthInputComponent],
 })
 export class AuthPageModule {}

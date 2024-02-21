@@ -8,7 +8,7 @@ import { AuthService } from "src/app/services/auth/auth.service";
   templateUrl: "./auth-form.component.html",
   styleUrls: ["./auth-form.component.scss"],
 })
-export class AuthFormComponent implements OnDestroy {
+export class AuthFormComponent implements OnInit {
   @Input() isLogin: boolean = true;
   @Output() switchHandler = new EventEmitter();
   constructor(private authService: AuthService, private router: Router) {}
@@ -25,9 +25,14 @@ export class AuthFormComponent implements OnDestroy {
     this.switchHandler.emit();
   }
 
+  ngOnInit(): void {
+    console.log("====================================");
+    console.log("Hello world");
+    console.log("====================================");
+  }
+
   onChange(event: any) {}
   onSubmit(form: NgForm) {
-    console.log(form, "From");
     if (!form.valid) {
       return;
     }
@@ -41,6 +46,9 @@ export class AuthFormComponent implements OnDestroy {
       confirm_password: this.password_confirm,
     };
 
+    console.log("====================================");
+    console.log(this.isLogin, authData);
+    console.log("====================================");
     this.authService.authenticate(this.isLogin, authData).subscribe({
       error: err => {
         console.log(err);

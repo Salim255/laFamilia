@@ -34,6 +34,8 @@ export class AuthService implements OnDestroy {
       .post<any>(`${this.ENV.apiURL}/users/${mode ? "login" : "signup"}`, dataToSend)
       .pipe(
         tap(response => {
+          console.log(response, "first response ", mode);
+
           this.setAuthData(response?.data);
         }),
       );
@@ -48,6 +50,7 @@ export class AuthService implements OnDestroy {
 
     this.user.next(buildUser);
     this.autoLogout(buildUser.tokenDuration);
+    console.log(buildUser, "second response  👹👹👹");
     this.storeAuthData(buildUser);
   }
 
