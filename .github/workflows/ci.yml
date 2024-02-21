@@ -76,10 +76,10 @@ jobs:
           #Restore-keys are extra keys that github can search for caches at , in github didn't find any caches using the main key
 
       - name: Use NodeJs
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
 
         with:
-          node-version: "18.x"
+          node-version: "16.x"
 
         # Performs a clean installation of all dependencies in the `package.json` file
       - name: Install dependencies
