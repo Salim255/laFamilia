@@ -24,11 +24,11 @@ const NatsWrapper = require("../../nats-wrapper");
 const Publisher = require("../events/publish");
 
 const createToken = userId => {
-  /*   return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
+  return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
     expiresIn: "90d",
-  }); */
+  });
   //
-  return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
+  //return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 
 const correctPassword = async (candidatePassword, userPassword) => {
@@ -86,11 +86,12 @@ exports.signup = catchAsync(async (req, res, next) => {
     [email, hashedPassword, first_name, last_name],
   );
 
+  console.log("====================================");
+  console.log("👹👹👹👹👹", rows[0]);
+  console.log("====================================");
   //Create token
   const token = createToken(rows[0].id);
-  console.log("====================================");
-  console.log("👹👹👹👹👹", token);
-  console.log("====================================");
+
   //To send a cookie, all we have to do is to attach it to the response object,
   // So we say res.cookie, and all what we have to do is to specify the name of the cookie, then the data that we want to send in the cookie, options for the cookie
   const cookieOptions = {
