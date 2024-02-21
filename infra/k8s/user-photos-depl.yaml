@@ -17,11 +17,11 @@ spec:
           image: crawan/user-photos
           #imagePullPolicy: Never
           env:
-            - name: JWT_KEY
+            - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
-                  key: JWT_KEY
+                  key: JWT_SECRET
 
 ---
 apiVersion: v1
