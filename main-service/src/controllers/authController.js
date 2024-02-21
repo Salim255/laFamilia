@@ -112,15 +112,16 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   /*   const expiration = jwt.verify(token, tokenConfig.tokenJWT); */
   const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
-  console.log("====================================");
-  console.log(expiration, "👹👹👹👹👹");
-  console.log("====================================");
+
   let data = {
     token,
     id: rows[0].id,
     expiresIn: expiration.exp,
   };
 
+  console.log("====================================");
+  console.log(data, "👹👹👹👹👹");
+  console.log("====================================");
   res.status(200).json({
     message: "success",
     data,
