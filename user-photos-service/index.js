@@ -13,13 +13,12 @@ require("dotenv").config();
 
 const appConfig = require("./src/config/app");
 
-const dbConfig = require("./src/config/db");
-
 const pool = require("./src/config/pool");
 
 const { default: migrate } = require("node-pg-migrate");
 
 const NatsWrapper = require("./nats-wrapper.js");
+
 const UserImageCreatedListener = require("./src/events/user-image-created-listener");
 
 const port = appConfig.appPort || 6001;
@@ -49,7 +48,7 @@ const autoMigration = async () => {
       }, */
       databaseUrl: {
         host: "user-photos-db-srv",
-        port: dbConfig.dbPort,
+        port: 5432,
         database: "postgres",
         user: "postgres",
         password: "postgres",
@@ -63,15 +62,13 @@ const autoMigration = async () => {
         password: "",
       }, */
     });
-  } catch (error) {
-    console.log(error, "Hello connection error🧶");
-  }
+  } catch (error) {}
 };
 
 //autoMigration();
 
-if (!process.env.JWT_KEY) {
-  throw new Error("JWT_KEY must be defined");
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET must be defined");
 }
 
 const connectToNats = async () => {

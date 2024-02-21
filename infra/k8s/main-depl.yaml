@@ -17,16 +17,41 @@ spec:
           image: crawan/main-app
           ##imagePullPolicy: Never
           env:
-            - name: JWT_KEY
+            - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
-                  key: JWT_KEY
+                  key: JWT_SECRET
+
             - name: RUN_ON
               valueFrom:
                 secretKeyRef:
                   name: run-on
                   key: RUN_KEY
+
+            - name: JWT_EXPIRATION
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-expiration
+                  key: JWT_EXPIRATION
+
+            - name: JWT_COOKIE_EXPIRES_IN
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-cookie-expires-in
+                  key: JWT_COOKIE_EXPIRES_IN
+
+            - name: APP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-port
+                  key: APP_PORT
+
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: db_port
+                  key: DB_PORT
 
 ---
 apiVersion: v1
