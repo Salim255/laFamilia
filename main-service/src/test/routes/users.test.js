@@ -35,14 +35,14 @@ describe("Test user controller", () => {
       .expect(200)
       .then(response => {
         if (response) {
-          console.log(response._body.data.id, "🤕👿👿👹👹");
+          console.log(response._body.data.id, "🤕👿👿👹👹", startingCount);
           createdUserId = response._body.data.id;
           token = response._body.data.token;
         }
       });
 
     const finishCount = await userController.countUsers();
-
+    console.log(finishCount, "🤕👿👿👹👹", startingCount);
     expect(finishCount - startingCount).toEqual(1);
   });
 
