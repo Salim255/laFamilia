@@ -24,9 +24,9 @@ const NatsWrapper = require("../../nats-wrapper");
 const Publisher = require("../events/publish");
 
 const createToken = userId => {
-  return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
+  return "34567890"; /* jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
     expiresIn: "90d",
-  });
+  }); */
   //
   //return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
