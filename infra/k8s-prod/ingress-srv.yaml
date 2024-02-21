@@ -40,6 +40,17 @@ spec:
                 port:
                   number: 3000
 
+            #To create user ///////
+          - path: /api/v1/chats/?(.*)
+            pathType: Prefix
+            backend:
+              #The service of posts
+              service:
+                name: main-app-srv
+                #The port of posts service
+                port:
+                  number: 3000
+
           - path: /?(.*)
             pathType: Prefix
             backend:
