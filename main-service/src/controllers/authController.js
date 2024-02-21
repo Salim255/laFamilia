@@ -24,10 +24,6 @@ const NatsWrapper = require("../../nats-wrapper");
 const Publisher = require("../events/publish");
 
 const createToken = userId => {
-  /*  return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
-    expiresIn: "90d",
-  }); */
-
   return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 
@@ -57,7 +53,6 @@ exports.login = catchAsync(async (req, res, next) => {
   //If everything ok, send token to client
   const token = createToken(user[0].id);
 
-  // const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
   const expiration = jwt.verify(token, tokenConfig.tokenJWT);
   let data = {
     token,
@@ -87,9 +82,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     [email, hashedPassword, first_name, last_name],
   );
 
-  console.log("====================================");
-  console.log("👹👹👹👹👹", rows[0]);
-  console.log("====================================");
   //Create token
   const token = createToken(rows[0].id);
 
@@ -109,7 +101,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   }
 
   const expiration = jwt.verify(token, tokenConfig.tokenJWT);
-  //const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
 
   let data = {
     token,
@@ -127,7 +118,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   //1)Getting token and check of it's there
   let token;
 
-  console.log("Hello from protect 👹👹👹");
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1];
   }
