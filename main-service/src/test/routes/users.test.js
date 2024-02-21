@@ -35,14 +35,13 @@ describe("Test user controller", () => {
       .expect(200)
       .then(response => {
         if (response) {
-          console.log(response._body.data.id, "🤕👿👿👹👹", startingCount);
           createdUserId = response._body.data.id;
           token = response._body.data.token;
         }
       });
 
     const finishCount = await userController.countUsers();
-    console.log(finishCount, "🤕👿👿👹👹", startingCount);
+
     expect(finishCount - startingCount).toEqual(1);
   });
 
@@ -58,7 +57,7 @@ describe("Test user controller", () => {
   });
 
   //Update user test
-  /*  it("update user", async () => {
+  it("update user", async () => {
     await request(buildApp())
       .put("/api/v1/users")
       .send({
@@ -68,7 +67,7 @@ describe("Test user controller", () => {
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
   });
- */
+
   //Get all user test
   /*  it("get all users", async () => {
     await request(buildApp())

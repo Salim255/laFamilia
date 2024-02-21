@@ -119,9 +119,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     expiresIn: expiration.exp,
   };
 
-  console.log("====================================");
-  console.log(data, "👹👹👹👹👹");
-  console.log("====================================");
   res.status(200).json({
     message: "success",
     data,
@@ -137,6 +134,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   if (!token) {
+    console.log("Hello from not token 👹👹👹");
     return next(new AppError("You are not logged in! Please log in to get access.", 401));
   }
   //2)Verification token
