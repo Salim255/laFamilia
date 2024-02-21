@@ -35,6 +35,7 @@ describe("Test user controller", () => {
       .expect(200)
       .then(response => {
         if (response) {
+          console.log(response, "🤕👿👿👹👹");
           createdUserId = response._body.data.id;
           token = response._body.data.token;
         }
