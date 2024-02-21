@@ -34,7 +34,7 @@ export class ChatsService {
         return parseData._token;
       }),
       switchMap(token => {
-        return this.http.get<any>(`${this.ENV.apiURLDev}/chats`, {
+        return this.http.get<any>(`${this.ENV.apiURL}/chats`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }),

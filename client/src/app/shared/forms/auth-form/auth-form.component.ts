@@ -46,18 +46,9 @@ export class AuthFormComponent implements OnInit {
       confirm_password: this.password_confirm,
     };
 
-    console.log("====================================");
-    console.log(this.isLogin, authData);
-    console.log("====================================");
-    let authObs: Observable<any>;
-    authObs = this.authService.authenticate(this.isLogin, authData);
-    authObs.subscribe({
-      error: err => {
-        console.log(err, "hello error 👹👹");
-      },
+    this.authService.authenticate(this.isLogin, authData).subscribe({
+      error: err => {},
       next: res => {
-        console.log(res);
-        console.log(res, "hello error 👹👹");
         this.authSub = this.authService.userIsAuthenticated.subscribe(() => {
           this.router.navigateByUrl("/tabs/home");
         });

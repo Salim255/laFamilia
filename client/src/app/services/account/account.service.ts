@@ -37,7 +37,10 @@ export class AccountService {
         return { token: parseData._token, id: parseData.id };
       }),
       switchMap(data => {
-        return this.http.get<any>(`${this.ENV.apiURLDev}/users/${data?.id}`, {
+        console.log("====================================");
+        console.log(data);
+        console.log("====================================");
+        return this.http.get<any>(`${this.ENV.apiURL}/users/${data?.id}`, {
           headers: { Authorization: `Bearer ${data?.token}` },
         });
       }),
