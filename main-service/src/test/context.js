@@ -70,8 +70,8 @@ class Context {
             }
           : {
               host: "postgres",
-              port: dbTestConfig.dbPort,
-              database: dbTestConfig.dbDatabase,
+              port: "5432",
+              database: "laFamilia-test",
               user: roleName,
               password: roleName,
             },
@@ -94,9 +94,9 @@ class Context {
       await pool.connect({
         host: "postgres",
 
-        port: dbTestConfig.dbPort,
+        port: "5432",
 
-        database: dbTestConfig.dbDatabase,
+        database: "laFamilia-test",
 
         user: roleName,
 
