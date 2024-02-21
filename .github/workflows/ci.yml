@@ -12,7 +12,7 @@ jobs:
   # Label used to access the service container
 
   #####----
-  test:
+  build:
     #needs: db-container
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
