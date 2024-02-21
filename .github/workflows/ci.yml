@@ -47,9 +47,10 @@ jobs:
           --health-retries 5
     # Provide the password for postgres
     env:
+      CI: true
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      APP_PORT: ${{secrets.APP_PORT}}
+      APP_PORT: 4000
       JWT_SECRET: ${{secrets.JWT_SECRET}}
       JWT_EXPIRATION: ${{secrets.JWT_EXPIRATION}}
 
@@ -92,11 +93,11 @@ jobs:
         working-directory: ./main-service
       - run: npm run format:check
         working-directory: ./main-service
-      - run: ls
+
       - run: npm test -- --coverage
-        env:
-          CI: true
+
         working-directory: ./main-service
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
