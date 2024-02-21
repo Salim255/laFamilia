@@ -57,7 +57,7 @@ const autoMigration = async () => {
   }
 };
 
-if (process.env.RUN_ON_K8s === "true") {
+if (!process.env.RUN_ON_K8s) {
   if (!process.env.RUN_ON) {
     autoMigration();
     throw new Error("RUN_KEY must be defined");
