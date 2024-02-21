@@ -27,7 +27,6 @@ export class AuthFormComponent implements OnDestroy {
 
   onChange(event: any) {}
   onSubmit(form: NgForm) {
-    console.log(form, "From");
     if (!form.valid) {
       return;
     }
@@ -41,6 +40,9 @@ export class AuthFormComponent implements OnDestroy {
       confirm_password: this.password_confirm,
     };
 
+    console.log("====================================");
+    console.log(this.isLogin, authData);
+    console.log("====================================");
     this.authService.authenticate(this.isLogin, authData).subscribe({
       error: err => {
         console.log(err);
