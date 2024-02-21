@@ -140,7 +140,7 @@ if (!process.env.RUN_ON) {
 //Centralized method to handle all unhandledRejections  in the application, by listing to unhandledRejections events
 process.on("unhandledRejection", err => {
   console.log(err.name, err.message);
-
+  //////
   console.log("UNHANDLED REJECTION! 💥 Shutting down...");
   //Now we exit the application after unhandledRejections nicely be close the server then exit the application
   server.close(() => {

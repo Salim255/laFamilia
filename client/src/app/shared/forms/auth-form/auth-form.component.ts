@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth/auth.service";
 @Component({
   selector: "app-auth-form",
@@ -49,13 +49,15 @@ export class AuthFormComponent implements OnInit {
     console.log("====================================");
     console.log(this.isLogin, authData);
     console.log("====================================");
-    this.authService.authenticate(this.isLogin, authData).subscribe({
+    let authObs: Observable<any>;
+    authObs = this.authService.authenticate(this.isLogin, authData);
+    authObs.subscribe({
       error: err => {
-        console.log(err);
+        console.log(err, "hello error 👹👹");
       },
       next: res => {
         console.log(res);
-
+        console.log(res, "hello error 👹👹");
         this.authSub = this.authService.userIsAuthenticated.subscribe(() => {
           this.router.navigateByUrl("/tabs/home");
         });

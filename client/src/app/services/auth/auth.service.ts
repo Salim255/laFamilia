@@ -29,6 +29,12 @@ export class AuthService implements OnDestroy {
 
   authenticate(mode: boolean, data: authData) {
     let dataToSend = mode ? { email: data.email, password: data.password } : data;
+    console.log(
+      "Hello data to send",
+      dataToSend,
+      mode,
+      `${this.ENV.apiURL}/users/${mode ? "login" : "signup"}`,
+    );
 
     return this.http
       .post<any>(`${this.ENV.apiURL}/users/${mode ? "login" : "signup"}`, dataToSend)
@@ -50,11 +56,12 @@ export class AuthService implements OnDestroy {
 
     this.user.next(buildUser);
     this.autoLogout(buildUser.tokenDuration);
-    console.log(buildUser, "second response  👹👹👹");
+
     this.storeAuthData(buildUser);
   }
 
   private storeAuthData = async (dataToStore: User) => {
+    console.log(dataToStore, "Three response  👹👹👹");
     const data = JSON.stringify(dataToStore);
 
     await Preferences.set({
