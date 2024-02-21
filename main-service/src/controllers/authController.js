@@ -57,13 +57,16 @@ exports.login = catchAsync(async (req, res, next) => {
   //If everything ok, send token to client
   const token = createToken(user[0].id);
 
-  //const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
-  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+  const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
+  // const expiration = jwt.verify(token, tokenConfig.tokenJWT);
   let data = {
     token,
     id: user[0].id,
     expiresIn: expiration.exp,
   };
+  console.log("====================================");
+  console.log(data);
+  console.log("====================================");
   res.status(200).json({
     message: "success",
     data,
