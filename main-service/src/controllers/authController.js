@@ -73,6 +73,9 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.signup = catchAsync(async (req, res, next) => {
   const { email, password, first_name, last_name } = req.body;
 
+  console.log("====================================");
+  console.log(email, password, first_name, last_name, "👹👹👹👹👹");
+  console.log("====================================");
   if (!validator.isEmail(email) || isEmpty(password)) {
     return next(new AppError("Create user information error", 401));
   }
