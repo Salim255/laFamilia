@@ -155,7 +155,8 @@ jobs:
         working-directory: ./main-service
       - run: npm run format:check
         working-directory: ./main-service
-      - run: npm test --coverage
+      - run: ls
+      - run: npm test -- --coverage
         env:
           CI: true
         working-directory: ./main-service
