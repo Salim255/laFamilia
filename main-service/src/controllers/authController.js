@@ -24,11 +24,11 @@ const NatsWrapper = require("../../nats-wrapper");
 const Publisher = require("../events/publish");
 
 const createToken = userId => {
-  return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
+  /*  return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
     expiresIn: "90d",
-  });
-  //
-  //return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
+  }); */
+
+  return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 
 const correctPassword = async (candidatePassword, userPassword) => {
@@ -57,16 +57,14 @@ exports.login = catchAsync(async (req, res, next) => {
   //If everything ok, send token to client
   const token = createToken(user[0].id);
 
-  const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
-  // const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+  // const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
   let data = {
     token,
     id: user[0].id,
     expiresIn: expiration.exp,
   };
-  console.log("====================================");
-  console.log(data);
-  console.log("====================================");
+
   res.status(200).json({
     message: "success",
     data,
@@ -110,8 +108,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
   }
 
-  /*   const expiration = jwt.verify(token, tokenConfig.tokenJWT); */
-  const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+  //const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
 
   let data = {
     token,
@@ -139,10 +137,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   //2)Verification token
 
-  const decoded = await promisify(jwt.verify)(
-    token,
-    "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk",
-  );
+  const decoded = await promisify(jwt.verify)(token, tokenConfig.tokenJWT);
 
   //3)Check if user still exist
   const { rows } = await pool.query(`SELECT * FROM users  WHERE id = $1;`, [decoded.id]);
