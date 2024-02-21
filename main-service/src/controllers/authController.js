@@ -24,10 +24,6 @@ const NatsWrapper = require("../../nats-wrapper");
 const Publisher = require("../events/publish");
 
 const createToken = userId => {
-  /*   return jwt.sign({ id: userId }, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk", {
-    expiresIn: "90d",
-  }); */
-  //
   return jwt.sign({ id: userId }, tokenConfig.tokenJWT, { expiresIn: tokenConfig.tokenEXP });
 };
 
@@ -57,13 +53,13 @@ exports.login = catchAsync(async (req, res, next) => {
   //If everything ok, send token to client
   const token = createToken(user[0].id);
 
-  //const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
   const expiration = jwt.verify(token, tokenConfig.tokenJWT);
   let data = {
     token,
     id: user[0].id,
     expiresIn: expiration.exp,
   };
+
   res.status(200).json({
     message: "success",
     data,
@@ -104,13 +100,14 @@ exports.signup = catchAsync(async (req, res, next) => {
     await new Publisher(NatsWrapper.getClient()).publish(rows[0]);
   }
 
-  /*   const expiration = jwt.verify(token, tokenConfig.tokenJWT); */
-  const expiration = jwt.verify(token, "gnjfnkceodsl030939JDNKKKDSNKsjfgnezaMLGTSKjdjndkHydslsldk");
+  const expiration = jwt.verify(token, tokenConfig.tokenJWT);
+
   let data = {
     token,
     id: rows[0].id,
     expiresIn: expiration.exp,
   };
+
   res.status(200).json({
     message: "success",
     data,
@@ -130,7 +127,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   //2)Verification token
 
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decoded = await promisify(jwt.verify)(token, tokenConfig.tokenJWT);
 
   //3)Check if user still exist
   const { rows } = await pool.query(`SELECT * FROM users  WHERE id = $1;`, [decoded.id]);
