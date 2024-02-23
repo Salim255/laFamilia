@@ -123,10 +123,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@v4
         with:
-          # Add all paths to ignore except the specific folder
-          paths-ignore: |
-            .github/*
-            !main-service/
+          config-file: .super-linter.yml
 
         env:
           VALIDATE_ALL_CODEBASE: false
