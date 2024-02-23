@@ -123,7 +123,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@v4
         with:
-          config-file: .super-linter.yml
+          super-linter-config: .super-linter.yml
 
         env:
           VALIDATE_ALL_CODEBASE: false
