@@ -7,7 +7,7 @@ exports.getUserPhotos = catchAsync(async (req, res, next) => {
     data: "hello world",
   });
 });
-
+///////
 exports.createUserPhoto = async ({ userId, photo_url }) => {
   const { rows } = await pool.query(
     `INSERT INTO photos (photo_url ,user_id )
