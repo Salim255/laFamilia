@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.previousAuthState = isAuth;
     });
   }
-  //////////
+  ////////// Helloo,fkf,kel,
   ngOnDestroy(): void {
     if (this.authSub) {
       this.authSub.unsubscribe();
