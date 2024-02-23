@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - "client/**" #We tell that we want to run this only when there are changes in main-service directory
+      - "client/**" #We tell that we want to run this only when there are changes in client-service directory
   #This will run whenever oui push or merge into master brunch
 jobs:
   build:

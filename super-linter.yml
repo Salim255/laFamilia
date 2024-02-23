@@ -1,0 +1,6 @@
+linter:
+  files:
+    - "."
+  ignore:
+    - "node_modules/"
+    - "./client"
