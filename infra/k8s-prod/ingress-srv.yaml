@@ -15,6 +15,7 @@ spec:
   rules:
     #This first routing rule is going to take the incoming traffic and send it off to our post service
     - host: www.sharing-prod.xyz
+      ##
       #Ingress engine assuming that we might be hosting many different apps at different domains. So that's what this host property here all about
       http:
         paths:
