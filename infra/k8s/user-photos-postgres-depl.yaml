@@ -15,13 +15,13 @@ spec:
       containers:
         - name: user-photos-db
           image: crawan/posts-db
-          #imagePullPolicy: Never
+          #imagePullPolicy: Never///
           env:
-            - name: JWT_KEY
+            - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
-                  key: JWT_KEY
+                  key: JWT_SECRET
 
 ---
 apiVersion: v1
