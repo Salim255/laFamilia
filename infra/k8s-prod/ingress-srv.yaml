@@ -53,7 +53,7 @@ spec:
                   number: 3000
 
             #To deal with messages
-            #kkk////////
+            #kkk////////////
           - path: /api/v1/messages/?(.*)
             pathType: Prefix
             backend:
